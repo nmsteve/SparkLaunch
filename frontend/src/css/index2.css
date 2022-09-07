@@ -48,6 +48,12 @@ html {
   
   background: hsl(106, 95%, 65%);
   border-radius: 15px;
+  cursor: pointer;
+}
+
+.next_button:hover{
+  background-color: #4CAF50; /* Green */
+  color: white;
 }
 
 #button_28{

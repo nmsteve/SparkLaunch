@@ -729,42 +729,6 @@ const FACTORY_ADDRESS = '0x1Ce6CAB4923aC137686f32a36f524A92c93e7651'
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 
 
-const deploySale = async () => {
-    try {
-        if (!ethereum) {
-           console.log('Please install MetaMask')
-        }
-
-         //signer needed for transaction 
-        const signer = provider.getSigner();
-        //console.log("signer:",signer)
-
-        const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, signer);
-
-        let balance = await provider.getBalance(ethereum.selectedAddress);
-        let bal = ethers.utils.formatEther(balance);
-
-        let deployFee = await FactoryContract.fee()
-        let fee =  ethers.utils.formatEther(deployFee)
-
-        if(bal < fee){
-            console.log("insufficient funds")
-        } else {
-
-            const tx = await FactoryContract.deploySale({value:ethers.utils.parseEther('0.001')})
-            tx.wait()
-            console.log(tx)
-        }
-
-        console.log('Account:',ethereum.selectedAddress ,"Bal:",bal)
-        console.log('fee:',fee)
-
-    } catch (error) {
-       console.log("Error:", error.message)
-    }
-}
-
-
 const postData = async () =>  {
 
     const name = document.getElementById("name").value
@@ -851,7 +815,60 @@ const postData = async () =>  {
 
 const Description = () => {
 
-   
+    const  [selected, setSelected] = useState(ethereum.selectedAddress)
+
+    console.log(selected)
+
+    const deploySale = async () => {
+
+        try {
+            if (!ethereum) {
+            console.log('Please install MetaMask')
+            } 
+
+        const connect = await ethereum.request({ method: 'eth_requestAccounts' });
+
+        if (connect) {
+
+        
+                    //signer needed for transaction 
+                    const signer = provider.getSigner();
+                    
+                
+                    const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, signer);
+
+                    let balance = await provider.getBalance(ethereum.selectedAddress);
+                    let bal = ethers.utils.formatEther(balance);
+
+                    let deployFee = await FactoryContract.fee()
+                    let fee =  ethers.utils.formatEther(deployFee)
+
+                    if(bal < fee){
+                        console.log("insufficient funds")
+                    } else {
+
+                        const tx = await FactoryContract.deploySale({value:deployFee})
+                        tx.wait()
+                    
+                        setSelected(ethereum.selectedAddress)
+
+                        FactoryContract.on("SaleDeployed", (saleContract) => {
+                            console.log(saleContract);
+                        });
+
+                    
+                    }
+
+                    console.log('Account:',ethereum.selectedAddress ,"Bal:",bal)
+                    console.log('fee:',fee)
+
+        }
+
+        } catch (error) {
+        console.log("Error:", error.message)
+        }
+    }
+
 
     return (
         <>
