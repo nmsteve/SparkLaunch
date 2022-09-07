@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var SimplesaleSchema = new Schema({
 
+   
     saleToken: {
         name: String,
         symbol: String,
@@ -14,7 +15,13 @@ var SimplesaleSchema = new Schema({
         hardCap:Number,
         price:Number,
         startDate:Date,
-        endDate:Date 
+        endDate:Date,
+        minBuy:Number,
+        maxBuy:Number,
+        firstRelease:Number,
+        eachRelease:Number,
+        VestingDays: Number
+
     },
 
     saleLinks: {
@@ -33,12 +40,10 @@ var SimplesaleSchema = new Schema({
     },
 
     saleDetails:{
-
         saleAddress:{type:String, default:'0x0000000000000000000000000000000000000000'},
         saleOwner: {type:String, default:'0x0000000000000000000000000000000000000000'},
         listingDate: {type:Date, default:()=> Date.now()},
         description:String
-        
     }
 });
 

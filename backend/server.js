@@ -55,10 +55,15 @@ app.post('/sale', function(request, response) {
 
               saleParams: {
                 softCap:request.body.saleParams.softCap,
-                hardCap:request.body. saleParams.hardCap,
-                price:request.body. saleParams.price,
-                startDate:request.body. saleParams.startDate,
-                endDate:request.body.saleParams.endDate
+                hardCap:request.body.saleParams.hardCap,
+                price:request.body.saleParams.price,
+                startDate:request.body.saleParams.startDate,
+                endDate:request.body.saleParams.endDate,
+                minBuy:request.body.saleParams.minBuy,
+                maxBuy:request.body.saleParams.minBuy,
+                firstRelease:request.body.saleParams.firstRelease,
+                eachRelease:request.body.saleParams.eachRelease,
+                VestingDays: request.body.saleParams.endDate
               },
 
               saleLinks: {
@@ -75,12 +80,12 @@ app.post('/sale', function(request, response) {
                 youtube: request.body. saleLinks.youtube
               },
 
-              // sale:{
-              // saleAddress:request.body.sale.saleAddress,
-              // saleOwner:request.body.sale.saleOwner,
-              // listingDate:request.body.sale.listingDate,
-              // description:request.body.sale.description,
-              // }
+              saleDetails:{
+              saleAddress:request.body.saleDetails.saleAddress,
+              saleOwner:request.body.saleDetails.saleOwner,
+              description:request.body.saleDetails.description,
+              },
+
         
 
           }, function(err, savedSale) {

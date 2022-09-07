@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {ethers} from 'ethers';
+import { id } from 'ethers/lib/utils';
 
 
 const factoryABI =[
@@ -721,107 +722,24 @@ const saleABI =  [
       "stateMutability": "payable",
       "type": "receive"
     }
-  ]
+]
 
 const {ethereum} = window
 
 const FACTORY_ADDRESS = '0x1Ce6CAB4923aC137686f32a36f524A92c93e7651'
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-
-const postData = async () =>  {
-
-    const name = document.getElementById("name").value
-    const symbol = document.getElementById("symbol").value
-    const address =document.getElementById("address").value
-
-    const softCap=document.getElementById("softCap").value
-    const hardCap=document.getElementById("hardCap").value
-    const price=document.getElementById("price").value
-    const startDate=document.getElementById("startDate").value
-    const endDate=document.getElementById("endDate").value
-
-
-    const logo=document.getElementById("logo").value
-    const fb=document.getElementById("fb").value
-    const git=document.getElementById("git").value
-    const insta=document.getElementById("insta").value
-    const reddit=document.getElementById("reddit").value
-
-    const web=document.getElementById("web").value
-    const twitter=document.getElementById("twitter").value
-    const telegram=document.getElementById("telegram").value
-    const discord=document.getElementById("discord").value
-    const youtube=document.getElementById("youtube").value
-
-
-    const input = JSON.stringify( 
-        {
-            saleToken:
-                {
-                    name: name,
-                    symbol: symbol,
-                    address: address
-                },
-            saleParams: 
-                {
-                    softCap:softCap,
-                    hardCap:hardCap,
-                    price:price,
-                    startDate:startDate,
-                    endDate:endDate
-                },
-            saleLinks: {
-
-                    logo: logo,
-                    fb:fb,
-                    git:git,
-                    insta:insta,
-                    reddit:reddit,
-            
-                    web: web,
-                    twitter: twitter,
-                    telegram: telegram,
-                    discord: discord,
-                    youtube: youtube
-            },
-
-        }
-    
-    )
-    
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: input
-    };
-
-    try{
-    
-        const response = await fetch('http://localhost:3001/sale', requestOptions);
-        const data = await response.json();
-        console.log('Data:',data)
-
-    } catch(e) {
-        
-        console.log("Err: ", e)
-    }
-
-    //console.log(data)
-
-   
-
-}
-
 const Description = () => {
 
-    const  [selected, setSelected] = useState(ethereum.selectedAddress)
-
-    console.log(selected)
+    var  selected = ethereum.selectedAddress
+    var  _id = 0
+    var saleAddress = ""
+    console.log('id', _id)
+    //console.log("Selected on Mount:",selected)
 
     const deploySale = async () => {
 
-        try {
+       
             if (!ethereum) {
             console.log('Please install MetaMask')
             } 
@@ -831,6 +749,7 @@ const Description = () => {
         if (connect) {
 
         
+          try {
                     //signer needed for transaction 
                     const signer = provider.getSigner();
                     
@@ -844,29 +763,139 @@ const Description = () => {
                     let fee =  ethers.utils.formatEther(deployFee)
 
                     if(bal < fee){
+
                         console.log("insufficient funds")
-                    } else {
+                    } 
+                    else {
 
                         const tx = await FactoryContract.deploySale({value:deployFee})
                         tx.wait()
                     
-                        setSelected(ethereum.selectedAddress)
-
-                        FactoryContract.on("SaleDeployed", (saleContract) => {
-                            console.log(saleContract);
-                        });
-
                     
                     }
+                    
+                    selected = ethereum.selectedAddress
+                    console.log("Selected on call", selected)
 
-                    console.log('Account:',ethereum.selectedAddress ,"Bal:",bal)
+                    console.log('Account:',ethereum.selectedAddress)
+                    console.log("Bal:",bal)
                     console.log('fee:',fee)
 
+
+                  } catch (error) {
+                    console.log("Error:", error.message)
+                    }
+
+                   
         }
 
-        } catch (error) {
-        console.log("Error:", error.message)
-        }
+       
+    }
+
+    const postData = async () =>  {
+
+      //_id++
+    //await deploySale()
+
+      const name = document.getElementById("name").value
+      const symbol = document.getElementById("symbol").value
+      const address =document.getElementById("address").value
+  
+      const softCap=document.getElementById("softCap").value
+      const hardCap=document.getElementById("hardCap").value
+      const price=document.getElementById("price").value
+      const startDate=document.getElementById("startDate").value
+      const endDate=document.getElementById("endDate").value
+      const minBuy=document.getElementById("minBuy").value
+      const maxBuy=document.getElementById("maxBuy").value
+      const firstRelease=document.getElementById("firstRelease").value
+      const VestingDays=document.getElementById("VestingDays").value
+      const eachRelease=document.getElementById("eachRelease").value
+  
+  
+      const logo=document.getElementById("logo").value
+      const fb=document.getElementById("fb").value
+      const git=document.getElementById("git").value
+      const insta=document.getElementById("insta").value
+      const reddit=document.getElementById("reddit").value
+  
+      const web=document.getElementById("web").value
+      const twitter=document.getElementById("twitter").value
+      const telegram=document.getElementById("telegram").value
+      const discord=document.getElementById("discord").value
+      const youtube=document.getElementById("youtube").value
+      const description=document.getElementById("description").value
+  
+  
+      const input = JSON.stringify( 
+          {
+            
+              saleToken:
+                  {
+                      name: name,
+                      symbol: symbol,
+                      address: address
+                  },
+              saleParams: 
+                  {
+                      softCap:softCap,
+                      hardCap:hardCap,
+                      price:price,
+                      startDate:startDate,
+                      endDate:endDate,
+                      minBuy:minBuy,
+                      maxBuy:maxBuy,
+                      firstRelease:firstRelease,
+                      eachRelease:eachRelease,
+                      VestingDays: VestingDays
+                  },
+              saleLinks: {
+  
+                      logo: logo,
+                      fb:fb,
+                      git:git,
+                      insta:insta,
+                      reddit:reddit,
+              
+                      web: web,
+                      twitter: twitter,
+                      telegram: telegram,
+                      discord: discord,
+                      youtube: youtube
+              },
+  
+              saleDetails:{
+                saleAddress:saleAddress,
+                saleOwner:selected,
+                description: description
+              },
+  
+          }
+      
+      )
+      
+      const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: input
+      };
+  
+      try{
+      
+          const response = await fetch('http://localhost:3001/sale', requestOptions);
+          const data = await response.json();
+          console.log('Data:',data)
+          console.log('Data:',data._id)
+  
+      } catch(e) {
+          
+          console.log("Err: ", e)
+      }
+  
+      //console.log(data)
+  
+     
+  
     }
 
 
@@ -874,11 +903,11 @@ const Description = () => {
         <>
             <div className='inner_div_right_bottoms'>
                 <div className='inner_div_right_bottom_heading'>Description</div>
-                <textarea className='inner_div_right_bottom_input' placeholder='This is my description' style={{padding:"2rem"}}></textarea>
+                <textarea id='description' className='inner_div_right_bottom_input' placeholder='This is my description' style={{padding:"2rem"}}></textarea>
             </div>
             <div className='next_button'  onClick={()=>{
-                    deploySale()
-                    //postData()
+                    //deploySale()
+                    postData()
                 }}>
                     <div id="button_29">Done</div>
             </div>
