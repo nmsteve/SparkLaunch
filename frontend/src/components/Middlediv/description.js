@@ -407,8 +407,8 @@ const provider = new ethers.providers.Web3Provider(window.ethereum);
 const Description = () => {
 
     var  selected = ethereum.selectedAddress
-    var  id = 13
-    var saleAddress = ""
+    let  id
+    let saleAddress 
    
 
     console.log('id', id)
@@ -416,7 +416,7 @@ const Description = () => {
 
     const deploySale = async () => {
              
-          //await postData()
+          await postData()
        
             if (!ethereum) {
             console.log('Please install MetaMask')
@@ -454,8 +454,8 @@ const Description = () => {
 
                         await tx.wait()
 
-                        const saleAddress = await FactoryContract.saleIdToAddress(id)
-                        console.log(saleAddress)
+                        saleAddress = await FactoryContract.saleIdToAddress(id)
+                        console.log('SaleAddress:',saleAddress)
                     }
                     
                     console.log('Account:',ethereum.selectedAddress)
@@ -560,13 +560,11 @@ const Description = () => {
   
       try{
       
-          const response = await fetch('https://sparklaunch-backend.herokuapp.com/sale', requestOptions);
+          const response = await fetch('http://localhost:3001/sale', requestOptions);
           const data = await response.json();
           console.log('Data:',data)
-          id = data._id
-          // const int = await parseInt(id,16)
-          // const BigNo = await ethers.BigNumber.from(int)
-          console.log('ID:', id.toString(16))
+          id = data.saleDetails.saleID
+          console.log('ID:', id)
   
       } catch(e) {
           
@@ -587,8 +585,8 @@ const Description = () => {
                 <textarea id='description' className='inner_div_right_bottom_input' placeholder='This is my description' style={{padding:"2rem"}}></textarea>
             </div>
             <div className='next_button'  onClick={()=>{
-                    //deploySale()
-                    postData()
+                    deploySale()
+                    //postData()
                 }}>
                     <div id="button_29">Done</div>
             </div>

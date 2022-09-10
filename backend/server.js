@@ -43,12 +43,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.post('/sale', function(request, response) {
 
           
-        const id = 100
+       
 
         Sale.create(
-  
+            
+         
             {
-              _id:id,       
+                   
               saleToken: {
               name: request.body.saleToken.name,
               symbol: request.body.saleToken.symbol,
@@ -93,9 +94,10 @@ app.post('/sale', function(request, response) {
           }, function(err, savedSale) {
             if (err) {
                 response.status(500).send({error:"Could not save sale"});
+                console.log(err)
             } else {
                 response.send(savedSale);
-                id++
+             
             }
            });
 });

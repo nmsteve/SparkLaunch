@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var saleID = 100
 
 var BNBsaleSchema = new Schema({
 
@@ -43,7 +44,8 @@ var BNBsaleSchema = new Schema({
         saleAddress:{type:String, default:'0x0000000000000000000000000000000000000000'},
         saleOwner: {type:String, default:'0x0000000000000000000000000000000000000000'},
         listingDate: {type:Date, default:()=> Date.now()},
-        description:String
+        description:String,
+        saleID:{type:Number, default: ()=>{return saleID++}}
     }
 });
 
