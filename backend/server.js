@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 require('dotenv').config()
 
 
-var Sale = require('./model/Simplesale');
+var Sale = require('./model/BNBsale');
 
 mongoose.connect(
   
@@ -42,11 +42,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.post('/sale', function(request, response) {
 
+          
+        const id = 100
 
         Sale.create(
   
             {
-                        
+              _id:id,       
               saleToken: {
               name: request.body.saleToken.name,
               symbol: request.body.saleToken.symbol,
@@ -93,6 +95,7 @@ app.post('/sale', function(request, response) {
                 response.status(500).send({error:"Could not save sale"});
             } else {
                 response.send(savedSale);
+                id++
             }
            });
 });

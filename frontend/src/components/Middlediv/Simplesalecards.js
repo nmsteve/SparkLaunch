@@ -1,7 +1,7 @@
 import React, {useState, useEffect}  from 'react'
 import {ethers} from 'ethers';
 
-import Salecard from './middlediv_salecard'
+import Salecard from './Salecard'
 
 const factoryABI =[
     {
@@ -728,7 +728,7 @@ const FACTORY_ADDRESS = '0x1Ce6CAB4923aC137686f32a36f524A92c93e7651'
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
 
-function Middlediv_salecards ({setopenModal9,setopenModal5}){
+function Salecards ({setopenModal9,setopenModal5}){
 
     let salesData = [];
 
@@ -793,24 +793,21 @@ function Middlediv_salecards ({setopenModal9,setopenModal5}){
     
         setSaleList( saleList =  salesData.map((sale)=> 
     
+        <div className="kyc_boxes" key={sale.saleAddress} onClick={()=>{setopenModal9(true);setopenModal5(false);}}>    
             <Salecard 
-                onClick={()=>{setopenModal9(true);setopenModal5(false);}}
-                saleAddress ={sale.saleAddress}
                 softCap={sale.softCap}
                 raised={sale.raised}
                 price={sale.price}
                 date={sale.date}
                 holders={sale.holders}
             />
+          </div>
         ))
     
     }
 
     { useEffect(()=>{
-
-       
-       displayCard()
-
+      displayCard()
    },[])}  
     
 
@@ -823,4 +820,4 @@ function Middlediv_salecards ({setopenModal9,setopenModal5}){
     )
 }
 
-export default Middlediv_salecards
+export default Salecards

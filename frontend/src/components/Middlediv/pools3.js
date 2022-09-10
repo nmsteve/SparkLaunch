@@ -20,14 +20,18 @@ const Pools3 = () => {
                                 <img src="/images/bsc.png" className='binance_img' />
                             </div>
                         </div>
-                        <div className='innerdiv_left_paragraph'>Lorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem ipsum dolorLorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem </div>
+                        <div className='innerdiv_left_paragraph'>Lorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem ipsum dolor sit amet,
+                         consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem ipsum dolorLorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem ipsum dolor sit amet, 
+                         consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem </div>
+
                         <div className='innerdiv_left_images'>
                             <img src="images/Vector2.png"></img>
                             <img src="images/Vector3.png"></img>
                             <img src="images/Vector4.png"></img>
                             <img src="images/Vector5.png"></img>
                         </div>
-                        <div className='innerdiv_poolheadings'>POOL DETAILS</div>
+
+                        <div className='innerdiv_poolheadings'>SALE DETAILS</div>
                         <div className="innerdiv_poolheadings_belowdiv">
                             <div className='innerdiv_poolheadings_belowdiv_left'>Access type :<span id="span_innerdiv">public</span></div>
                             <div className='innerdiv_poolheadings_belowdiv_right'>Hard Cap :  $500 000</div>

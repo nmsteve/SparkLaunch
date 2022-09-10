@@ -59,8 +59,8 @@ const Topdiv = () => {
                     </div>
 
                     <div className="info_div">
-                        <NavLink to="/" exact><p>VESTING SALE</p> </NavLink>
-                        <NavLink to="/simple" exact><p>SIMPLE SALE</p></NavLink>
+                        <NavLink to="/" exact><p>BNB SALE</p> </NavLink>
+                        <NavLink to="/erc20" exact><p>ERC20 SALE</p></NavLink>
                         <NavLink to="/About" exact><p>ABOUT</p></NavLink>
                     </div>
 

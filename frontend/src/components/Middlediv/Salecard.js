@@ -1,10 +1,10 @@
 import React from 'react'
 
-const Middlediv_salecard =(sale) => {
+const salecard =(sale) => {
 
     return (
         <>
-           <div className="kyc_boxes" key={sale.saleAddress} >    
+          
             <div className='kyc_boxes_inside_top'>
                 <div className='kyc_boxes_inside_top_left'>
                     <p className='kyc_heading'>Roburna</p>
@@ -78,9 +78,9 @@ const Middlediv_salecard =(sale) => {
                 <div id="percentage_3">Mar 1,2022,3PM UTC</div>
             </div> 
             
-           </div> 
+         
         </>
        )
 }
 
-export default Middlediv_salecard
+export default salecard

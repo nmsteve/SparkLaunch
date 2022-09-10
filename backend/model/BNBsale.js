@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var SimplesaleSchema = new Schema({
+var BNBsaleSchema = new Schema({
 
    
     saleToken: {
@@ -47,4 +47,4 @@ var SimplesaleSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Simplesale', SimplesaleSchema);
+module.exports = mongoose.model('BNBsale', BNBsaleSchema);
