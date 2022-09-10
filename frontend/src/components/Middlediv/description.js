@@ -1,9 +1,5 @@
 import React, { useState } from 'react'
 import {ethers} from 'ethers';
-import bigNumber from 'big-number';
-var BigNumber = require('big-number');
-
-
 
 const factoryABI = [
   {
@@ -410,10 +406,8 @@ const Description = () => {
     let  id
     let saleAddress 
    
-
     console.log('id', id)
   
-
     const deploySale = async () => {
              
           await postData()

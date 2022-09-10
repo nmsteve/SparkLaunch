@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 
-import Salecards from './Middlediv/Simplesalecards'
+import Salecards from './Middlediv/salecards'
 import Boxesdiv from './Middlediv/middlediv_boxesdiv'
 import Bottomdiv from './Bottomdiv/bottomdiv'
 import Bottomdiv1 from './Bottomdiv/bottomdiv1'
