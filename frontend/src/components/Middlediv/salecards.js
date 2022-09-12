@@ -1174,7 +1174,7 @@ function Salecards ({setopenModal9,setopenModal5}){
 
     try{
     
-        const response = await fetch('http://localhost:3001/sale');
+        const response = await fetch('https://sparklaunch-backend.herokuapp.com/sale');
         const data = await response.json();
         console.log('Data:',data)
         //const id = data.saleDetails.saleID
