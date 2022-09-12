@@ -554,7 +554,7 @@ const Description = () => {
   
       try{
       
-          const response = await fetch('http://localhost:3001/sale', requestOptions);
+          const response = await fetch('https://sparklaunch-backend.herokuapp.com/sale', requestOptions);
           const data = await response.json();
           console.log('Data:',data)
           id = data.saleDetails.saleID
@@ -579,8 +579,8 @@ const Description = () => {
                 <textarea id='description' className='inner_div_right_bottom_input' placeholder='This is my description' style={{padding:"2rem"}}></textarea>
             </div>
             <div className='next_button'  onClick={()=>{
-                    deploySale()
-                    //postData()
+                    //deploySale()
+                    postData()
                 }}>
                     <div id="button_29">Done</div>
             </div>

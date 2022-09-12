@@ -12,7 +12,7 @@ const Title = ({setopenModal6}) => {
                 <div className='inner_top_left_top_mid2'>Token Address *</div>
                 <input id={"address"} className='inner_div_left_top_input3' placeholder='0X ...' ></input>
                 <div className='inner_top_left_top_bottom1'>Users will pay with BNB for your token</div>
-                <div className='inner_top_left_top_bottom2'>Pool creation fee: 0.001 BNB</div>
+                <div className='inner_top_left_top_bottom2'>Pool creation fee: 0.005 BNB</div>
             </div>
             <div  className='next_button' 
                     onClick={() => {
