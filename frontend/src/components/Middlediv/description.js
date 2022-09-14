@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import {ethers} from 'ethers';
 
 const factoryABI = [
@@ -481,7 +481,7 @@ const Description = () => {
       const minBuy=document.getElementById("minBuy").value
       const maxBuy=document.getElementById("maxBuy").value
       const firstRelease=document.getElementById("firstRelease").value
-      const VestingDays=document.getElementById("VestingDays").value
+      const vestingDays=document.getElementById("vestingDays").value
       const eachRelease=document.getElementById("eachRelease").value
   
   
@@ -519,10 +519,9 @@ const Description = () => {
                       maxBuy:maxBuy,
                       firstRelease:firstRelease,
                       eachRelease:eachRelease,
-                      VestingDays: VestingDays
+                      vestingDays: vestingDays
                   },
               saleLinks: {
-  
                       logo: logo,
                       fb:fb,
                       git:git,
@@ -535,7 +534,6 @@ const Description = () => {
                       discord: discord,
                       youtube: youtube
               },
-  
               saleDetails:{
                 saleAddress:saleAddress,
                 saleOwner:selected,
@@ -555,6 +553,7 @@ const Description = () => {
       try{
       
           const response = await fetch('https://sparklaunch-backend.herokuapp.com/sale', requestOptions);
+          //const response = await fetch('http://localhost:3001/sale', requestOptions);
           const data = await response.json();
           console.log('Data:',data)
           id = data.saleDetails.saleID
@@ -579,8 +578,8 @@ const Description = () => {
                 <textarea id='description' className='inner_div_right_bottom_input' placeholder='This is my description' style={{padding:"2rem"}}></textarea>
             </div>
             <div className='next_button'  onClick={()=>{
-                    //deploySale()
-                    postData()
+                    deploySale()
+                    //postData()
                 }}>
                     <div id="button_29">Done</div>
             </div>

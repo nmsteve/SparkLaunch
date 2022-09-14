@@ -17,7 +17,7 @@ function App() {
    
       <>
           <Routes>
-            <Route exact path="/" element={<BNB/>}></Route>
+            <Route exact="true" path="/" element={<BNB/>}></Route>
             <Route path="/ERC20" element={<ERC20/>}></Route> 
         </Routes>
       </>

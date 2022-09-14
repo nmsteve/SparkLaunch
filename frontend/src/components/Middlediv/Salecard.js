@@ -4,11 +4,10 @@ const salecard =(sale) => {
 
     return (
         <>
-          
             <div className='kyc_boxes_inside_top'>
                 <div className='kyc_boxes_inside_top_left'>
-                    <p className='kyc_heading'>Roburna</p>
-                    <p className='kyc_heading_small'>RBA</p>
+                    <p className='kyc_heading'>{sale.name}</p>
+                    <p className='kyc_heading_small'>{sale.symbol}</p>
                     <div className='kyc_images'>
                         <img className="spark_image_2_1" src="images/Vector2.png" />
                         <img className="spark_image_2_1" src="images/Vector3.png" />
@@ -21,7 +20,6 @@ const salecard =(sale) => {
 
                 </div>
             </div>
-
             <div className='kyc_boxes_inside_middle'>
                 <div className="live_div">
                     <div id="button_11">LIVE</div>
@@ -30,11 +28,11 @@ const salecard =(sale) => {
                     <div id="button_12">UPCOMING</div>
                 </div>
             </div>
-
             <div className='kyc_boxes_inside_middle_1'>
-                <p className='middle_para'>lorem kcdhckc cjojco hshsh nslkkkchhc jxjxsacj jsxlsjc mcmdlcl mlcmc ljcocj jocojqwjhw jcowj ojxkh oclshc lshchc h hs hkhdsdkdh h</p>
+                <p className='middle_para'>
+                    {sale.description}
+                </p>
             </div>
-
             <div className='kyc_boxes_inside_last'>
                 <div className="kyc_boxes_inside_last_left">
                     <div  style={{ marginTop: "0.7rem"}}>Soft Cap</div>
@@ -50,12 +48,10 @@ const salecard =(sale) => {
                    </div>
                 </div>
             </div>
-
             <div className='registration'>
                 <div id="registration">registration closes in 2 days, 22 hours</div>
                 <div id="percentage">45%</div>
             </div>
-
             <div className='potion_fill'>
                 <div className='potion'>
                     <div className='potion_flow'>
@@ -64,7 +60,6 @@ const salecard =(sale) => {
                 </div>
 
             </div>
-
             <div className='registration_1'>
                 <div id="registration_1"></div>
                 <div id="percentage_1"></div>
@@ -75,10 +70,8 @@ const salecard =(sale) => {
             </div>
             <div className='registration_3'>
                 <div id="registration_3">{sale.holders}</div>
-                <div id="percentage_3">Mar 1,2022,3PM UTC</div>
+                <div id="percentage_3">{sale.listingDate}</div>
             </div> 
-            
-         
         </>
        )
 }

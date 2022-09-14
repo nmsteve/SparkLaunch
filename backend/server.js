@@ -42,9 +42,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.post('/sale', function(request, response) {
 
-          
-       
-
         Sale.create(
             
          
@@ -66,7 +63,7 @@ app.post('/sale', function(request, response) {
                 maxBuy:request.body.saleParams.minBuy,
                 firstRelease:request.body.saleParams.firstRelease,
                 eachRelease:request.body.saleParams.eachRelease,
-                VestingDays: request.body.saleParams.endDate
+                vestingDays:request.body.saleParams.vestingDays
               },
 
               saleLinks: {
@@ -89,11 +86,9 @@ app.post('/sale', function(request, response) {
               description:request.body.saleDetails.description,
               },
 
-        
-
           }, function(err, savedSale) {
             if (err) {
-                response.status(500).send({error:"Could not save sale"});
+                response.status(500).send({error:err});
                 console.log(err)
             } else {
                 response.send(savedSale);
@@ -116,10 +111,11 @@ app.get('/sale', function(request, response) {
 
 app.delete('/sale', function(request, response) {
 
-  Sale.deleteMany({saleAddress:request.body.saleAddress}, function(err, sale)
+  Sale.deleteMany({'saleDetails.saleID':request.body.saleID}, function(err, sale)
       {
           if(err){
-            response.status(500).send({error:"Could not detete sale"})
+            response.status(500).send({error:err})
+            console.log(err)
           } else {
             response.send(sale)
           }

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var saleID = 100
+var saleID = 1010
 
 var BNBsaleSchema = new Schema({
 
@@ -21,7 +21,7 @@ var BNBsaleSchema = new Schema({
         maxBuy:Number,
         firstRelease:Number,
         eachRelease:Number,
-        VestingDays: Number
+        vestingDays: Number
 
     },
 

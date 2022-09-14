@@ -1111,6 +1111,7 @@ const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provide
 function Salecards ({setopenModal9,setopenModal5}){
 
     let salesData = [];
+    let saleInfor = [];
 
     var [saleList, setSaleList] = useState()
 
@@ -1131,26 +1132,26 @@ function Salecards ({setopenModal9,setopenModal5}){
                     const saleAddress = saleAddressObject.toString()
                    // console.log(saleAddress)
                     
-                   //get sale data
+                   //get sale chainData
                     const saleContract =  new ethers.Contract(saleAddress, saleABI, provider);
-                    const data = await saleContract.sale();
-                    //console.log('Data',data)
+                    const chainData = await saleContract.sale();
+                    //console.log('Data',chainData)
                     
                     //get NO of participants
                     const noOfParticipants =await saleContract.numberOfParticipants()
                     const holders = noOfParticipants.toNumber()
                     //console.log('Holders', holders)
     
-                    //format data for display
-                    let dateObject = new Date(data.saleEnd.toString() *1000)
-                    console.log("Date:", dateObject.toUTCString())
+                    //format chainData for display
+                    let dateObject = new Date(chainData.saleEnd.toString() *1000)
+                    //console.log("Date:", dateObject.toUTCString())
     
                     //create display object
                     let sale = {
                         saleAddress:saleAddress,
-                        softCap:data.softCap.toString()/10**18,
-                        raised:data.totalBNBRaised.toString()/10**18,
-                        price:data.tokenPriceInBNB.toString()/10**18,
+                        softCap:chainData.softCap.toString()/10**18,
+                        raised:chainData.totalBNBRaised.toString()/10**18,
+                        price:chainData.tokenPriceInBNB.toString()/10**18,
                         date: dateObject,
                         holders:holders
                     }
@@ -1160,49 +1161,147 @@ function Salecards ({setopenModal9,setopenModal5}){
                      salesData.push(sale)
                     
                     
-                } catch (e) {
-                    console.log("Err: ", e)
-                }
+                } catch (e) {console.log("Err: ", e)}
             
             }
           
         }
+        
     }
 
     async function fetchSaleInfor () {
-     
 
-    try{
-    
-        const response = await fetch('https://sparklaunch-backend.herokuapp.com/sale');
-        const data = await response.json();
-        console.log('Data:',data)
-        //const id = data.saleDetails.saleID
-        //console.log('ID:', id)
+      
 
-    } catch(e) {
+        try{
         
-        console.log("Err: ", e)
-    }
+            const response = await fetch('https://sparklaunch-backend.herokuapp.com/sale');
+            //const response = await fetch('http://localhost:3001/sale');
+            const DBdata = await response.json();
+            //console.log('Data:',DBdata)
+            console.log('Data Lenght:', DBdata.length)
 
-    }  
+            DBdata.map(  async sale =>  {
+
+              const saleID = sale.saleDetails.saleID
+
+              //get sale address
+              const saleAddressObject = await FactoryContract.saleIdToAddress(saleID);
+              const saleAddress = saleAddressObject.toString()
+              //console.log(saleAddress)
+              
+            //get sale chainData
+              const saleContract =  new ethers.Contract(saleAddress, saleABI, provider);
+              const chainData = await saleContract.sale();
+              //console.log('Data',chainData)
+              
+              //get NO of participants
+              const noOfParticipants =await saleContract.numberOfParticipants()
+              const holders = noOfParticipants.toNumber()
+              //console.log('Holders', holders)
+
+              //format data for display
+              let dateObject = new Date(chainData.saleEnd.toString() *1000)
+
+              //get max and min participation
+              const minBuy = await saleContract.minParticipation()
+              const maxBuy = await saleContract.maxParticipation()
+
+
+
+            
+            let saleDBChain = 
+            
+              {       
+                  saleToken: {
+                  name: sale.saleToken.name,
+                  symbol: sale.saleToken.symbol,
+                  address: sale.saleToken.address,
+                  },
+                  saleParams: {
+                    softCap:chainData.softCap.toString()/10**18,
+                    hardCap:chainData.hardCap.toString()/10**18,
+                    raised:chainData.totalBNBRaised.toString()/10**18,
+                    price:chainData.tokenPriceInBNB.toString()/10**18,
+                    startDate:sale.saleParams.startDate,
+                    endDate:dateObject,
+                    minBuy:minBuy.toString()/10**18,
+                    maxBuy:maxBuy.toString()/10**18,
+                    firstRelease:sale.saleParams.firstRelease,
+                    eachRelease:sale.saleParams.eachRelease,
+                    vestingDays: sale.saleParams.vestingDay
+                  },
+                  saleLinks: {
+                    logo: sale.saleLinks.logo,
+                    fb:sale.saleLinks.fb,
+                    git:sale.saleLinks.git,
+                    insta:sale.saleLinks.insta,
+                    reddit:sale.saleLinks.reddit,
+            
+                    web: sale.saleLinks.web,
+                    twitter: sale.saleLinks.twitter,
+                    telegram: sale.saleLinks.telegram,
+                    discord: sale.saleLinks.discord,
+                    youtube: sale.saleLinks.youtube
+                  },
+                  saleDetails:{
+                  saleID:sale.saleDetails.saleID,
+                  saleAddress:saleAddress,
+                  saleOwner:chainData.saleOwner.toString(),
+                  description:sale.saleDetails.description,
+                  holders:holders,
+                  listingDate: sale.saleDetails.listingDate
+                  },
+              }
+
+            saleInfor.push(saleDBChain)
+            
+            });
+        
+          
+
+        } catch(e) {console.log("Err: ", e)}
+        
+     }  
 
     async function displayCard(){
-        await fetchSalesData()
         await fetchSaleInfor() 
+        await fetchSalesData()
+        console.log('saleInfor',saleInfor)
+       console.log('saleData',salesData)
+
+        // salesData.map((sale) => {
+        //   console.log('Sale:',sale)
+        // })
+
+        setSaleList( saleList =   saleInfor.map((sale)=> 
     
-        setSaleList( saleList =  salesData.map((sale)=> 
-    
-        <div className="kyc_boxes" key={sale.saleAddress} onClick={()=>{setopenModal9(true);setopenModal5(false);}}>    
-            <Salecard 
-                softCap={sale.softCap}
-                raised={sale.raised}
-                price={sale.price}
-                date={sale.date}
-                holders={sale.holders}
-            />
+        // <div className="kyc_boxes" key={sale.saleAddress} onClick={()=>{setopenModal9(true);setopenModal5(false);}}>    
+        //     <Salecard 
+        //         softCap={sale.softCap}
+        //         raised={sale.raised}
+        //         price={sale.price}
+        //         date={sale.date}
+        //         holders={sale.holders}
+        //     />
+        // </div>
+
+          <div className="kyc_boxes" key={sale.saleDetails.saleID} onClick={()=>{setopenModal9(true);setopenModal5(false);}}>    
+          <Salecard 
+              name={sale.saleToken.name}
+              symbol={sale.saleToken.symbol}
+              description={sale.saleDetails.description}
+              softCap={sale.saleParams.softCap}
+              raised={sale.saleParams.raised}
+              price={sale.saleParams.price}
+              date={sale.saleParams.endDate}
+              holders={sale.saleDetails.holders}
+              listingDate={sale.saleDetails.listingDate}
+          />
           </div>
+
         ))
+        {console.log('saleList',saleList)}
     
     }
 
@@ -1213,7 +1312,7 @@ function Salecards ({setopenModal9,setopenModal5}){
 
     return (
         <> 
-        {console.log('salesData',salesData)}
+    
         {saleList}
 
         </>
