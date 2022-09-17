@@ -3,7 +3,8 @@ import React from 'react'
 const salecard =(sale) => {
 
     return (
-        <>
+        <>  {sale.ID}
+             
             <div className='kyc_boxes_inside_top'>
                 <div className='kyc_boxes_inside_top_left'>
                     <p className='kyc_heading'>{sale.name}</p>

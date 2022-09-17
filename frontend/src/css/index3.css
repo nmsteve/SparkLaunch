@@ -361,6 +361,8 @@ color: #5CE65C;
   line-height: 169.3%;
   color: #ffffff;
 }
+
+
 .innerdiv_poolheadings_1 {
   display: flex;
   flex-direction: row;
@@ -475,9 +477,67 @@ top: 774px; */
   background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
   border-radius: 1.5rem;
 }
+
+.innerparticipate_button {
+  position: absolute;
+  width: 20.3rem;
+  height: 5.3rem;
+  margin-left: 23rem;
+  margin-top: 30rem;
+  cursor: pointer;
+
+  /* gradient green */
+
+  background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
+  border-radius: 1.5rem;
+}
+
+.participate_button {
+  position: absolute;
+  width: 20.3rem;
+  height: 5.3rem;
+  margin-left: 29rem;
+  margin-top: 5rem;
+
+  /* gradient green */
+
+  background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
+  border-radius: 1.5rem;
+  cursor: pointer;
+}
+
+.withdraw_button {
+  position: absolute;
+  width: 20.3rem;
+  height: 5.3rem;
+  margin-left: 29rem;
+  margin-top: 15rem;
+
+  /* gradient green */
+
+  background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
+  border-radius: 1.5rem;
+  cursor: pointer;
+}
+
+.withdrawused_button {
+  position: absolute;
+  width: 20.3rem;
+  height: 5.3rem;
+  margin-left: 29rem;
+  margin-top: 25rem;
+
+  /* gradient green */
+
+  background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
+  border-radius: 1.5rem;
+  cursor: pointer;
+}
+
+
 #button_15 {
   position: absolute;
-  width: 13.7rem;
+  width: 20.7rem;
   height: 2.9rem;
   margin-left: 4.3rem;
   margin-top: 1.3rem;

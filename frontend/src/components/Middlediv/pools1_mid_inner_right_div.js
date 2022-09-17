@@ -1,9 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Pools1_right_topBottom_boxes from './pools1_right_topBottom_boxes'
 
 const pools1_mid_inner_right_div = ({ setopenModal12 }) => {
-
-    // const [openModal13, setopenModal13] = useState(false);
 
     return (
         <>{  <>
@@ -38,8 +36,7 @@ export default pools1_mid_inner_right_div
 
 {<>
     <div className='innerdiv_right1'>
-        {/* <div className='innerdivright_top'> */}
-        {/* <div className='innerdivright_topboxes'> */}
+      
         <div className='boxes_top1'>
             <div className='boxes_topleft1'></div>
             <div className='boxes_topright1'>
@@ -120,12 +117,9 @@ export default pools1_mid_inner_right_div
             <div className="Kycbox_div1">
                 <div id="button_191">KYC</div>
             </div>
-            {/* </div> */}
-            {/* </div> */}
+           
         </div>
-        {/* <div className='innerdivright_button'>
-    <div id="button_15">Connect Wallet</div>
-</div> */}
+     
     </div>
     <div className='right_bottom'>
         <div className='right_bottom_top'>Amount (max:2BNB)</div>

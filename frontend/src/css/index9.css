@@ -36,12 +36,60 @@ html {
     font-family: 'Gilroy';
     font-style: normal;
     font-weight: 700;
-    font-size: 7rem;
+    font-size: 5rem;
     line-height: 8.7rem;
     text-align: center;
     color: #79FB53;
     word-spacing: 0.8rem;
 }
+
+.participate_div {
+  box-sizing: border-box;
+  position: absolute;
+  width: 68.3rem;
+  height: 46.1rem;
+  left: 37rem;
+  top: 58.2rem;
+  
+  background: #131313;
+  border-radius: 3.4rem;
+  border:2px solid green;
+}
+.participate_heading{
+  position: absolute;
+  width: 50.6rem;
+  height: 8.85rem;
+  margin-left: 8.8rem;
+  margin-top: 3.6rem;
+  
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 5rem;
+  line-height: 8.7rem;
+  text-align: center;
+  color: #79FB53;
+  word-spacing: 0.8rem;
+}
+
+.participate_amount{
+  position: absolute;
+  width: 50.6rem;
+  height: 8.85rem;
+  margin-left: 8.8rem;
+  margin-top: 13.6rem;
+  
+  font-family: 'Gilroy';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 8.7rem;
+  text-align: center;
+  color: #79FB53;
+  word-spacing: 0.8rem;
+}
+
+
 .metamask_heading_below{
     position: absolute;
     width: 56.6rem;
@@ -127,7 +175,7 @@ html {
     width: 38.6rem;
     height: 3.3rem;
     margin-left:18rem;
-    margin-top: 29.3rem;
+    margin-top: 27.3rem;
     
     font-family: 'Konnect';
     font-style: normal;
@@ -141,10 +189,10 @@ html {
     box-sizing: border-box;
 
     position: absolute;
-    width: 31.7rem;
+    width: 35.7rem;
     height: 7.2rem;
     margin-left: 18.3rem;
-    margin-top: 34.6rem;
+    margin-top: 35.6rem;
     
     background: linear-gradient(91.18deg, #5CE65C 3.96%, #249806 101.84%);
     border-radius: 1.5rem;
@@ -159,7 +207,7 @@ html {
     font-family: 'Konnect';
     font-style: normal;
     font-weight: 700;
-    font-size: 2.5rem;
+    font-size: 2rem;
     line-height: 3.3rem;
     color: #FFFFFF;
     

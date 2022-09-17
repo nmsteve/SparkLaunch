@@ -13,6 +13,7 @@ import Description from './Middlediv/description'
 import Pools1 from './Middlediv/pools1'
 import Pools3 from './Middlediv/pools3'
 import Metamaskconnect from './Middlediv/metamaskconnect'
+import Participate from './Middlediv/participate'
 
 
 const MiddleBottomdiv = () => {
@@ -25,7 +26,7 @@ const MiddleBottomdiv = () => {
     const [openModal9, setopenModal9] = useState(false);
     const [openModal10, setopenModal10] = useState(false);
     const [openModal11, setopenModal11] = useState(false);
-    const [openModal12, setopenModal12] = useState(false);
+   
 
     
     const toggle = () => {
@@ -132,7 +133,8 @@ const MiddleBottomdiv = () => {
                                     onClick={() => { setopenModal9(false);setopenModal5(true)}}>
                                     Close
                          </button>
-                        <Pools1 setopenModal5={setopenModal5} setopenModal9={setopenModal9} setopenModal10={setopenModal10}  toggle={toggle}/>
+                        <Pools1 setopenModal5={setopenModal5} setopenModal9={setopenModal9} 
+                                setopenModal10={setopenModal10}  setopenModal11={setopenModal11} toggle={toggle}/>
                         </div>
                         <Bottomdiv1 />
                     </div>
@@ -140,17 +142,10 @@ const MiddleBottomdiv = () => {
             }
             {
                 openModal10 &&
-                <Metamaskconnect  toggle1={toggle1} setopenModal10={setopenModal10} setopenModal11={setopenModal11} setopenModal9={setopenModal9} />
+                <Metamaskconnect  toggle1={toggle1} setopenModal11={setopenModal11} setopenModal10={setopenModal10}  setopenModal9={setopenModal9}/>
             }
-            {openModal11 && 
-                <>
-                    <div className="main_div">
-                        <Topdiv />
-                        <Pools3 />
-                        <Bottomdiv1 />
-                    </div>
-                </>
-                
+            {   openModal11 && 
+                 <Participate  toggle1={toggle1} setopenModal11={setopenModal11}  setopenModal10={setopenModal10} setopenModal9={setopenModal9}/>
             }
         </>
     )
