@@ -2,11 +2,14 @@ import React from 'react'
 
 const salecard =(sale) => {
 
+    
+
     return (
-        <>  {sale.ID}
-             
-            <div className='kyc_boxes_inside_top'>
+        <>  
+            <div className='kyc_boxes_inside_top' >
+            {  sale.ID}
                 <div className='kyc_boxes_inside_top_left'>
+               
                     <p className='kyc_heading'>{sale.name}</p>
                     <p className='kyc_heading_small'>{sale.symbol}</p>
                     <div className='kyc_images'>

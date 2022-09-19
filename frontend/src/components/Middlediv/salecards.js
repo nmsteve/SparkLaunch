@@ -8,7 +8,15 @@ var selectedSale =1000
 
 function Salecards ({setopenModal9,setopenModal5}){
 
-  var [saleList, setSaleList] = useState()
+    var [saleList, setSaleList] = useState()
+
+
+   function handleClick(e)
+    {
+      console.log(e.currentTarget.id);
+      setopenModal9(true);
+      setopenModal5(false);
+    }
   
     async function displayCard(){
        const saleInfor = await fetchSaleInfor() 
@@ -16,26 +24,16 @@ function Salecards ({setopenModal9,setopenModal5}){
         console.log('saleInfor',saleInfor)
        //console.log('saleData',salesData)
 
-        // salesData.map((sale) => {
-        //   console.log('Sale:',sale)
-        // })
 
         setSaleList( saleList =   saleInfor.map((sale)=> 
-    
-        // <div className="kyc_boxes" key={sale.saleAddress} onClick={()=>{setopenModal9(true);setopenModal5(false);}}>    
-        //     <Salecard 
-        //         softCap={sale.softCap}
-        //         raised={sale.raised}
-        //         price={sale.price}
-        //         date={sale.date}
-        //         holders={sale.holders}
-        //     />
-        // </div>
 
-          <div className="kyc_boxes" key={sale.saleDetails.saleID} onClick={ async ()=>{
-            setopenModal9(true);
-            setopenModal5(false);
-            }}>    
+          <div id={sale.saleDetails.saleID} className="kyc_boxes" key={sale.saleDetails.saleID} 
+          onClick={
+            handleClick
+          }
+
+           >  
+             
           <Salecard
 
               ID={sale.saleDetails.saleID}
@@ -58,7 +56,6 @@ function Salecards ({setopenModal9,setopenModal5}){
 
     { useEffect(()=>{
       displayCard()
-      console.log('selected sale:', selectedSale)
    },[])}  
     
 

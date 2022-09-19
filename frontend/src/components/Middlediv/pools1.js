@@ -11,6 +11,7 @@ const Pools1 = ({ setopenModal11,setopenModal10, setopenModal9, setopenModal5,to
                     </option>
                 </div>
                 <div className="inner_div">
+                    <div className='closediv' onClick={() => { setopenModal9(false);setopenModal5(true)}}> </div>
                     <div className='innerdiv_left'>
                         <LeftDiv setopenModal11={setopenModal11} setopenModal10={setopenModal10}/>
                     </div>
