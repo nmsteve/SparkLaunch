@@ -423,20 +423,61 @@ const withdraw = async () => {
   }
 }
 
+const withdrawUsed = async () => {
+  try {
+
+
+     //connect if not connected
+     await ethereum.request({ method: 'eth_requestAccounts' });
+
+     //get sale address
+     const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
+    
+     // create signer
+     const signer = provider.getSigner(ethereum.selectedAddress)
+
+     //connect to sale
+     const saleContract =  new ethers.Contract(saleAddress, saleABI, signer)
+
+      //get sale chain data
+     const sale = await saleContract.sale()
+
+     if(!sale.isCreated) {
+      console.log('params not set')
+     } else if(!await saleContract.saleFinished()) {
+         console.log("Sale not Finished")
+     } else if( ! await saleContract.isParticipated(ethereum.selectedAddress)) {
+      console.log('You did not participate')
+     } else if(await saleContract.isSaleSuccessful()) {
+      console.log("sale was successful, withdraw instead")
+     } else {
+      const tx = await saleContract.withdrawUserFundsIfSaleCancelled()
+      tx.wait()
+      console.log('tx:',tx)
+     }
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 const finishSale = async () => {
   try {
 
+    //get sale Data
+    const signer = provider.getSigner(ethereum.selectedAddress)
+
     //get sale address
     const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
-    
-    if(! await AdminContract.isAdmin(ethereum.selectedAddress)) {
+    const saleContract =  new ethers.Contract(saleAddress, saleABI, signer)
+
+    if (await saleContract.saleFinished()) {
+      console.log('sale aready Finished')
+
+    } else if(! await AdminContract.isAdmin(ethereum.selectedAddress)) {
       console.log('Caller not the admin')
     } else
     {
-      //get sale Data
-        const signer = provider.getSigner(ethereum.selectedAddress)
-        const saleContract =  new ethers.Contract(saleAddress, saleABI, signer)
-
         //finish sale
         const tx = await saleContract.finishSale()
         tx.wait()
@@ -448,4 +489,99 @@ const finishSale = async () => {
   }
 }
 
-export { fetchSalesData, fetchSaleInfor, deploySale, participateInsale, withdraw, finishSale}
+export const depositTokens = async () => {
+  try {
+
+    //connect if not connected
+    await ethereum.request({ method: 'eth_requestAccounts' });
+
+    
+    if (selectedSale == 0) {
+      console.log('selected sale lost, please refresh')
+    } else
+    {
+      //get sale address
+      const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
+    
+      //Create signer
+      const signer = provider.getSigner(ethereum.selectedAddress)
+
+      //get connect to contract
+      const saleContract =  new ethers.Contract(saleAddress, saleABI, signer)
+
+      //get sale details
+      const sale = await saleContract.sale()
+     
+     //compare address
+      const compare = sale.saleOwner.toString().toLowerCase() ===  ethereum.selectedAddress.toString().toLowerCase()
+      console.log('compare', compare)
+
+      if(!sale.isCreated) {
+      console.log('params not set')
+      } else if(!compare) {
+          console.log('Not sale owner')
+      } else if(sale.tokensDeposited) {
+          console.log("Already deposited")
+      } else {
+      const tx = await saleContract.depositTokens()
+      tx.wait()
+      console.log('tx:',tx)
+      }
+    }
+   
+ } catch (error) {
+   console.log(error.message)
+ }
+}
+
+const withdrawDeposit = async () => {
+  try {
+
+    //connect if not connected
+    await ethereum.request({ method: 'eth_requestAccounts' });
+
+    
+    if (selectedSale == 0) {
+      console.log('selected sale lost, please refresh')
+    } else
+    {
+      //get sale address
+      const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
+    
+      //Create signer
+      const signer = provider.getSigner(ethereum.selectedAddress)
+
+      //get connect to contract
+      const saleContract =  new ethers.Contract(saleAddress, saleABI, signer)
+
+      //get sale details
+      const sale = await saleContract.sale()
+     
+     
+      const compare = sale.saleOwner.toString().toLowerCase() ===  ethereum.selectedAddress.toString().toLowerCase()
+      console.log('compare', compare)
+
+      if(!sale.isCreated) {
+      console.log('params not set')
+      } else if(!compare) {
+          console.log('Not sale owner')
+      } else if(!await saleContract.saleFinished()) {
+          console.log("Sale not finished")
+      } else if(await saleContract.isSaleSuccessful()) {
+      console.log("sale was successful, withdraw earning instead")
+      } else {
+      const tx = await saleContract. withdrawDepositedTokensIfSaleCancelled()
+      tx.wait()
+      console.log('tx:',tx)
+      }
+    }
+   
+ } catch (error) {
+   console.log(error.message)
+ }
+}
+
+
+
+export { fetchSalesData, fetchSaleInfor, deploySale, participateInsale, withdraw, withdrawUsed, finishSale,
+   withdrawDeposit}
