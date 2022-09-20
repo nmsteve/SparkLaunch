@@ -1,13 +1,18 @@
   import { ethers } from "ethers"
 
-  import { factoryABI, saleABI } from "./abi";
+  import { factoryABI, saleABI , adminABI} from "./abi";
+  import { selectedSale } from "./salecards";
 
   //const backendURL = 'http://localhost:3001/sale'
   const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
   
   const FACTORY_ADDRESS = '0x8548128b77c66d6914f4F01A2087fF8343942282'
+  const ADMIN_ADDRESS = '0xE765240958a91DF0cF878b8a4ED23D5FF8effFFe'
+
   const provider = new ethers.providers.Web3Provider(window.ethereum);
+
   const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
+  const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
 
   const {ethereum} = window
   
@@ -71,7 +76,7 @@
    
   }
 
- async function fetchSaleInfor () {
+  async function fetchSaleInfor () {
 
    let saleInfor = [];
    try{
@@ -270,9 +275,9 @@
              
     const id = await postData()
     
-         if (!ethereum) {
-         console.log('Please install MetaMask')
-         } 
+    if (!ethereum) {
+    console.log('Please install MetaMask')
+    } 
 
      const connect = await ethereum.request({ method: 'eth_requestAccounts' });
 
@@ -325,4 +330,122 @@
     
  }
 
-export { fetchSalesData, fetchSaleInfor, deploySale}
+ const participateInsale = async ()  =>  {
+
+  const amount = document.getElementById('amount').value
+  const amountInWei = ethers.utils.parseUnits( amount.toString(), 'ether')
+
+  try {
+
+    //connect if not connected
+    await ethereum.request({ method: 'eth_requestAccounts' });
+
+    //get sale address
+    const saleAddressObject = await FactoryContract.saleIdToAddress(selectedSale);
+    const saleAddress = saleAddressObject.toString()
+  
+  //get sale chainData
+    const signer = provider.getSigner(ethereum.selectedAddress)
+    const saleContract =  new ethers.Contract(saleAddress, saleABI, signer);
+    const sale = await await saleContract.sale()
+    console.log('sale',sale.isCreated)
+
+    if(!sale.isCreated) {
+      console.log('sale Params not set')
+    } else 
+    
+    {
+
+      const userTierObject = await saleContract.tier(ethereum.selectedAddress);
+      const userTier = userTierObject.toNumber()
+      console.log('userTier',userTier)
+
+
+      if(userTier == 0) {
+        console.log('No tier granted')
+
+      } else 
+      
+      {
+
+        if(await saleContract.isParticipated(ethereum.selectedAddress)) {
+
+          console.log('Already Participated')
+          console.log(amountInWei.toString())
+        } else 
+        {
+          //Participate
+         const  tx= await saleContract.participate(userTier, {value:amountInWei})
+         tx.wait()
+         console.log(tx)
+
+        }
+      }
+  }  
+  } catch (error) {
+
+    console.log(error.message)
+    
+  }
+}
+
+const withdraw = async () => {
+  try {
+
+
+     //connect if not connected
+     await ethereum.request({ method: 'eth_requestAccounts' });
+
+     //get sale address
+     const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
+    
+   //get sale chainData
+     const signer = provider.getSigner(ethereum.selectedAddress)
+     const saleContract =  new ethers.Contract(saleAddress, saleABI, signer)
+     const sale = await saleContract.sale()
+     if(!sale.isCreated) {
+      console.log('params not set')
+     } else if(!await saleContract.saleFinished()) {
+         console.log("Sale not Finished")
+     } else if( ! await saleContract.isParticipated(ethereum.selectedAddress)) {
+      console.log('You did not participate')
+     } else if(!await saleContract.isSaleSuccessful()) {
+      console.log("sale Not successful")
+     } else {
+      const tx = await saleContract.withdraw()
+      tx.wait()
+      console.log('tx:',tx)
+     }
+
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+const finishSale = async () => {
+  try {
+
+    //get sale address
+    const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
+    
+    if(! await AdminContract.isAdmin(ethereum.selectedAddress)) {
+      console.log('Caller not the admin')
+    } else
+    {
+      //get sale Data
+        const signer = provider.getSigner(ethereum.selectedAddress)
+        const saleContract =  new ethers.Contract(saleAddress, saleABI, signer)
+
+        //finish sale
+        const tx = await saleContract.finishSale()
+        tx.wait()
+        console.log('tx:',tx)
+    }
+    
+  } catch (error) {
+    console.log('Error:',error.message)
+  }
+}
+
+export { fetchSalesData, fetchSaleInfor, deploySale, participateInsale, withdraw, finishSale}

@@ -17,9 +17,9 @@ const Pools1 = ({ setopenModal11,setopenModal10, setopenModal9, setopenModal5,to
                     </div>
                     <div className='innerdiv_right'>
                         <RightDiv />
-                        <div className='innerdivright_button'>
+                        {/* <div className='innerdivright_button'>
                             <div id="button_15" onClick={()=>{setopenModal10(true); toggle();}}>Connect Wallet</div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
         </>)

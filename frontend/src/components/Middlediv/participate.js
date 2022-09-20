@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
-
+import { selectedSale } from './salecards';
+import { participateInsale } from './dataProccessing';
 
 const Participate = ({ setopenModal11, setopenModal10, setopenModal9, toggle1 }) => {
+
+   { useEffect(()=>{
+        console.log('selected sale', selectedSale)
+     
+    },[]) }
+
     return (
         <>
             <div className='participate_div'>
@@ -13,11 +20,11 @@ const Participate = ({ setopenModal11, setopenModal10, setopenModal9, toggle1 })
             
                         <div className='participate_amount'>
                         Amount (max:10BNB) <br></br> 
-                        <input className='' placeholder='0.1'></input>
+                        <input id="amount" className='participateAmount' placeholder='0.1'></input>
                         </div>
                        
                         <div className='innerparticipate_button'>
-                            <div id="button_15" onClick={()=>{}}>Buy</div>
+                            <div id="button_15" onClick={()=>{participateInsale()}}>Buy</div>
                         </div>
                 
             </div>

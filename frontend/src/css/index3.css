@@ -534,6 +534,20 @@ top: 774px; */
   cursor: pointer;
 }
 
+.finish_button {
+  position: absolute;
+  width: 20.3rem;
+  height: 5.3rem;
+  margin-left: 1rem;
+  margin-top: 3rem;
+
+  /* gradient green */
+
+  background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
+  border-radius: 1.5rem;
+  cursor: pointer;
+}
+
 
 #button_15 {
   position: absolute;

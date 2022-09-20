@@ -1,5 +1,6 @@
 import React from 'react'
 import Pools1_right_topBottom_boxes from './pools1_right_topBottom_boxes'
+import { finishSale } from './dataProccessing'
 
 const pools1_mid_inner_right_div = ({ setopenModal12 }) => {
 
@@ -8,6 +9,9 @@ const pools1_mid_inner_right_div = ({ setopenModal12 }) => {
             <div className='innerdivright_top'>
                 <div className='innerdivright_topboxes'>
                     <Pools1_right_topBottom_boxes />
+                    <div className='finish_button'>
+                        <div id="button_15" onClick={()=>{finishSale()}}>Finish Sale</div>
+                    </div>
                 </div>
 
                 <div className='innerdivright_topboxes'>

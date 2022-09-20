@@ -101,7 +101,7 @@ app.get('/sale', function(request, response) {
 
     Sale.find({},function(err, sale) {
         if (err) {
-            response.status(500).send({error: "Could not fetch sale"});
+            response.status(500).send({error: err.message});
         } else {
             response.send(sale);
         }

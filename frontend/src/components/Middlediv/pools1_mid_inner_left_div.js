@@ -1,4 +1,5 @@
 import React from 'react'
+import { withdraw } from './dataProccessing'
 
 const pools1_mid_inner_left_div = ({setopenModal11,setopenModal10}) => {
   return (
@@ -32,7 +33,7 @@ const pools1_mid_inner_left_div = ({setopenModal11,setopenModal10}) => {
           <div id="button_15" onClick={()=>{setopenModal11(true)}}>Participate</div>
       </div>
       <div className='withdraw_button'>
-          <div id="button_15" onClick={()=>{}}>withdraw</div>
+          <div id="button_15" onClick={()=>{withdraw()}}>withdraw</div>
       </div>
       <div className='withdrawused_button'>
           <div id="button_15" onClick={()=>{}}>withdraw used</div>

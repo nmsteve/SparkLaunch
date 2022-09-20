@@ -103,6 +103,10 @@ html {
   height: 10rem;
   background-color: #000;
 }
+
+.participateAmount{
+  font-size: 1.5rem;
+}
 /* .Roburna_img {
   position: absolute;
   left: 44.74%;

@@ -3,19 +3,19 @@ import React, {useState, useEffect}  from 'react'
 import Salecard from './Salecard'
 import { fetchSalesData, fetchSaleInfor} from './dataProccessing'
 
-export 
-var selectedSale =1000
+export var selectedSale = 0
+
 
 function Salecards ({setopenModal9,setopenModal5}){
 
     var [saleList, setSaleList] = useState()
-
-
-   function handleClick(e)
-    {
-      console.log(e.currentTarget.id);
+  
+    function handleClick(e){
+      console.log('Target:',e.currentTarget.id);
+      selectedSale = e.currentTarget.id
       setopenModal9(true);
       setopenModal5(false);
+      console.log('Selected Sale:',selectedSale)
     }
   
     async function displayCard(){
@@ -68,4 +68,5 @@ function Salecards ({setopenModal9,setopenModal5}){
     )
 }
 
-export default Salecards 
+export default Salecards
+

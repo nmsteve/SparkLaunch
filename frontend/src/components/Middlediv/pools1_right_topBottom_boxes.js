@@ -19,10 +19,10 @@ const Pools1_right_top_boxes = () => {
                 </div>
             </div>
             <div className='boxes_mid1'>
-                <div className='boxes_mid_inner'>
+                {/* <div className='boxes_mid_inner'>
                     <div className="boxes_mid_inner_top">1 XXX = 0.02 IGNT </div>
                     <div className="boxes_mid_inner_bottom">1 IGNT = 200XXX</div>
-                </div>
+                </div> */}
             </div>
             <div className='Registration'>
                 <div id="Registration">registration closes in 2 days, 22 hours</div>
@@ -73,14 +73,7 @@ const Pools1_right_top_boxes = () => {
                     </div>
                 </div>
             </div>
-            <div className="kyc_audit1">
-                <div className='audit_div1'>
-                    <div id="button_18">AUDIT</div>
-                </div>
-                <div className="kycbox_div1">
-                    <div id="button_19">KYC</div>
-                </div>
-            </div>
+           
         </>
     )
 }
