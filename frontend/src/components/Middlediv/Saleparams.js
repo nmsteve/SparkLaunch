@@ -19,7 +19,7 @@ const Saleparams = ({setopenModal7}) => {
                         <input id="eachRelease"className='inner_div_left_botton_mid_right_input5' placeholder='Ex. 20%'></input>
                     </div>
                     <div className='inner_div_left_bottom_mid_right'>
-                        <div className="inner_div_left_bottom_mid_right_heading1">HardCap (BNB) *</div>
+                        <div className="inner_div_left_bottom_mid_right_heading1">HardCap (Sale Tokens) *</div>
                         <input id="hardCap" className='inner_div_left_botton_mid_right_input1' placeholder='0'></input>
                         <div className="inner_div_left_bottom_mid_right_heading2">Maxumim buy (BNB) *</div>
                         <input id="maxBuy"className='inner_div_left_botton_mid_right_input2' placeholder='0'></input>

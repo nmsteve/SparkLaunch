@@ -1,6 +1,6 @@
   import { ethers } from "ethers"
 
-  import { factoryABI, saleABI , adminABI} from "./abi";
+  import { factoryABI, saleABI , adminABI, busdABI} from "./abi";
   import { selectedSale } from "./salecards";
 
   //const backendURL = 'http://localhost:3001/sale'
@@ -8,15 +8,19 @@
   
   const FACTORY_ADDRESS = '0x8548128b77c66d6914f4F01A2087fF8343942282'
   const ADMIN_ADDRESS = '0xE765240958a91DF0cF878b8a4ED23D5FF8effFFe'
+  const BUSD_ADDRESS = '0xDE9FD15d56D096Ee61773E3951217422051F3b22'
 
   const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
   const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
 
+  
+  
+
   const {ethereum} = window
   
-  async  function  fetchSalesData() {
+ export async  function  fetchSalesData() {
 
          
     let salesData = [];
@@ -76,7 +80,7 @@
    
   }
 
-  async function fetchSaleInfor () {
+ export async function fetchSaleInfor () {
 
    let saleInfor = [];
    try{
@@ -166,7 +170,7 @@
    return saleInfor
   }  
 
- const postData = async () =>  {
+ export const postData = async () =>  {
 
    let  id
 
@@ -262,7 +266,7 @@
 
    } catch(e) {
        
-       console.log("Err: ", e)
+       console.log("Err: ", e.message)
    }
 
    //console.log(data)
@@ -271,7 +275,7 @@
 
  }
 
- const deploySale = async () => {
+ export const deploySale = async () => {
              
     const id = await postData()
     
@@ -330,7 +334,7 @@
     
  }
 
- const participateInsale = async ()  =>  {
+export const participateInsale = async ()  =>  {
 
   const amount = document.getElementById('amount').value
   const amountInWei = ethers.utils.parseUnits( amount.toString(), 'ether')
@@ -352,6 +356,8 @@
 
     if(!sale.isCreated) {
       console.log('sale Params not set')
+    } else if(!sale.tokensDeposited) {
+      console.log('Sale tokens were not deposited')
     } else 
     
     {
@@ -361,7 +367,7 @@
       console.log('userTier',userTier)
 
 
-      if(userTier == 0) {
+      if(userTier === 0) {
         console.log('No tier granted')
 
       } else 
@@ -389,7 +395,7 @@
   }
 }
 
-const withdraw = async () => {
+export const withdraw = async () => {
   try {
 
 
@@ -423,7 +429,7 @@ const withdraw = async () => {
   }
 }
 
-const withdrawUsed = async () => {
+export const withdrawUnused = async () => {
   try {
 
 
@@ -461,7 +467,7 @@ const withdrawUsed = async () => {
   }
 }
 
-const finishSale = async () => {
+export const finishSale = async () => {
   try {
 
     //get sale Data
@@ -496,7 +502,7 @@ export const depositTokens = async () => {
     await ethereum.request({ method: 'eth_requestAccounts' });
 
     
-    if (selectedSale == 0) {
+    if (selectedSale === 0) {
       console.log('selected sale lost, please refresh')
     } else
     {
@@ -508,6 +514,7 @@ export const depositTokens = async () => {
 
       //get connect to contract
       const saleContract =  new ethers.Contract(saleAddress, saleABI, signer)
+      const BUSDContract = new ethers.Contract(BUSD_ADDRESS, busdABI, signer)
 
       //get sale details
       const sale = await saleContract.sale()
@@ -523,10 +530,16 @@ export const depositTokens = async () => {
       } else if(sale.tokensDeposited) {
           console.log("Already deposited")
       } else {
-      const tx = await saleContract.depositTokens()
-      tx.wait()
-      console.log('tx:',tx)
-      }
+          const approve = await BUSDContract.approve(saleAddress, sale.hardCap)
+          approve.wait()
+          console.log("Approve",approve)
+          
+          if(approve) {
+            const deposit = await saleContract.depositTokens()
+            deposit.wait()
+            console.log('deposit:',deposit)
+          }
+        }
     }
    
  } catch (error) {
@@ -534,14 +547,14 @@ export const depositTokens = async () => {
  }
 }
 
-const withdrawDeposit = async () => {
+export const withdrawDeposit = async () => {
   try {
 
     //connect if not connected
     await ethereum.request({ method: 'eth_requestAccounts' });
 
     
-    if (selectedSale == 0) {
+    if (selectedSale === 0) {
       console.log('selected sale lost, please refresh')
     } else
     {
@@ -570,7 +583,7 @@ const withdrawDeposit = async () => {
       } else if(await saleContract.isSaleSuccessful()) {
       console.log("sale was successful, withdraw earning instead")
       } else {
-      const tx = await saleContract. withdrawDepositedTokensIfSaleCancelled()
+      const tx = await saleContract.withdrawDepositedTokensIfSaleCancelled()
       tx.wait()
       console.log('tx:',tx)
       }
@@ -581,7 +594,60 @@ const withdrawDeposit = async () => {
  }
 }
 
+export const withdrawEarnings = async () => {
 
+  var errorMsg = document.getElementById('errormsg')
+  try {
 
-export { fetchSalesData, fetchSaleInfor, deploySale, participateInsale, withdraw, withdrawUsed, finishSale,
-   withdrawDeposit}
+    //connect if not connected
+    await ethereum.request({ method: 'eth_requestAccounts' });
+
+    
+    if (selectedSale === 0) {
+      console.log('selected sale lost, please refresh')
+      errorMsg.innerText = 'Selected sale lost, please refresh'
+    } else
+    {
+      //get sale address
+      const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
+    
+      //Create signer
+      const signer = provider.getSigner(ethereum.selectedAddress)
+
+      //get connect to contract
+      const saleContract =  new ethers.Contract(saleAddress, saleABI, signer)
+    
+      //get sale details
+      const sale = await saleContract.sale()
+     
+     //compare address
+      const compare = sale.saleOwner.toString().toLowerCase() ===  ethereum.selectedAddress.toString().toLowerCase()
+      console.log('compare', compare)
+
+      if(!sale.isCreated) {
+      console.log('params not set')
+      errorMsg.innerText = 'params not set'
+      } else if(!compare) {
+          console.log('Not sale owner')
+          errorMsg.innerText = 'Not sale owner'
+      } else if(!await saleContract.saleFinished()) {
+        console.log('sale still running')
+        errorMsg.innerText = 'sale still running'
+      } else if(! await saleContract.isSaleSuccessful()) {
+          console.log("sale was cancled,withdraw deposited instead")
+          errorMsg.innerText = 'sale was cancled.Withdraw deposited instead'
+      } else if (sale.earningsWithdrawn) {
+        console.log("Aready withdraw")
+        errorMsg.innerText = "Aready withdraw"
+      }
+      else {
+      const tx = await saleContract.withdrawEarningsAndLeftover()
+      tx.wait()
+      console.log('tx:',tx)
+      }
+    }
+   
+ } catch (error) {
+   console.log(error.message)
+ }
+}

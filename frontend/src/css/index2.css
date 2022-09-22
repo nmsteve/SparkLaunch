@@ -882,7 +882,7 @@ p {
   position: absolute;
   width: 2px;
   height: 7px;
-  margin-left: 20rem;
+  margin-left: 16rem;
   margin-top: 1rem;
 
   width: 20rem;
@@ -947,4 +947,8 @@ h5 {
   #button_3 {
     font-size: 10px;
   }
+}
+
+.inputfontsize{
+  font-size: 1.5rem;
 }

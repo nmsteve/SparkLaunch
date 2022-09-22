@@ -355,6 +355,13 @@ h5 {
   }
 }
 
+#errormsg{
+  color:red;
+  margin-left: 25rem;
+  font-size: 1.8rem;
+  
+}
+
 @media (min-width: 1650px) and (max-width: 1920px) {
   html {
     font-size: 62.5%;

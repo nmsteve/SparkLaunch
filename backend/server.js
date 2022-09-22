@@ -88,8 +88,8 @@ app.post('/sale', function(request, response) {
 
           }, function(err, savedSale) {
             if (err) {
-                response.status(500).send({error:err});
-                console.log(err)
+                response.status(500).send({error:err.message});
+                console.log(err.message)
             } else {
                 response.send(savedSale);
              

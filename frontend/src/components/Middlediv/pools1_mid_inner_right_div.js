@@ -1,6 +1,6 @@
 import React from 'react'
 import Pools1_right_topBottom_boxes from './pools1_right_topBottom_boxes'
-import { depositTokens,withdrawDeposit } from './dataProccessing'
+import { depositTokens,withdrawDeposit,withdrawEarnings } from './dataProccessing'
 
 const pools1_mid_inner_right_div = ({ setopenModal12 }) => {
 
@@ -23,9 +23,10 @@ const pools1_mid_inner_right_div = ({ setopenModal12 }) => {
                 <div className='innerdivright_topboxes'>
                     <Pools1_right_topBottom_boxes />
                     <div className='finish_button'>
-                        <div id="button_15" onClick={()=>{}}>Withdraw Earning</div>
+                        <div id="button_15" onClick={()=>{withdrawEarnings()}}>Withdraw Earning</div>
                     </div>
                 </div>
+                <h3 id='errormsg'></h3>
             </div>
             <div className='innerdivright_bottom'>
                 <div className='innerdivright_bottomboxes'>
