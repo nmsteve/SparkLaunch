@@ -1,12 +1,11 @@
 import React from 'react'
-
 const Saleparams = ({setopenModal7}) => {
     return (
         <>
              <div className='inner_div_left_bottom'>
                 <div className="inner_div_left_bottom_mid">
                     <div className='inner_div_left_bottom_mid_left'>
-                        <div  className="inner_div_left_bottom_mid_left_heading1">Softcap (BNB) *</div>
+                        <div  className="inner_div_left_bottom_mid_left_heading1">Softcap (Sale Tokens) *</div>
                         <input id="softCap" className='inner_div_left_botton_mid_left_input1' placeholder='0'></input>
                         <div className="inner_div_left_bottom_mid_left_heading2">Minimum buy (BNB) *</div>
                         <input id="minBuy" className='inner_div_left_botton_mid_left_input2' placeholder='0'></input>
@@ -21,7 +20,7 @@ const Saleparams = ({setopenModal7}) => {
                     <div className='inner_div_left_bottom_mid_right'>
                         <div className="inner_div_left_bottom_mid_right_heading1">HardCap (Sale Tokens) *</div>
                         <input id="hardCap" className='inner_div_left_botton_mid_right_input1' placeholder='0'></input>
-                        <div className="inner_div_left_bottom_mid_right_heading2">Maxumim buy (BNB) *</div>
+                        <div className="inner_div_left_bottom_mid_right_heading2">Maxmum buy (BNB) *</div>
                         <input id="maxBuy"className='inner_div_left_botton_mid_right_input2' placeholder='0'></input>
                         <div id="inner_div_left_bottom_mid_right_heading1"></div>
                         <div className="inner_div_left_bottom_mid_right_heading3">End time (UTC) *</div>

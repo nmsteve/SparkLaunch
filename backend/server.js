@@ -60,7 +60,7 @@ app.post('/sale', function(request, response) {
                 startDate:request.body.saleParams.startDate,
                 endDate:request.body.saleParams.endDate,
                 minBuy:request.body.saleParams.minBuy,
-                maxBuy:request.body.saleParams.minBuy,
+                maxBuy:request.body.saleParams.maxBuy,
                 firstRelease:request.body.saleParams.firstRelease,
                 eachRelease:request.body.saleParams.eachRelease,
                 vestingDays:request.body.saleParams.vestingDays

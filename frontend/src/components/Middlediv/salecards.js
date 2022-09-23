@@ -1,12 +1,14 @@
 import React, {useState, useEffect}  from 'react'
 
 import Salecard from './Salecard'
-import { fetchSalesData, fetchSaleInfor} from './dataProccessing'
+import {fetchSaleInfor} from './dataProccessing'
 
 export var selectedSale = 0
 
 
 function Salecards ({setopenModal9,setopenModal5}){
+     
+  
 
     var [saleList, setSaleList] = useState()
   
@@ -19,13 +21,13 @@ function Salecards ({setopenModal9,setopenModal5}){
     }
   
     async function displayCard(){
-       const saleInfor = await fetchSaleInfor() 
-       const salesData = await fetchSalesData()
-        console.log('saleInfor',saleInfor)
+      const salesInfor = await fetchSaleInfor()
+        console.log('saleInfor',salesInfor)
        //console.log('saleData',salesData)
-
-
-        setSaleList( saleList =   saleInfor.map((sale)=> 
+       
+        if(salesInfor.length > 0) {
+         console.log('Infor ready')
+        setSaleList( saleList =   salesInfor.map((sale)=> 
 
           <div id={sale.saleDetails.saleID} className="kyc_boxes" key={sale.saleDetails.saleID} 
           onClick={
@@ -50,8 +52,42 @@ function Salecards ({setopenModal9,setopenModal5}){
           </div>
 
         ))
-        //{console.log('saleList',saleList)}
-    
+        {console.log('saleList',saleList)}
+        } else {
+          setTimeout(function() {
+           
+            console.log('Infor ready after wait')
+            setSaleList( saleList =   salesInfor.map((sale)=> 
+
+          <div id={sale.saleDetails.saleID} className="kyc_boxes" key={sale.saleDetails.saleID} 
+          onClick={
+            handleClick
+          }
+
+           >  
+             
+          <Salecard
+
+              ID={sale.saleDetails.saleID}
+              name={sale.saleToken.name}
+              symbol={sale.saleToken.symbol}
+              description={sale.saleDetails.description}
+              softCap={sale.saleParams.softCap}
+              raised={sale.saleParams.raised}
+              price={sale.saleParams.price}
+              date={sale.saleParams.endDate}
+              holders={sale.saleDetails.holders}
+              listingDate={sale.saleDetails.listingDate}
+          />
+          </div>
+
+             ))
+            {console.log('saleList',saleList)}
+
+   
+          }, 5000);
+        }
+
     }
 
     { useEffect(()=>{
