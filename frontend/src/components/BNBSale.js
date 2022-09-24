@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState,useRef } from 'react'
 
 import Salecards from './Middlediv/salecards'
 import Boxesdiv from './Middlediv/middlediv_boxesdiv'
@@ -26,7 +26,15 @@ const MiddleBottomdiv = () => {
     const [openModal9, setopenModal9] = useState(false);
     const [openModal10, setopenModal10] = useState(false);
     const [openModal11, setopenModal11] = useState(false);
-   
+
+
+   const salecardsRef = useRef(null)
+
+   const scrollToSales = () => {
+
+    salecardsRef.current?.scrollIntoView({behavior: 'smooth'});
+
+   }
 
     
     const toggle = () => {
@@ -56,7 +64,7 @@ const MiddleBottomdiv = () => {
                                 <div id="button_5" onClick={() => { setopenModal4(true); setopenModal5(false); }}>LAUNCH YOUR PROJECT WITH US</div>
                             </div>
                             <div className='buy_div'>
-                                <div id="button_6">BUY TOKENS</div>
+                                <div id="button_6" onClick={scrollToSales}>BUY TOKENS</div>
                             </div>
                             <p className="featured">FEATURED PROJECTS</p>
                             <div className='boxes_div'>
@@ -70,7 +78,7 @@ const MiddleBottomdiv = () => {
                             <div className='duartion_div_right'>
                                 <button id="button_10">Search</button>
                             </div>
-                            <div className="kyc_div">
+                            <div className="kyc_div" ref={salecardsRef} >
                                 <Salecards setopenModal9={setopenModal9} setopenModal5={setopenModal5} />
                             </div>
                             <div className='corner_button'>

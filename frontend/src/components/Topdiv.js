@@ -2,14 +2,15 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 
-import { ethers } from 'ethers';
+import { ethers } from 'ethers'
+import { provider } from './Middlediv/dataProccessing'
 
 const Topdiv = () => {
     const [haveMetamask, sethaveMetamask] = useState(true);
 	const [isConnected, setIsConnected] = useState(false);
 
 	const { ethereum } = window;
-	const provider = new ethers.providers.Web3Provider(window.ethereum);
+	//const provider = new ethers.providers.Web3Provider(window.ethereum);
 
     const [accountAddress, setAccountAddress] = useState('');
 	const [accountBalance, setAccountBalance] = useState('');

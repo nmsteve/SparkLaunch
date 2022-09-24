@@ -10,84 +10,22 @@
   const FACTORY_ADDRESS = '0x863CC01CDC295A1042b8A734E61D9be280C47F2a'
   const ADMIN_ADDRESS = '0xE765240958a91DF0cF878b8a4ED23D5FF8effFFe'
   const SALETOKEN_ADDRESS = '0x8b0049487dA250bdc91A89F6b10e3ed3701b171c'
+  const { ethereum } = window;
+  export let provider
+    
+
+  if(!ethereum){
+    console.log('Install MetaMask')
+    alert("Please install Metamask")
+  } else {
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+  }
 
   
-
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-
   const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
   const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
   
-  const {ethereum} = window
-  
-  export async  function  fetchSalesData() {
-
-          
-      let salesData = [];
-
-    if (typeof window.ethereum !== "undefined") {
-
-        const salesNoObject = await FactoryContract.getNumberOfSalesDeployed();
-        const  salesNo = salesNoObject.toNumber()
-        console.log('saleNo:', salesNo)
-        
-        if(salesNo === 0) {
-          console.log('No sale deployed')
-        } else 
-        {
-
-        for(let i = 0;i < salesNo;i++) {
-            
-            //try to get the saleData in the contract
-            try {
-
-                //get sale address
-                const saleAddressObject = await FactoryContract.allSales(i);
-                const saleAddress = saleAddressObject.toString()
-                console.log(saleAddress)
-                if (saleAddress === '0x0000000000000000000000000000000000000000') {console.log('sale in DB but not deployed')}
-                else
-                {
-                  //get sale chainData
-                  const saleContract =  new ethers.Contract(saleAddress, saleABI, provider);
-                  const chainData = await saleContract.sale();
-                  //console.log('Data',chainData)
-                  
-                  //get NO of participants
-                  const noOfParticipants =await saleContract.numberOfParticipants()
-                  const holders = noOfParticipants.toNumber()
-                  //console.log('Holders', holders)
-
-                  //format chainData for display
-                  let dateObject = new Date(chainData.saleEnd.toString() *1000)
-                  //console.log("Date:", dateObject.toUTCString())
-
-                  //create display object
-                  let sale = {
-                      saleAddress:saleAddress,
-                      softCap:chainData.softCap.toString()/10**18,
-                      raised:chainData.totalBNBRaised.toString()/10**18,
-                      price:chainData.tokenPriceInBNB.toString()/10**18,
-                      date: dateObject,
-                      holders:holders
-                  }
-
-                    //console.log('SaleOdject',sale)
-
-                    salesData.push(sale)
-                }
-                
-            } catch (e) {console.log("Err: ", e)}
-        
-        }
-
-        return salesData
-        }
-    }
-
-   
-    
-    }
+ 
 
   export async function fetchSaleInfor() {
 
@@ -309,19 +247,22 @@
 
   export const deploySale = async () => {
               
-      const {id,minBuy, maxBuy} = await postData()
-      console.log(id,minBuy, maxBuy)
-      
-      if (!ethereum) {
-      console.log('Please install MetaMask')
-      } 
-
-      const connect = await ethereum.request({ method: 'eth_requestAccounts' });
-
-      if (connect) {
-
-      
         try {
+
+            if (!ethereum) 
+              {
+                console.log('Please install MetaMask')
+              } else 
+              {
+      
+                 const connect = await ethereum.request({ method: 'eth_requestAccounts' });
+
+                 if (connect) 
+                 {
+                  const {id,minBuy, maxBuy} = await postData()
+                  console.log(id,minBuy, maxBuy)
+                  
+          
                   //signer needed for transaction 
                   const signer = provider.getSigner();
                   
@@ -355,12 +296,13 @@
                   console.log('Account:',ethereum.selectedAddress)
                   console.log("Bal:",bal)
                   console.log('fee:',fee)
+                  }
+              }
 
-
-                } catch (error) {
-                  console.log("Error:", error.message)
-                  }    
-      }
+            }
+               catch (error) 
+               {console.log("Error:", error.message)}    
+      
   }
 
   export const participateInsale = async ()  =>  {
