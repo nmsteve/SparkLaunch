@@ -13,7 +13,6 @@
   const { ethereum } = window;
   export let provider
     
-
   if(!ethereum){
     console.log('Install MetaMask')
     alert("Please install Metamask")
