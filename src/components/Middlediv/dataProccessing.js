@@ -7,9 +7,9 @@
   //const backendURL = 'http://localhost:3001/sale'
   const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
   
-  const FACTORY_ADDRESS = '0x863CC01CDC295A1042b8A734E61D9be280C47F2a'
-  const ADMIN_ADDRESS = '0xE765240958a91DF0cF878b8a4ED23D5FF8effFFe'
-  const SALETOKEN_ADDRESS = '0x8b0049487dA250bdc91A89F6b10e3ed3701b171c'
+  const ADMIN_ADDRESS = '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
+  const FACTORY_ADDRESS = '0x547C9eE7ca659C1FA567cBED2Fc483524ee179B2'
+  const SALETOKEN_ADDRESS = '0xCdC76670B62Fd02F1724C976a337E8768fe01fd7'
   const { ethereum } = window;
   export let provider
     
@@ -21,27 +21,24 @@
     provider = new ethers.providers.Web3Provider(window.ethereum);
   }
 
-  
   const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
   const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
   
- 
-
-  export async function fetchSaleInfor() {
+  export const fetchSaleInfor = async () => {
 
     try{
 
-        const sales  = await FactoryContract.getNumberOfSalesDeployed()
-        if(sales.toNumber() === 0) {
+        const salesNO  = await FactoryContract.getNumberOfSalesDeployed()
+
+        if(salesNO.toNumber() === 0) {
           console.log('No sale deployed')
         } else 
         {
               const response = await fetch(`${backendURL}`);
               const DBdata = await response.json();
-              //console.log('Data:',DBdata)
               console.log('Data Lenght:', DBdata.length)
 
-              let saleInfor = [];
+              let salesData = [];
 
              await DBdata.map(  async sale =>  
                 
@@ -68,13 +65,12 @@
                       //console.log('Holders', holders)
 
                       //format data for display
-                      let dateObject = new Date(chainData.saleEnd.toString() *1000)
+                      let dateObject = new Date(chainData.saleEnd.toString()*1000)
 
                       //get max and min participation
                       const minBuy = await saleContract.minParticipation()
                       const maxBuy = await saleContract.maxParticipation()
 
-                      
 
                      let saleDBChain = 
                     
@@ -120,20 +116,20 @@
                           },
                       }
 
-                    saleInfor.push(saleDBChain)
+                    salesData.push(saleDBChain)
                   }
                   
                 }
 
                 );
               
-            return saleInfor
+             return {salesNO, salesData}
           }
 
     } catch(e) {console.log("Err: ", e.message)}
     
     
-    }  
+  } 
 
   export const postData = async () =>  {
 
