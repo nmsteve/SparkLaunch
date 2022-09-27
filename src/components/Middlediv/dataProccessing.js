@@ -3,10 +3,11 @@
   import { factoryABI, saleABI , adminABI, testABI} from "./abi";
   import { selectedSale } from "./salecards";
   import { formatDistanceToNow } from "date-fns";
+import { useLinkClickHandler } from "react-router-dom";
  
 
-  //const backendURL = 'http://localhost:3001/sale'
-  const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
+  const backendURL = 'http://localhost:3001/sale'
+  //const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
   
   const ADMIN_ADDRESS = '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
   const FACTORY_ADDRESS = '0x547C9eE7ca659C1FA567cBED2Fc483524ee179B2'
@@ -74,6 +75,7 @@
                       console.log('raised',chainData.totalBNBRaised/10**18)
                       console.log('hardcap',chainData.hardCap/10**18 )
                       console.log('price',chainData.tokenPriceInBNB/10**18)
+
                       const percentage = () => {
                         const raised = chainData.totalBNBRaised/10**18
                         const hardCap = chainData.hardCap/10**18
@@ -245,13 +247,14 @@
         const response = await fetch(`${backendURL}`, requestOptions);
         const data = await response.json();
         console.log('Data:',data)
-        let id = data.saleDetails.saleID
+        let id = await data._id
         let softCap = data.saleParams.softCap
         let hardCap = data.saleParams.hardCap
         let minBuy = data.saleParams.minBuy
         let maxBuy = data.saleParams.maxBuy
 
         console.log('ID:', id, 'softCap',softCap, 'hardcap', hardCap, 'Minbuy',minBuy, 'Maxbuy', maxBuy)
+
         return {id,minBuy, maxBuy}
 
     } catch(e) {
@@ -282,8 +285,23 @@
                  if (connect) 
                  {
                   const {id,minBuy, maxBuy} = await postData()
+
                   console.log(id,minBuy, maxBuy)
                   
+                  //fetch saleId from db
+                  const response = await fetch(`${backendURL+id}`);
+                  const data = await response.json();
+                  console.log('B4Deploy:', data[0])
+                  
+
+                  const saleId = async () => {
+                    var saleID = data[0].saleDetails.saleID
+                    if(saleID === undefined) {
+                      const response = await fetch(`${backendURL+id}`);
+                      const data = await response.json();
+                      saleID = data[0].saleDetails.saleID
+                    } else {return saleID}
+                  }
           
                   //signer needed for transaction 
                   const signer = provider.getSigner();
@@ -307,13 +325,13 @@
                         const tx = await FactoryContract.deployNormalSale(
                         ethers.utils.parseUnits(minBuy.toString(), 'ether'),
                         ethers.utils.parseUnits(maxBuy.toString(), 'ether'),
-                        id,
+                        saleId(),
                         {value:deployFee})
 
-                      await tx.wait()
+                        await tx.wait()
 
-                      let saleAddress = await FactoryContract.saleIdToAddress(id)
-                      console.log('SaleAddress:',saleAddress)
+                        let saleAddress = await FactoryContract.saleIdToAddress(saleId())
+                        console.log('SaleAddress:',saleAddress)
                   }
                   
                   console.log('Account:',ethereum.selectedAddress)
@@ -645,3 +663,12 @@
     console.log(error.message)
   }
   }
+
+  export const clickHandler = async () => {
+    let links = document.querySelectorAll('a');
+    links.forEach((a) => {
+        a.addEventListener('click', () => {
+          a.hostname == window.location.hostname ? a.target = '_self' : a.target = '_blank';
+        });
+      });
+    }

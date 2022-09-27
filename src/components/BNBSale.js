@@ -71,7 +71,7 @@ const MiddleBottomdiv = () => {
                                 <Boxesdiv />
                             </div>
                             <div className='duration_div_left'>
-                                <button id="button_7">ALL POOLS</button>
+                                <button id="button_7">ALL SALES</button>
                                 <button id="button_8">UPCOMING</button>
                                 <button id="button_9">ENDED</button>
                             </div>

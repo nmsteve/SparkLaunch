@@ -2,7 +2,6 @@ import React from 'react'
 
 const salecard =(sale) => {
 
-    //console.log(sale)
 
     return (
         <>  
@@ -13,10 +12,10 @@ const salecard =(sale) => {
                     <p className='kyc_heading'>{sale.name}</p>
                     <p className='kyc_heading_small'>{sale.symbol}</p>
                     <div className='kyc_images'>
-                      <a><img className="spark_image_2_1" src="images/Vector2.png" /></a>
-                        <img className="spark_image_2_1" src="images/Vector3.png" />
-                        <img className="spark_image_2_1" src="images/Vector4.png" />
-                        <img className="spark_image_2_1" src="images/Vector5.png" />
+                      <a href={sale.telegram} target="_blank" rel="noopener noreferrer"><img className="spark_image_2_1" src="images/Vector2.png" /></a>
+                      {/* <a href={sale.linkedIn} target="_blank" rel="noopener noreferrer"><img className="spark_image_2_1" src="images/Vector3.png" /> </a>  */}
+                      <a href={sale.discord} target="_blank" rel="noopener noreferrer"><img className="spark_image_2_1" src="images/Vector4.png" /></a>
+                      <a href={sale.twitter} target="_blank" rel="noopener noreferrer"> <img className="spark_image_2_1" src="images/Vector5.png" /> </a>
                     </div>
 
                 </div>

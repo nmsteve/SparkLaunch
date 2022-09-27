@@ -62,7 +62,7 @@ const Topdiv = () => {
                     <div className="info_div">
                         <NavLink to="/" exact><p>BNB SALE</p> </NavLink>
                         <NavLink to="/erc20" exact><p>ERC20 SALE</p></NavLink>
-                        <NavLink to="/About" exact><p>ABOUT</p></NavLink>
+                        {/* <NavLink to="/About" exact><p>ABOUT</p></NavLink> */}
                     </div>
 
                 {haveMetamask?  
