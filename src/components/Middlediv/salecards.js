@@ -9,8 +9,8 @@ export var selectedSale = 0
 function Salecards ({setopenModal9,setopenModal5}){
      
   
-
-    var [saleList, setSaleList] = useState()
+    var [salesArrary, setSalesArrary] = useState([])
+    var [saleList, setSaleList] = useState([])
   
     function handleClick(e){
       console.log('Target:',e.currentTarget.id);
@@ -21,21 +21,23 @@ function Salecards ({setopenModal9,setopenModal5}){
     }
   
     async function displayCard(){
-       const salesInfor = await fetchSaleInfor()
+
+        const salesInfor = await fetchSaleInfor()
         console.log('sale NO',salesInfor.salesNO.toNumber())
         console.log('saleData',salesInfor.salesData)
         console.log('saleLength',salesInfor.salesData.length)
+        console.log('percentage', salesInfor.salesData.saleDetails)
        
         if(salesInfor.salesData.length === salesInfor.salesNO.toNumber()) {
          console.log('Infor ready')
          setSaleList( saleList =   salesInfor.salesData.map((sale)=> 
-
+            
           <div id={sale.saleDetails.saleID} className="kyc_boxes" key={sale.saleDetails.saleID} 
           onClick={handleClick}
            >  
              
           <Salecard
-
+              
               ID={sale.saleDetails.saleID}
               name={sale.saleToken.name}
               symbol={sale.saleToken.symbol}
@@ -46,6 +48,8 @@ function Salecards ({setopenModal9,setopenModal5}){
               date={sale.saleParams.endDate}
               holders={sale.saleDetails.holders}
               listingDate={sale.saleDetails.listingDate}
+              percentage={sale.saleDetails.percentage}
+              diff={sale.saleDetails.diff}
           />
           </div>
 
@@ -72,6 +76,8 @@ function Salecards ({setopenModal9,setopenModal5}){
                   date={sale.saleParams.endDate}
                   holders={sale.saleDetails.holders}
                   listingDate={sale.saleDetails.listingDate}
+                  percentage={sale.saleDetails.percentage}
+                  diff={sale.saleDetails.diff}
               />
 
               </div>
@@ -86,38 +92,50 @@ function Salecards ({setopenModal9,setopenModal5}){
 
     }
 
-    const displaySales =() => {
-      fetchSaleInfor().then((sales) =>  setSaleList( saleList =   sales.map((sale)=> 
+    const displaySales = async () =>  {
 
-      <div id={sale.saleDetails.saleID} className="kyc_boxes" key={sale.saleDetails.saleID} 
-      onClick={
-        handleClick
+     setTimeout( async function() {
+        const {salesNO, salesData} = await fetchSaleInfor()
+        console.log('saleData',salesData)
+       console.log('saleLength',salesData.length)
+       console.log('saleNO',salesNO.toNumber())
+
+      setSalesArrary(salesData)
+      },2000)
+
+      console.log(salesArrary)
+
+      setSaleList( saleList =   salesArrary.map((sale)=> 
+
+        <div id={sale.saleDetails.saleID} className="kyc_boxes" key={sale.saleDetails.saleID} 
+        onClick={
+          handleClick
+        }
+
+        >  
+          
+        <Salecard
+
+            ID={sale.saleDetails.saleID}
+            name={sale.saleToken.name}
+            symbol={sale.saleToken.symbol}
+            description={sale.saleDetails.description}
+            softCap={sale.saleParams.softCap}
+            raised={sale.saleParams.raised}
+            price={sale.saleParams.price}
+            date={sale.saleParams.endDate}
+            holders={sale.saleDetails.holders}
+            listingDate={sale.saleDetails.listingDate}
+        />
+        </div>
+
+      )) 
       }
-
-       >  
-         
-      <Salecard
-
-          ID={sale.saleDetails.saleID}
-          name={sale.saleToken.name}
-          symbol={sale.saleToken.symbol}
-          description={sale.saleDetails.description}
-          softCap={sale.saleParams.softCap}
-          raised={sale.saleParams.raised}
-          price={sale.saleParams.price}
-          date={sale.saleParams.endDate}
-          holders={sale.saleDetails.holders}
-          listingDate={sale.saleDetails.listingDate}
-      />
-      </div>
-
-    )) )
-    }
 
     { useEffect(()=>{
       displayCard()
       //displaySales()
-   },[])}  
+   },[salesArrary])}  
     
 
     return (

@@ -2,7 +2,7 @@ import React from 'react'
 
 const salecard =(sale) => {
 
-    
+    //console.log(sale)
 
     return (
         <>  
@@ -13,7 +13,7 @@ const salecard =(sale) => {
                     <p className='kyc_heading'>{sale.name}</p>
                     <p className='kyc_heading_small'>{sale.symbol}</p>
                     <div className='kyc_images'>
-                        <img className="spark_image_2_1" src="images/Vector2.png" />
+                      <a><img className="spark_image_2_1" src="images/Vector2.png" /></a>
                         <img className="spark_image_2_1" src="images/Vector3.png" />
                         <img className="spark_image_2_1" src="images/Vector4.png" />
                         <img className="spark_image_2_1" src="images/Vector5.png" />
@@ -53,15 +53,17 @@ const salecard =(sale) => {
                 </div>
             </div>
             <div className='registration'>
-                <div id="registration">registration closes in 2 days, 22 hours</div>
-                <div id="percentage">45%</div>
+                <div id="registration">{sale.diff}</div>
+                <div id="percentage">{sale.percentage}%</div>
             </div>
             <div className='potion_fill'>
                 <div className='potion'>
-                    <div className='potion_flow'>
-
+                    {/* <div className='potion_flow'>
+                    </div> */}
+                    <div class="progress">
+                        <div class="progress-bar"  style={{width:sale.percentage}} role="progressbar" aria-label="Basic example" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-                </div>
+                   </div>
 
             </div>
             <div className='registration_1'>

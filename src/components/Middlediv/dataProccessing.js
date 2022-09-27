@@ -2,6 +2,7 @@
 
   import { factoryABI, saleABI , adminABI, testABI} from "./abi";
   import { selectedSale } from "./salecards";
+  import { formatDistanceToNow } from "date-fns";
  
 
   //const backendURL = 'http://localhost:3001/sale'
@@ -69,7 +70,29 @@
                       //get max and min participation
                       const minBuy = await saleContract.minParticipation()
                       const maxBuy = await saleContract.maxParticipation()
+                      
+                      console.log('raised',chainData.totalBNBRaised/10**18)
+                      console.log('hardcap',chainData.hardCap/10**18 )
+                      console.log('price',chainData.tokenPriceInBNB/10**18)
+                      const percentage = () => {
+                        const raised = chainData.totalBNBRaised/10**18
+                        const hardCap = chainData.hardCap/10**18
+                        const price = chainData.tokenPriceInBNB/10**18
 
+                        const value = raised/(hardCap *price) * 100
+                        if(value > 0) {return value} else {return 0}
+                      }
+                      
+                      //const end = chainData.saleEnd.toString()*1000
+                      const timeDiff = () => {
+                          const  diff = formatDistanceToNow(chainData.saleEnd.toString()*1000)
+                              if (Date.now()/1000 < chainData.saleEnd.toString()) {
+                                return 'Regestration close in '+ diff
+                              } else {
+                                return 'Closed in '+ diff
+                              }
+                           }
+                         
 
                      let saleDBChain = 
                     
@@ -111,7 +134,9 @@
                           saleOwner:chainData.saleOwner.toString(),
                           description:sale.saleDetails.description,
                           holders:holders,
-                          listingDate: sale.saleDetails.listingDate
+                          listingDate: sale.saleDetails.listingDate,
+                          percentage: percentage(),
+                          diff: timeDiff()
                           },
                       }
 
@@ -247,6 +272,8 @@
             if (!ethereum) 
               {
                 console.log('Please install MetaMask')
+                alert('Please install MetaMask')
+
               } else 
               {
       
@@ -273,12 +300,13 @@
                   if(bal < fee){
 
                       console.log("insufficient funds")
+                      alert("insufficient funds")
                   } 
                   else {
 
-                      const tx = await FactoryContract.deployNormalSale(
-                        ethers.utils.parseUnits(minBuy.toString(), 'ether'),///softCap*10**18, //BigNumber.from(softCap).mul(10**18),
-                        ethers.utils.parseUnits(maxBuy.toString(), 'ether'),///hardCap*10**18,//BigNumber.from(hardCap).mul(10**18),
+                        const tx = await FactoryContract.deployNormalSale(
+                        ethers.utils.parseUnits(minBuy.toString(), 'ether'),
+                        ethers.utils.parseUnits(maxBuy.toString(), 'ether'),
                         id,
                         {value:deployFee})
 
