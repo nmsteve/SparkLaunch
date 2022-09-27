@@ -6,8 +6,8 @@
 import { useLinkClickHandler } from "react-router-dom";
  
 
-  const backendURL = 'http://localhost:3001/sale'
-  //const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
+  //const backendURL = 'http://localhost:3001/sale'
+  const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
   
   const ADMIN_ADDRESS = '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
   const FACTORY_ADDRESS = '0x547C9eE7ca659C1FA567cBED2Fc483524ee179B2'
