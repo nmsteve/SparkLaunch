@@ -1,7 +1,7 @@
 import React, {useState, useEffect}  from 'react'
 
 import Salecard from './Salecard'
-import {clickHandler, fetchSaleInfor} from './dataProccessing'
+import {fetchSaleInfor} from './dataProccessing'
 
 export var selectedSale = 0
 
@@ -9,7 +9,7 @@ export var selectedSale = 0
 function Salecards ({setopenModal9,setopenModal5}){
      
   
-    var [salesArrary, setSalesArrary] = useState([])
+    
     var [saleList, setSaleList] = useState([])
   
     function handleClick(e){
@@ -58,6 +58,7 @@ function Salecards ({setopenModal9,setopenModal5}){
               telegram={sale.saleLinks.telegram}
               discord={sale.saleLinks.discord}
               twitter={sale.saleLinks.twitter}
+              logo={sale.saleLinks.logo}
           />
           </div>
 
@@ -89,6 +90,7 @@ function Salecards ({setopenModal9,setopenModal5}){
                       telegram={sale.saleLinks.telegram}
                       discord={sale.saleLinks.discord}
                       twitter={sale.saleLinks.twitter}
+                      logo={sale.saleLinks.logo}
                   />
 
                   </div>

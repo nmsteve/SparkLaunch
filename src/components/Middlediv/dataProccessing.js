@@ -3,9 +3,7 @@
   import { factoryABI, saleABI , adminABI, testABI} from "./abi";
   import { selectedSale } from "./salecards";
   import { formatDistanceToNow } from "date-fns";
-import { useLinkClickHandler } from "react-router-dom";
  
-
   //const backendURL = 'http://localhost:3001/sale'
   const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
   
@@ -71,10 +69,15 @@ import { useLinkClickHandler } from "react-router-dom";
                       //get max and min participation
                       const minBuy = await saleContract.minParticipation()
                       const maxBuy = await saleContract.maxParticipation()
+
+                      //get sale start, isFinished
+                      const isFinished = await saleContract.saleFinished()
+                      const saleStartTime = await saleContract.saleStartTime()
                       
-                      console.log('raised',chainData.totalBNBRaised/10**18)
-                      console.log('hardcap',chainData.hardCap/10**18 )
+                      //console.log('raised',chainData.totalBNBRaised/10**18)
+                      //console.log('hardcap',chainData.hardCap/10**18 )
                       console.log('price',chainData.tokenPriceInBNB/10**18)
+                      //console.log('Logo:', sale.saleLinks.logo)
 
                       const percentage = () => {
                         const raised = chainData.totalBNBRaised/10**18
@@ -87,13 +90,24 @@ import { useLinkClickHandler } from "react-router-dom";
                       
                       //const end = chainData.saleEnd.toString()*1000
                       const timeDiff = () => {
-                          const  diff = formatDistanceToNow(chainData.saleEnd.toString()*1000)
-                              if (Date.now()/1000 < chainData.saleEnd.toString()) {
-                                return 'Regestration close in '+ diff
-                              } else {
-                                return 'Closed in '+ diff
-                              }
-                           }
+                          const  diffEnd = formatDistanceToNow(chainData.saleEnd.toString()*1000)
+                          const diffStart = formatDistanceToNow(saleStartTime.toNumber()*1000)
+                           if(isFinished){ return 'Sale Closed'
+                          }else if(Date.now()/1000 < saleStartTime.toNumber()){
+                                return 'Sale starts in ' + diffStart
+                          } else if (Date.now()/1000 < chainData.saleEnd.toString()) {
+                                return 'Sale ends in '+ diffEnd
+                          } else {
+                                return 'Sale ended in '+ diffEnd
+                          }
+                        }
+
+                     const logo = () => {
+                        if(sale.saleLinks.logo) {
+                          return sale.saleLinks.logo
+                        } else 
+                        return "https://res.cloudinary.com/dk8epvq9b/image/upload/v1664379996/Metamaskimg_w3h2fv.png"
+                      }
                          
 
                      let saleDBChain = 
@@ -118,7 +132,7 @@ import { useLinkClickHandler } from "react-router-dom";
                             vestingDays: sale.saleParams.vestingDay
                           },
                           saleLinks: {
-                            logo: sale.saleLinks.logo,
+                            logo:sale.saleLinks.logo,
                             fb:sale.saleLinks.fb,
                             git:sale.saleLinks.git,
                             insta:sale.saleLinks.insta,
@@ -137,7 +151,7 @@ import { useLinkClickHandler } from "react-router-dom";
                           description:sale.saleDetails.description,
                           holders:holders,
                           listingDate: sale.saleDetails.listingDate,
-                          percentage: percentage(),
+                          percentage:percentage(),
                           diff: timeDiff()
                           },
                       }
@@ -191,80 +205,81 @@ import { useLinkClickHandler } from "react-router-dom";
     const description=document.getElementById("description").value
 
 
-    const input = JSON.stringify( 
-        {
+    if(maxBuy < minBuy) {
+      alert("maxBuy is less than minBuy")
+    } else {
+
+          const input = JSON.stringify( 
+              {
+                
+                  saleToken:
+                      {
+                          name: name,
+                          symbol: symbol,
+                          address: address
+                      },
+                  saleParams: 
+                      {
+                          softCap:softCap,
+                          hardCap:hardCap,
+                          price:price,
+                          startDate:startDate,
+                          endDate:endDate,
+                          minBuy:minBuy,
+                          maxBuy:maxBuy,
+                          firstRelease:firstRelease,
+                          eachRelease:eachRelease,
+                          vestingDays: vestingDays
+                      },
+                  saleLinks: {
+                          logo: logo,
+                          fb:fb,
+                          git:git,
+                          insta:insta,
+                          reddit:reddit,
+                  
+                          web: web,
+                          twitter: twitter,
+                          telegram: telegram,
+                          discord: discord,
+                          youtube: youtube
+                  },
+                  saleDetails:{
+                    saleOwner:ethereum.selectedAddress,
+                    description: description
+                  },
+
+              }
           
-            saleToken:
-                {
-                    name: name,
-                    symbol: symbol,
-                    address: address
-                },
-            saleParams: 
-                {
-                    softCap:softCap,
-                    hardCap:hardCap,
-                    price:price,
-                    startDate:startDate,
-                    endDate:endDate,
-                    minBuy:minBuy,
-                    maxBuy:maxBuy,
-                    firstRelease:firstRelease,
-                    eachRelease:eachRelease,
-                    vestingDays: vestingDays
-                },
-            saleLinks: {
-                    logo: logo,
-                    fb:fb,
-                    git:git,
-                    insta:insta,
-                    reddit:reddit,
-            
-                    web: web,
-                    twitter: twitter,
-                    telegram: telegram,
-                    discord: discord,
-                    youtube: youtube
-            },
-            saleDetails:{
-              saleOwner:ethereum.selectedAddress,
-              description: description
-            },
+          )
+          
+          const requestOptions = {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: input
+          };
 
-        }
-    
-    )
-    
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: input
-    };
+          try{
+          
+              
+              const response = await fetch(`${backendURL}`, requestOptions);
+              const data = await response.json();
+              console.log('Data:',data)
+              let id = await data._id
+              let softCap = data.saleParams.softCap
+              let hardCap = data.saleParams.hardCap
+              let minBuy = data.saleParams.minBuy
+              let maxBuy = data.saleParams.maxBuy
 
-    try{
-    
+              console.log('ID:', id, 'softCap',softCap, 'hardcap', hardCap, 'Minbuy',minBuy, 'Maxbuy', maxBuy)
+
+              return {id,minBuy, maxBuy}
+
+          } catch(e) {console.log("Err: ", e.message)}
+
+          //console.log(data)
+      }
         
-        const response = await fetch(`${backendURL}`, requestOptions);
-        const data = await response.json();
-        console.log('Data:',data)
-        let id = await data._id
-        let softCap = data.saleParams.softCap
-        let hardCap = data.saleParams.hardCap
-        let minBuy = data.saleParams.minBuy
-        let maxBuy = data.saleParams.maxBuy
-
-        console.log('ID:', id, 'softCap',softCap, 'hardcap', hardCap, 'Minbuy',minBuy, 'Maxbuy', maxBuy)
-
-        return {id,minBuy, maxBuy}
-
-    } catch(e) {
-        
-        console.log("Err: ", e.message)
-    }
-
-    //console.log(data)
-
-    
 
   }
 
@@ -285,18 +300,22 @@ import { useLinkClickHandler } from "react-router-dom";
                  if (connect) 
                  {
                   const {id,minBuy, maxBuy} = await postData()
-
                   console.log(id,minBuy, maxBuy)
+
+                 
                   
                   //fetch saleId from db
                   const response = await fetch(`${backendURL+id}`);
                   const data = await response.json();
                   console.log('B4Deploy:', data[0])
+                  console.log('SaleID:',data[0].saleDetails.saleID)
                   
 
                   const saleId = async () => {
+
                     var saleID = data[0].saleDetails.saleID
-                    if(saleID === undefined) {
+
+                    if(!saleID) {
                       const response = await fetch(`${backendURL+id}`);
                       const data = await response.json();
                       saleID = data[0].saleDetails.saleID
@@ -332,11 +351,11 @@ import { useLinkClickHandler } from "react-router-dom";
 
                         let saleAddress = await FactoryContract.saleIdToAddress(saleId())
                         console.log('SaleAddress:',saleAddress)
-                  }
+                        console.log('Account:',ethereum.selectedAddress)
+                        console.log("Bal:",bal)
+                        console.log('fee:',fee)
+                    }
                   
-                  console.log('Account:',ethereum.selectedAddress)
-                  console.log("Bal:",bal)
-                  console.log('fee:',fee)
                   }
               }
 
@@ -664,11 +683,4 @@ import { useLinkClickHandler } from "react-router-dom";
   }
   }
 
-  export const clickHandler = async () => {
-    let links = document.querySelectorAll('a');
-    links.forEach((a) => {
-        a.addEventListener('click', () => {
-          a.hostname == window.location.hostname ? a.target = '_self' : a.target = '_blank';
-        });
-      });
-    }
+ 

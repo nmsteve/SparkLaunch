@@ -6,7 +6,7 @@ const salecard =(sale) => {
     return (
         <>  
             <div className='kyc_boxes_inside_top' >
-            {  sale.ID}
+            {sale.ID}
                 <div className='kyc_boxes_inside_top_left'>
                
                     <p className='kyc_heading'>{sale.name}</p>
@@ -19,8 +19,8 @@ const salecard =(sale) => {
                     </div>
 
                 </div>
-                <div className='kyc_boxes_inside_top_right'>
-
+                <div className=''>
+                   <img className='img-fluid img-thumbnail kyc_boxes_inside_top_right' src={sale.logo} alt=''/>
                 </div>
             </div>
             <div className='kyc_boxes_inside_middle'>
@@ -59,8 +59,8 @@ const salecard =(sale) => {
                 <div className='potion'>
                     {/* <div className='potion_flow'>
                     </div> */}
-                    <div class="progress">
-                        <div class="progress-bar"  style={{width:sale.percentage}} role="progressbar" aria-label="Basic example" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div className="progress">
+                        <div className="progress-bar"  style={{width:sale.percentage}} role="progressbar" aria-label="Basic example" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                    </div>
 
