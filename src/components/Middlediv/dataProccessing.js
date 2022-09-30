@@ -43,12 +43,12 @@
                 
                 {
 
-                  const saleID = sale.saleDetails.saleID
+                  const saleID =  await sale.saleDetails.saleID
 
                   //get sale address
                   const saleAddressObject = await FactoryContract.saleIdToAddress(saleID);
                   const saleAddress = saleAddressObject.toString()
-                  console.log(saleAddress)
+                  //console.log(saleAddress)
                   
                   if (saleAddress === '0x0000000000000000000000000000000000000000') {console.log('sale in DB but not deployed')}
                   else
@@ -102,14 +102,22 @@
                           }
                         }
 
-                     const logo = () => {
-                        if(sale.saleLinks.logo) {
-                          return sale.saleLinks.logo
-                        } else 
-                        return "https://res.cloudinary.com/dk8epvq9b/image/upload/v1664379996/Metamaskimg_w3h2fv.png"
-                      }
-                         
+                      const status = () => {
+                            if(isFinished){ return 'CLOSED'
+                          }else if(Date.now()/1000 < saleStartTime.toNumber()){
+                                return 'UPCOMMING'
+                          } else if (Date.now()/1000 < chainData.saleEnd.toString()) {
+                                return 'LIVE'
+                          } else {
+                                return 'ENDED'
+                          }
 
+                      }
+
+                      console.log('status:', status())
+
+                    
+                         
                      let saleDBChain = 
                     
                       {       
@@ -152,7 +160,8 @@
                           holders:holders,
                           listingDate: sale.saleDetails.listingDate,
                           percentage:percentage(),
-                          diff: timeDiff()
+                          diff: timeDiff(),
+                          status: status()
                           },
                       }
 

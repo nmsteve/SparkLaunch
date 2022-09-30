@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 
 //import Kycboxes from './Middlediv/Simplesalecards'
-import Boxesdiv from './Middlediv/middlediv_boxesdiv'
+import Boxesdiv from './Middlediv/boxesdiv'
 import Bottomdiv from './Bottomdiv/bottomdiv'
 import Bottomdiv1 from './Bottomdiv/bottomdiv1'
 import Topdiv from './Topdiv'

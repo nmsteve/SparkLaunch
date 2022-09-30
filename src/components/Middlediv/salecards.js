@@ -32,6 +32,7 @@ function Salecards ({setopenModal9,setopenModal5}){
         console.log('sale NO',salesInfor.salesNO.toNumber())
         console.log('saleData',salesInfor.salesData)
         console.log('saleLength',salesInfor.salesData.length)
+        
 
        
         if(salesInfor.salesData.length === salesInfor.salesNO.toNumber()) {
@@ -40,7 +41,7 @@ function Salecards ({setopenModal9,setopenModal5}){
             
           <div id={sale.saleDetails.saleID} className="kyc_boxes" key={sale.saleDetails.saleID} 
           onClick={handleClick}
-           >  
+           > 
              
           <Salecard
               ID={sale.saleDetails.saleID}
@@ -59,6 +60,7 @@ function Salecards ({setopenModal9,setopenModal5}){
               discord={sale.saleLinks.discord}
               twitter={sale.saleLinks.twitter}
               logo={sale.saleLinks.logo}
+              status={sale.saleDetails.status}
           />
           </div>
 
@@ -68,6 +70,7 @@ function Salecards ({setopenModal9,setopenModal5}){
               setTimeout(function() {
                
                 console.log('saleLength',salesInfor.salesData.length)
+                
                 console.log('Infor ready after wait')
 
                 setSaleList( saleList =   salesInfor.salesData.map((sale)=> 
@@ -91,6 +94,7 @@ function Salecards ({setopenModal9,setopenModal5}){
                       discord={sale.saleLinks.discord}
                       twitter={sale.saleLinks.twitter}
                       logo={sale.saleLinks.logo}
+                      status={sale.saleDetails.status}
                   />
 
                   </div>

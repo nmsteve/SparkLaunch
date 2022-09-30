@@ -550,10 +550,13 @@ p {
   height: 2rem;
 }
 .live_div {
+  box-sizing: border-box;
   position: absolute;
-  width: 7rem;
+  width: 10rem;
   margin-left: 5rem;
   height: 2.2rem;
+  border: 1px solid #5ce65c;
+  border-radius: 8px;
 
   background: #71ee4f;
   border-radius: 8px;
@@ -561,9 +564,29 @@ p {
 .upcoming_div {
   box-sizing: border-box;
   position: absolute;
+  width: 8rem;
+  height: 2.2rem;
+  margin-left: 11.4rem;
+  border: 1px solid #5ce65c;
+  border-radius: 8px;
+}
+
+.ended_div {
+  box-sizing: border-box;
+  position: absolute;
+  width: 6rem;
+  height: 2.2rem;
+  margin-left: 20.4rem;
+  border: 1px solid #5ce65c;
+  border-radius: 8px;
+}
+
+.closed_div {
+  box-sizing: border-box;
+  position: absolute;
   width: 7rem;
   height: 2.2rem;
-  margin-left: 12.4rem;
+  margin-left: 28.4rem;
   border: 1px solid #5ce65c;
   border-radius: 8px;
 }
