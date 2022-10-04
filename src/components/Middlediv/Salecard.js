@@ -50,7 +50,7 @@ const salecard =(sale) => {
                     <div style={{ marginTop: "0.7rem" }}>End</div>
                 </div>
                 <div className="kyc_boxes_inside_last_right">
-                   <div style={{ marginTop: "0.7rem" }}>{sale.softCap} BNB</div>
+                   <div style={{ marginTop: "0.7rem" }}>{sale.softCap} Token</div>
                    <div style={{ marginTop: "0.7rem" }}>{sale.raised} BNB</div>
                    <div  style={{ marginTop: "0.7rem" }}>{sale.price} BNB</div>
                    <div style={{ marginTop: "0.7rem", width: "15rem" }}> {sale.date.toUTCString()}

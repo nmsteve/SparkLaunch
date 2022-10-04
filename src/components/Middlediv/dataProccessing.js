@@ -3,12 +3,13 @@
   import { factoryABI, saleABI , adminABI, testABI} from "./abi";
   import { selectedSale } from "./salecards";
   import { formatDistanceToNow } from "date-fns";
+import { formatEther } from "ethers/lib/utils";
  
   //const backendURL = 'http://localhost:3001/sale'
   const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
   
   const ADMIN_ADDRESS = '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
-  const FACTORY_ADDRESS = '0x547C9eE7ca659C1FA567cBED2Fc483524ee179B2'
+  const FACTORY_ADDRESS = '0x863B229F7d5e41D76C49bC9922983B0c3a096CDF'
   const SALETOKEN_ADDRESS = '0xCdC76670B62Fd02F1724C976a337E8768fe01fd7'
   const { ethereum } = window;
   export let provider
@@ -22,9 +23,10 @@
 
   const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
   const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
+
   
   export const fetchSaleInfor = async () => {
-
+    let salesData = [];
     try{
 
         const salesNO  = await FactoryContract.getNumberOfSalesDeployed()
@@ -33,17 +35,19 @@
           console.log('No sale deployed')
         } else 
         {
-              const response = await fetch(`${backendURL}`);
+              const response = await fetch(`${backendURL}/deployed/true`);
               const DBdata = await response.json();
-              console.log('Data Lenght:', DBdata.length)
+              console.log('DB Data:', DBdata)
 
-              let salesData = [];
+             
 
              await DBdata.map(  async sale =>  
                 
                 {
 
-                  const saleID =  await sale.saleDetails.saleID
+                  const saleID =  await sale._id
+
+                  //console.log('SaleID',saleID)
 
                   //get sale address
                   const saleAddressObject = await FactoryContract.saleIdToAddress(saleID);
@@ -108,11 +112,13 @@
                                 return 'UPCOMMING'
                           } else if (Date.now()/1000 < chainData.saleEnd.toString()) {
                                 return 'LIVE'
-                          } else {
-                                return 'ENDED'
+                          } else if (chainData.saleEnd.toNumber() === 0){ 
+                                return 'NOT-SET' 
+                          } else return 'ENDED'
+
                           }
 
-                      }
+                      
 
                       console.log('status:', status())
 
@@ -120,7 +126,8 @@
                          
                      let saleDBChain = 
                     
-                      {       
+                      {     
+                          id:sale._id,  
                           saleToken: {
                           name: sale.saleToken.name,
                           symbol: sale.saleToken.symbol,
@@ -177,8 +184,7 @@
 
     } catch(e) {console.log("Err: ", e.message)}
     
-    
-  } 
+  }
 
   export const postData = async () =>  {
 
@@ -270,7 +276,6 @@
 
           try{
           
-              
               const response = await fetch(`${backendURL}`, requestOptions);
               const data = await response.json();
               console.log('Data:',data)
@@ -280,7 +285,7 @@
               let minBuy = data.saleParams.minBuy
               let maxBuy = data.saleParams.maxBuy
 
-              console.log('ID:', id, 'softCap',softCap, 'hardcap', hardCap, 'Minbuy',minBuy, 'Maxbuy', maxBuy)
+              console.log('Post To DB','ID:', id, 'softCap',softCap, 'hardcap', hardCap, 'Minbuy',minBuy, 'Maxbuy', maxBuy)
 
               return {id,minBuy, maxBuy}
 
@@ -309,32 +314,34 @@
                  if (connect) 
                  {
                   const {id,minBuy, maxBuy} = await postData()
-                  console.log(id,minBuy, maxBuy)
+                  console.log('Return Values',id,minBuy, maxBuy)
 
-                 
+                  // //fetch saleId from db
+                  // const response = await fetch(`${backendURL}/id${id}`);
+                  // const data = await response.json();
+                  // console.log('B4Deploy:', data[0])
+                  // console.log('SaleID:',data[0].saleDetails.saleID)
                   
-                  //fetch saleId from db
-                  const response = await fetch(`${backendURL+id}`);
-                  const data = await response.json();
-                  console.log('B4Deploy:', data[0])
-                  console.log('SaleID:',data[0].saleDetails.saleID)
-                  
+                  // const saleId = async () => {
 
-                  const saleId = async () => {
+                  //   var saleID = await data[0].saleDetails.saleID
+                  //   console.log('SaleID:undifined  ', saleID)
 
-                    var saleID = data[0].saleDetails.saleID
+                  //   if(!saleID) {
 
-                    if(!saleID) {
-                      const response = await fetch(`${backendURL+id}`);
-                      const data = await response.json();
-                      saleID = data[0].saleDetails.saleID
-                    } else {return saleID}
-                  }
+                  //     const response = await fetch(`${backendURL}/id${id}`);
+                  //     const data = await response.json();
+                  //     saleID = await data[0].saleDetails.saleID
+                  //     console.log('SaleID:difined  ', saleID)
+
+                  //     return(saleID)
+
+                  //   } else {return saleID}
+                  // }
           
                   //signer needed for transaction 
                   const signer = provider.getSigner();
                   
-              
                   const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, signer);
 
                   let balance = await provider.getBalance(ethereum.selectedAddress);
@@ -353,16 +360,46 @@
                         const tx = await FactoryContract.deployNormalSale(
                         ethers.utils.parseUnits(minBuy.toString(), 'ether'),
                         ethers.utils.parseUnits(maxBuy.toString(), 'ether'),
-                        saleId(),
+                        id,
                         {value:deployFee})
 
                         await tx.wait()
 
-                        let saleAddress = await FactoryContract.saleIdToAddress(saleId())
+                        let saleAddress = await FactoryContract.saleIdToAddress(id)
                         console.log('SaleAddress:',saleAddress)
+
+                        if(saleAddress) {
+
+                          const input = JSON.stringify( 
+                              {
+                                  deployed:true,
+                                  saleAddress:saleAddress
+                
+                              }
+                          )
+                          
+                          const requestOptions = {
+                              method: 'PUT',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: input
+                          };
+
+                        const response = await fetch(`${backendURL}/deploy/${id}`, requestOptions)
+                        const data = await response.json()
+
+                        console.log("data aft put", data)
+
+                        // console.log('Deployed?:', data.saleDetails.deployed)
+                        // console.log('saleOwner:', data.saleDetails.saleAddress)
+
                         console.log('Account:',ethereum.selectedAddress)
-                        console.log("Bal:",bal)
+                        console.log("Bal4:",bal)
                         console.log('fee:',fee)
+                        const BalAFT = await provider.getBalance(ethereum.selectedAddress)
+                        console.log('BalAFT:', formatEther(BalAFT))
+
+                        }
+                        
                     }
                   
                   }

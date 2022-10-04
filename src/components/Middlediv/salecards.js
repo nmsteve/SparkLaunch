@@ -30,83 +30,56 @@ function Salecards ({setopenModal9,setopenModal5}){
 
         const salesInfor = await fetchSaleInfor()
         console.log('sale NO',salesInfor.salesNO.toNumber())
-        console.log('saleData',salesInfor.salesData)
-        console.log('saleLength',salesInfor.salesData.length)
-        
+        console.log('saleInfor',salesInfor.salesData)
+        console.log('saleInforLength',salesInfor.salesData.length)
+ 
+        let timerId = setInterval(function() {
+              console.log('Infor ready after wait')
 
-       
-        if(salesInfor.salesData.length === salesInfor.salesNO.toNumber()) {
-         console.log('Infor ready')
-         setSaleList( saleList =   salesInfor.salesData.map((sale)=> 
-            
-          <div id={sale.saleDetails.saleID} className="kyc_boxes" key={sale.saleDetails.saleID} 
-          onClick={handleClick}
-           > 
-             
-          <Salecard
-              ID={sale.saleDetails.saleID}
-              name={sale.saleToken.name}
-              symbol={sale.saleToken.symbol}
-              description={sale.saleDetails.description}
-              softCap={sale.saleParams.softCap}
-              raised={sale.saleParams.raised}
-              price={sale.saleParams.price}
-              date={sale.saleParams.endDate}
-              holders={sale.saleDetails.holders}
-              listingDate={sale.saleDetails.listingDate}
-              percentage={sale.saleDetails.percentage}
-              diff={sale.saleDetails.diff}
-              telegram={sale.saleLinks.telegram}
-              discord={sale.saleLinks.discord}
-              twitter={sale.saleLinks.twitter}
-              logo={sale.saleLinks.logo}
-              status={sale.saleDetails.status}
-          />
-          </div>
+              console.log('saleData',salesInfor.salesData)
+              console.log('saleLength',salesInfor.salesData.length)
+              console.log('Compare',salesInfor.salesData.length === salesInfor.salesNO.toNumber())
 
-        ))
-        {console.log('saleList',saleList)}
-        } else {
-              setTimeout(function() {
-               
-                console.log('saleLength',salesInfor.salesData.length)
-                
-                console.log('Infor ready after wait')
+              setSaleList( saleList =   salesInfor.salesData.map((sale)=> 
 
-                setSaleList( saleList =   salesInfor.salesData.map((sale)=> 
+                <div id={sale.id} className="kyc_boxes" key={sale.id} onClick={handleClick} >  
+              
+                <Salecard
+                    ID={sale.saleDetails.saleID}
+                    name={sale.saleToken.name}
+                    symbol={sale.saleToken.symbol}
+                    description={sale.saleDetails.description}
+                    softCap={sale.saleParams.softCap}
+                    raised={sale.saleParams.raised}
+                    price={sale.saleParams.price}
+                    date={sale.saleParams.endDate}
+                    holders={sale.saleDetails.holders}
+                    listingDate={sale.saleDetails.listingDate}
+                    percentage={sale.saleDetails.percentage}
+                    diff={sale.saleDetails.diff}
+                    telegram={sale.saleLinks.telegram}
+                    discord={sale.saleLinks.discord}
+                    twitter={sale.saleLinks.twitter}
+                    logo={sale.saleLinks.logo}
+                    status={sale.saleDetails.status}
+                />
 
-                  <div id={sale.saleDetails.saleID} className="kyc_boxes" key={sale.saleDetails.saleID} onClick={handleClick} >  
-                
-                  <Salecard
-                      ID={sale.saleDetails.saleID}
-                      name={sale.saleToken.name}
-                      symbol={sale.saleToken.symbol}
-                      description={sale.saleDetails.description}
-                      softCap={sale.saleParams.softCap}
-                      raised={sale.saleParams.raised}
-                      price={sale.saleParams.price}
-                      date={sale.saleParams.endDate}
-                      holders={sale.saleDetails.holders}
-                      listingDate={sale.saleDetails.listingDate}
-                      percentage={sale.saleDetails.percentage}
-                      diff={sale.saleDetails.diff}
-                      telegram={sale.saleLinks.telegram}
-                      discord={sale.saleLinks.discord}
-                      twitter={sale.saleLinks.twitter}
-                      logo={sale.saleLinks.logo}
-                      status={sale.saleDetails.status}
-                  />
+                </div>
 
-                  </div>
-
-                ))
+              ))
 
 
-                {console.log('saleList',saleList)}
+              {console.log('saleList',saleList)}
 
-      
-              }, 5000);
-          }
+    
+        }, 5000);
+          
+        setTimeout(() => { 
+              clearInterval(timerId);
+
+          if(salesInfor.salesNO.toNumber()===salesInfor.salesData.length){
+            console.log('Loaded')
+          } else alert('Could not load, timeout 15s'); }, 15000);
         
 
     }

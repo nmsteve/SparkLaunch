@@ -53,6 +53,7 @@ const MiddleBottomdiv = () => {
                     <div className='main_div1'>
                         <Topdiv />
                         <div className="middle_div1" >
+                            {/* <img className="logo" src='images/biglogo.png'/> */}
                             <img className="mid_image_1" src="images/Vector8.png" />
                             <img className="mid_image_2" src="images/Vector31.png" />
                             <img className="mid_image_3" src="images/Vector6.png" />

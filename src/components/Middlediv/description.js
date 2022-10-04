@@ -8,7 +8,7 @@ const Description = () => {
         <>
             <div className='inner_div_right_bottoms'>
                 <div className='inner_div_right_bottom_heading'>Description</div>
-                <textarea id='description' className='inner_div_right_bottom_input' placeholder='This is my description' style={{padding:"2rem"}}></textarea>
+                <textarea id='description' className='inner_div_right_bottom_input' placeholder='This is my description' style={{padding:"2rem", fontSize:"1.5rem"}}></textarea>
             </div>
             <div className='next_button'  onClick={()=>{
                     deploySale()

@@ -386,7 +386,7 @@ p {
 
 .featured {
   position: absolute;
-  width: 63.8rem;
+  /* width: 63.8rem; */
   height: 9.8rem;
   left: 53.9rem;
   top: 91.6rem;
@@ -410,7 +410,7 @@ p {
   flex-direction: row;
   top: 108.8rem;
   margin-left: 20rem;
-  margin-top: 5rem;
+  margin-top: 10rem;
   position: relative;
   /* width:2; */
   gap: 3.5rem;
@@ -485,7 +485,7 @@ p {
 .kyc_div {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 167rem;
+  margin-top: 145rem;
   margin-left: 20.2rem;
   gap: 18.6rem;
 }
@@ -608,7 +608,7 @@ p {
 }
 #button_12 {
   position: absolute;
-  width: 48px;
+  /* width: 48px; */
   height: 11px;
   margin-left: 0.5rem;
   margin-top: 0.5rem;
@@ -793,7 +793,7 @@ p {
 }
 #registration {
   position: absolute;
-  width: 181px;
+  /* width: 181px; */
   height: 7px;
   margin-left: 5rem;
   font-family: "Konnect";
