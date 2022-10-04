@@ -1,16 +1,26 @@
-import React, {useState, useEffect}  from 'react'
+import React, {useState, useEffect, useRef}  from 'react'
 
 import Salecard from './Salecard'
 import {fetchSaleInfor} from './dataProccessing'
 
+
 export var selectedSale = 0
+export var saleList, setSaleList
+export var getSaleList = () => {}
+
+export var scrollToSales = () => {}
 
 
 function Salecards ({setopenModal9,setopenModal5}){
      
-  
-    
-    var [saleList, setSaleList] = useState([])
+    [saleList, setSaleList] = useState([])
+     var [salesInfor, setSaleInfor ] = useState([])
+
+     
+
+    getSaleList = () => {
+      return salesInfor.salesData.length
+    }
   
     function handleClick(e){
       console.log('Main Target:',e.currentTarget.id);
@@ -28,17 +38,22 @@ function Salecards ({setopenModal9,setopenModal5}){
   
     async function displayCard(){
 
-        const salesInfor = await fetchSaleInfor()
+       setSaleInfor( salesInfor = await fetchSaleInfor())
         console.log('sale NO',salesInfor.salesNO.toNumber())
         console.log('saleInfor',salesInfor.salesData)
         console.log('saleInforLength',salesInfor.salesData.length)
+
+        setSaleList(saleList =
+
+            <div className="loading-div">
+            <img className="loading" src='images/smlogo.png'/>
+            </div>  
+        )
  
         let timerId = setInterval(function() {
-              console.log('Infor ready after wait')
 
-              console.log('saleData',salesInfor.salesData)
-              console.log('saleLength',salesInfor.salesData.length)
-              console.log('Compare',salesInfor.salesData.length === salesInfor.salesNO.toNumber())
+              //console.log('salecard saleData 5s wait',salesInfor.salesData)
+              //console.log('Compare',salesInfor.salesData.length === salesInfor.salesNO.toNumber())
 
               setSaleList( saleList =   salesInfor.salesData.map((sale)=> 
 
@@ -69,10 +84,11 @@ function Salecards ({setopenModal9,setopenModal5}){
               ))
 
 
-              {console.log('saleList',saleList)}
+              {console.log('salecard saleList 5s wait',saleList)}
 
     
         }, 5000);
+
           
         setTimeout(() => { 
               clearInterval(timerId);
@@ -93,7 +109,10 @@ function Salecards ({setopenModal9,setopenModal5}){
 
     return (
         <> 
-        {saleList}
+        
+         {saleList}
+         
+        
         </>
     )
 }

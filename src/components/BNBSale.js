@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState,useRef } from 'react'
+import 'animate.css';
 
 import Salecards from './Middlediv/salecards'
 import Boxesdiv from './Middlediv/boxesdiv'
@@ -14,7 +15,7 @@ import Pools1 from './Middlediv/pools1'
 import Pools3 from './Middlediv/pools3'
 import Metamaskconnect from './Middlediv/metamaskconnect'
 import Participate from './Middlediv/participate'
-
+import {scrollToSales} from "./Middlediv/salecards"
 
 const MiddleBottomdiv = () => {
 
@@ -27,16 +28,17 @@ const MiddleBottomdiv = () => {
     const [openModal10, setopenModal10] = useState(false);
     const [openModal11, setopenModal11] = useState(false);
 
-
-   const salecardsRef = useRef(null)
-
-   const scrollToSales = () => {
-
-    salecardsRef.current?.scrollIntoView({behavior: 'smooth'});
-
-   }
-
     
+    var salecardsRef = useRef(null)
+
+   var  scrollToSales = () => {
+
+      salecardsRef.current?.scrollIntoView({behavior: 'smooth'});
+    
+    }
+    
+
+
     const toggle = () => {
         var blur = document.getElementById('blur');
         blur.classList.toggle('active1');
@@ -46,6 +48,7 @@ const MiddleBottomdiv = () => {
         var blur = document.getElementById('blur');
         blur.classList.toggle('inactive1');
     }
+
     return (
         <>
             {openModal5 &&
@@ -53,7 +56,7 @@ const MiddleBottomdiv = () => {
                     <div className='main_div1'>
                         <Topdiv />
                         <div className="middle_div1" >
-                            {/* <img className="logo" src='images/biglogo.png'/> */}
+                           
                             <img className="mid_image_1" src="images/Vector8.png" />
                             <img className="mid_image_2" src="images/Vector31.png" />
                             <img className="mid_image_3" src="images/Vector6.png" />
@@ -83,9 +86,9 @@ const MiddleBottomdiv = () => {
                                 <Salecards setopenModal9={setopenModal9} setopenModal5={setopenModal5} />
                             </div>
                             <div className='corner_button'>
-                                
-                                    <div id='button_28'>Ask Us</div>
+                                <div id='button_28'>Ask Us</div>
                             </div>
+
                         </div>
                         <Bottomdiv />
                     </div>
@@ -158,6 +161,7 @@ const MiddleBottomdiv = () => {
             }
         </>
     )
+
 }
 
 export default MiddleBottomdiv

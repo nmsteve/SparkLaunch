@@ -1,4 +1,17 @@
-.logo {
+.loading {
     height: auto;
-    width: auto;
+    width: 259px;
+    align-self: center;
+    animation: pulse; /* referring directly to the animation's @keyframe declaration */
+    animation-duration: 2s; /* don't forget to set a duration! */
+    animation-iteration-count: infinite;
 }
+
+.loading-div {
+    margin-left: 35%;
+    margin-top: 15%;
+    
+
+}
+
+

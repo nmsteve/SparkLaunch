@@ -5,8 +5,8 @@
   import { formatDistanceToNow } from "date-fns";
 import { formatEther } from "ethers/lib/utils";
  
-  //const backendURL = 'http://localhost:3001/sale'
-  const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
+  const backendURL = 'http://localhost:3001/sale'
+  //const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
   
   const ADMIN_ADDRESS = '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
   const FACTORY_ADDRESS = '0x863B229F7d5e41D76C49bC9922983B0c3a096CDF'
@@ -80,7 +80,7 @@ import { formatEther } from "ethers/lib/utils";
                       
                       //console.log('raised',chainData.totalBNBRaised/10**18)
                       //console.log('hardcap',chainData.hardCap/10**18 )
-                      console.log('price',chainData.tokenPriceInBNB/10**18)
+                      //console.log('price',chainData.tokenPriceInBNB/10**18)
                       //console.log('Logo:', sale.saleLinks.logo)
 
                       const percentage = () => {
@@ -120,7 +120,7 @@ import { formatEther } from "ethers/lib/utils";
 
                       
 
-                      console.log('status:', status())
+                      //console.log('status:', status())
 
                     
                          
