@@ -13,7 +13,7 @@ export var scrollToSales = () => {}
 
 function Salecards ({setopenModal9,setopenModal5}){
      
-    [saleList, setSaleList] = useState([])
+     var [saleList, setSaleList] = useState([])
      var [salesInfor, setSaleInfor ] = useState([])
 
      
@@ -95,7 +95,7 @@ function Salecards ({setopenModal9,setopenModal5}){
 
           if(salesInfor.salesNO.toNumber()===salesInfor.salesData.length){
             console.log('Loaded')
-          } else alert('Could not load, timeout 15s'); }, 15000);
+          } else alert('Failed to load, timeout 15s'); }, 15000);
         
 
     }

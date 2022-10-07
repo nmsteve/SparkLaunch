@@ -3,7 +3,7 @@ import { useState,useRef } from 'react'
 import 'animate.css';
 
 import Salecards from './Middlediv/salecards'
-import Boxesdiv from './Middlediv/boxesdiv'
+import Boxesdiv from './Middlediv/Featuredboxes'
 import Bottomdiv from './Bottomdiv/bottomdiv'
 import Bottomdiv1 from './Bottomdiv/bottomdiv1'
 import Topdiv from './Topdiv'
