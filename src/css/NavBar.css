@@ -1,13 +1,32 @@
-.nav-container{
-    border-color: black;
-    margin-top: 2%;
-    margin-bottom: 2%;
-    margin-left: 3%;
-    margin-left: 3%;
+.navbar-container{
+    border-color: green !important;
+    height: 4%;
+    background-color: black;
+    border-width: 10rem;
+    
+}
+
+.navbar_row {
+    margin: 2% 5%;
 }
 
 .nav_logo{
-    height: 100px;
-    
+   margin-right: 10%;
     
 }
+
+.nav_menu{
+    display: flex;
+    margin: 5% 5%;
+    font-family: Konnect !important;
+    font-size: 15px;
+    font-weight: 550;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: white;
+    
+     
+}
+
+
