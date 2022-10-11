@@ -93,8 +93,8 @@ const MiddleBottomdiv = () => {
                         <Bottomdiv />
                     </div>
                 </>
-
             }
+
             {openModal4 &&
                 <>
                     <div className='main_div'>
@@ -133,10 +133,9 @@ const MiddleBottomdiv = () => {
 
                     </div>
                 </>
-
             }
-            {
-                openModal9 &&
+
+            {openModal9 &&
                 <>
                     <div className="main_div" id="blur">
                         <Topdiv />
@@ -152,12 +151,21 @@ const MiddleBottomdiv = () => {
                     </div>
                 </>
             }
-            {
-                openModal10 &&
-                <Metamaskconnect  toggle1={toggle1} setopenModal11={setopenModal11} setopenModal10={setopenModal10}  setopenModal9={setopenModal9}/>
+
+            {openModal10 &&
+
+                <Metamaskconnect  
+                        toggle1={toggle1} setopenModal11={setopenModal11}
+                         setopenModal10={setopenModal10}  setopenModal9={setopenModal9}
+                />
             }
-            {   openModal11 && 
-                 <Participate  toggle1={toggle1} setopenModal11={setopenModal11}  setopenModal10={setopenModal10} setopenModal9={setopenModal9}/>
+
+            {openModal11 && 
+
+                 <Participate  
+                        toggle1={toggle1} setopenModal11={setopenModal11}  
+                        setopenModal10={setopenModal10} setopenModal9={setopenModal9}
+                 />
             }
         </>
     )

@@ -59,13 +59,17 @@ const Topdiv = () => {
             </div>
             <div className='col-6'>
                 <div className='nav_menu'>
-                <a>HOME</a>
-                <a>POOLS</a>
-                <a>ABOUT</a>
+                <a className='nav-Menu_item'>HOME</a>
+                <a className='nav-Menu_item'>POOLS</a>
+                <a className='nav-Menu_item'>ABOUT</a>
+                <a className='nav-Menu_item'>TOKENLOCKERS</a>
                 
                 </div>
             </div>
             <div className='col-4'>
+                <di className="buttons">
+                 <button className='button btn_custom'>PYRE GAMES</button>
+                </di>
             </div>
         </div>
    
