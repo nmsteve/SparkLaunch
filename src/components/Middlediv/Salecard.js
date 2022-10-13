@@ -5,34 +5,42 @@ const salecard =(sale) => {
 
     return (
         <>  
-            <div className='kyc_boxes_inside_top' >
-            {sale.ID}
-                <div className='kyc_boxes_inside_top_left'>
-               
-                    <p className='kyc_heading'>{sale.name}</p>
-                    <p className='kyc_heading_small'>{sale.symbol}</p>
-                    <div className='kyc_images'>
-                      <a href={sale.telegram} target="_blank" rel="noopener noreferrer"><img className="spark_image_2_1" src="images/Vector2.png" /></a>
-                      {/* <a href={sale.linkedIn} target="_blank" rel="noopener noreferrer"><img className="spark_image_2_1" src="images/Vector3.png" /> </a>  */}
-                      <a href={sale.discord} target="_blank" rel="noopener noreferrer"><img className="spark_image_2_1" src="images/Vector4.png" /></a>
-                      <a href={sale.twitter} target="_blank" rel="noopener noreferrer"> <img className="spark_image_2_1" src="images/Vector5.png" /> </a>
+            <div className='row card-title-row' >
+             <div className='col-7'>
+                    <div className='row'>
+                        <p className='card-title-name'>{sale.name}</p>
+                    </div>
+                    <div className='row'>
+                        <p className='card-title-symbol'>{sale.symbol}</p> 
                     </div>
 
+                    <div className='row'>
+                                <div className='kyc_images'>
+                                        <a href={sale.telegram} target="_blank" rel="noopener noreferrer"><img className="spark_image_2_1" src="images/Vector2.png" /></a>
+                                         <a href={sale.linkedIn} target="_blank" rel="noopener noreferrer"><img className="spark_image_2_1" src="images/Vector3.png" /> </a> 
+                                        <a href={sale.discord} target="_blank" rel="noopener noreferrer"><img className="spark_image_2_1" src="images/Vector4.png" /></a>
+                                        <a href={sale.twitter} target="_blank" rel="noopener noreferrer"> <img className="spark_image_2_1" src="images/Vector5.png" /> </a> 
+                                </div>
+                    </div>
                 </div>
-                <div className=''>
-                   <img className='img-fluid img-thumbnail kyc_boxes_inside_top_right' src={sale.logo} alt=''/>
+
+                <div className='col-5'>
+                   <img className='img-fluid img-thumbnail card-title-img' src={sale.logo} alt=''/>
                 </div>
             </div>
+
             <div className='kyc_boxes_inside_middle'>
                 <div className="live_div">
                     <div id="button_12">{sale.status}</div>
                 </div>
             </div>
+
             <div className='kyc_boxes_inside_middle_1'>
                 <p className='middle_para'>
                     {sale.description}
                 </p>
             </div>
+
             <div className='kyc_boxes_inside_last'>
                 <div className="kyc_boxes_inside_last_left">
                     <div  style={{ marginTop: "0.7rem"}}>Soft Cap</div>
@@ -48,10 +56,12 @@ const salecard =(sale) => {
                    </div>
                 </div>
             </div>
+
             <div className='registration'>
                 <div id="registration">{sale.diff}</div>
                 <div id="percentage">{sale.percentage}%</div>
             </div>
+
             <div className='potion_fill'>
                 <div className='potion'>
                     {/* <div className='potion_flow'>
@@ -62,18 +72,22 @@ const salecard =(sale) => {
                    </div>
 
             </div>
+
             <div className='registration_1'>
                 <div id="registration_1"></div>
                 <div id="percentage_1"></div>
             </div>
+
             <div className='registration_2'>
                 <div id="registration_2">Holders</div>
                 <div id="percentage_2">Listing Time</div>
             </div>
+
             <div className='registration_3'>
                 <div id="registration_3">{sale.holders}</div>
                 <div id="percentage_3">{sale.listingDate}</div>
             </div> 
+
         </>
        )
 }

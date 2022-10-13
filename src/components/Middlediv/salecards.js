@@ -57,7 +57,7 @@ function Salecards ({setopenModal9,setopenModal5}){
 
               setSaleList( saleList =   salesInfor.salesData.map((sale)=> 
 
-                <div id={sale.id} className="kyc_boxes" key={sale.id} onClick={handleClick} >  
+                <div id={sale.id} className="sale-card" key={sale.id} onClick={handleClick} >  
               
                 <Salecard
                     ID={sale.saleDetails.saleID}

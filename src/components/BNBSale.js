@@ -57,11 +57,12 @@ const MiddleBottomdiv = () => {
 
     return (
         <>
+        <div className='container-fluid'>
+         <Header/>
             {openModal5 &&
                 <>
                     <div className='container-fuild'>
-                           <Header/>
-                            <div className="row content" >
+                        <div className="row content" >
                             <div className='container-fuild'>
                                 <div className='row'>
                                     <div className='col'></div>
@@ -112,30 +113,21 @@ const MiddleBottomdiv = () => {
                                         <button className='button filter-btn'>ENDED</button>
                                     </div>
                                     <div className='col-4'>
-                                      <input class="filter-search" type="search" placeholder="Search" aria-label="Search"/>
+                                      <input class="filter-search-name" type="search" placeholder="Search.." aria-label="Search"/>
+                                      <img className='filter-search-icon' src='/images/Search.png'></img>
+                                    </div>
+                                
+                                </div>
+                                <div className='row cards-row'  ref={salecardsRef} >  
+                                    <Salecards setopenModal9={setopenModal9} setopenModal5={setopenModal5} />
+                                </div>
+                                <div className='row'>
+                                    <div className='container ask-btn-div'>
+                                        <button className='ask-btn'>Ask Us</button>
                                     </div>
                                 </div>
                             </div>
-                                
-                                
-                                
-                                {/* <div className='duration_div_left'>
-                                    <button id="button_7">ALL SALES</button>
-                                    <button id="button_8">UPCOMING</button>
-                                    <button id="button_9">ENDED</button>
-                                </div>
-                                <div className='duartion_div_right'>
-                                    <button id="button_10">Search</button>
-                                </div> */}
-                                <div className="kyc_div" ref={salecardsRef} >
-                                    <Salecards setopenModal9={setopenModal9} setopenModal5={setopenModal5} />
-                                </div>
-                                <div className='corner_button'>
-                                    <div id='button_28'>Ask Us</div>
-                                </div>
-
-                            </div>
-                            <Footer/> 
+                        </div>
                    </div>
                 </>
             }
@@ -143,8 +135,6 @@ const MiddleBottomdiv = () => {
             {openModal4 &&
                 <>
                     <div className='main_div'>
-
-                        <Header />
 
                         <div className="middle_div" >
                                 <button className='close_button' 
@@ -174,8 +164,6 @@ const MiddleBottomdiv = () => {
                                 </div>
                         </div>
 
-                        <Footer />
-
                     </div>
                 </>
             }
@@ -183,7 +171,6 @@ const MiddleBottomdiv = () => {
             {openModal9 &&
                 <>
                     <div className="main_div" id="blur">
-                        <Header />
                         <div className="middle_div" >
                         <button className='close_button' 
                                     onClick={() => { setopenModal9(false);setopenModal5(true)}}>
@@ -192,7 +179,6 @@ const MiddleBottomdiv = () => {
                         <Pools1 setopenModal5={setopenModal5} setopenModal9={setopenModal9} 
                                 setopenModal10={setopenModal10}  setopenModal11={setopenModal11} toggle={toggle}/>
                         </div>
-                        <Footer />
                     </div>
                 </>
             }
@@ -212,6 +198,11 @@ const MiddleBottomdiv = () => {
                         setopenModal10={setopenModal10} setopenModal9={setopenModal9}
                  />
             }
+
+         <Footer/> 
+        
+        </div>
+       
         </>
     )
 
