@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef}  from 'react'
 
 import Salecard from './Salecard'
-import {fetchSaleInfor} from './dataProccessing'
+import {fetchSaleInfor} from '../../connect/dataProccessing'
 
 
 export var selectedSale = 0
@@ -95,7 +95,7 @@ function Salecards ({setopenModal9,setopenModal5}){
 
           if(salesInfor.salesNO.toNumber()===salesInfor.salesData.length){
             console.log('Loaded')
-          } else alert('Failed to load, timeout 15s'); }, 15000);
+          } else alert('Failed to load, timeout 15s'); }, 20000);
         
 
     }

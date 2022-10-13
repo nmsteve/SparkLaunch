@@ -27,15 +27,6 @@ const salecard =(sale) => {
                 <div className="live_div">
                     <div id="button_12">{sale.status}</div>
                 </div>
-                {/* <div className='upcoming_div'>
-                    <div id="button_12">UPCOMING</div>
-                </div>
-                <div className='ended_div'>
-                    <div id="button_12">ENDED</div>
-                </div>
-                <div className='closed_div'>
-                    <div id="button_12">CLOSED</div>
-                </div> */}
             </div>
             <div className='kyc_boxes_inside_middle_1'>
                 <p className='middle_para'>

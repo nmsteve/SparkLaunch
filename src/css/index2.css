@@ -6,7 +6,7 @@
 html {
   font-size: 62.5%;
 }
-.main_div1 {
+.bodyz {
   position: relative;
   width: 192rem;
   height: 456rem;
@@ -384,7 +384,7 @@ p {
   letter-spacing: 1rem;
 }
 
-.featured {
+.featuredo {
   position: absolute;
   /* width: 63.8rem; */
   height: 9.8rem;
@@ -424,10 +424,10 @@ p {
   background: rgba(129, 128, 128, 0.36);
   border-radius: 10px;
   border: 1px solid #5ce65c;
+
   animation: flash;
   animation-duration: 4s;
   animation-iteration-count: infinite;
-  background-image: ;
 }
 
 .duration_div_left {

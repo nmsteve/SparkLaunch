@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { fetchFeaturedsale } from './dataProccessing'
+import { fetchFeaturedsale } from '../../connect/dataProccessing'
 
 const Featuredboxes = () => {
 
@@ -15,12 +15,13 @@ const Featuredboxes = () => {
            
             setFeaturedList(
             
-            featuredList = <>
-                        <div className='boxes'></div> 
-                        <div className='boxes'></div>
-                        <div className='boxes'></div> 
-                        <div className='boxes'></div>
-                        <div className='boxes'></div> 
+            featuredList = 
+                        <>
+                        <div className='featured-card-animation'></div> 
+                        <div className='featured-card-animation'></div>
+                        <div className='featured-card-animation'></div> 
+                        <div className='featured-card-animation'></div>
+                        <div className='featured-card-animation'></div> 
                         </>
         )
         
@@ -29,10 +30,9 @@ const Featuredboxes = () => {
 
         setFeaturedList(
             featuredList = featuredSales.map((sale)=>
-                <div id={sale.saleDetails.saleID} key={sale._id} className='featured_box'>
-                     <img className='img-fluid featured_mainImg' src={sale.saleDetails.saleImg}></img>
-                      {/* <img className='featured_logoImg' src={sale.saleDetails.saleImg}></img> */}
-                    <h2 className='featured_name'>{sale.saleToken.name}</h2>
+                <div id={sale.saleDetails.saleID} key={sale._id} className='featured-card' style={{backgroundImage:`url(${sale.saleDetails.saleImg})`}}>
+                     {/* <img className='img-fluid featured_mainImg' src={sale.saleDetails.saleImg}></img> */}
+                    <h2 className='featured-card-name'>{sale.saleToken.name}</h2>
                 </div>
                 
             )

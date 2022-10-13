@@ -1,10 +1,7 @@
-.navbar-container{
-    border-color: green !important;
+.navbar-custom{
     height: 4%;
     background-color: black;
-    border-width: 1rem;
-    border-style: solid;
-    
+    position: relative;
 }
 
 .navbar_row {

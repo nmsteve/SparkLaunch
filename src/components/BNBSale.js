@@ -1,21 +1,27 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useState,useRef } from 'react'
 import 'animate.css';
 
+//nav bar section
+import Header from './Header'
+
+//displays on home page
+import Featuredboxes from './Middlediv/Featuredboxes'
 import Salecards from './Middlediv/salecards'
-import Boxesdiv from './Middlediv/Featuredboxes'
-import Bottomdiv from './Bottomdiv/bottomdiv'
-import Bottomdiv1 from './Bottomdiv/bottomdiv1'
-import Topdiv from './Topdiv'
+
+//displays for launch sale
 import Title from './Middlediv/title'
 import Saleparams from './Middlediv/Saleparams'
 import Urldiv from './Middlediv/url'
 import Description from './Middlediv/description'
+
+//displays for participate
 import Pools1 from './Middlediv/pools1'
-import Pools3 from './Middlediv/pools3'
 import Metamaskconnect from './Middlediv/metamaskconnect'
 import Participate from './Middlediv/participate'
-import {scrollToSales} from "./Middlediv/salecards"
+
+//footer section
+import Footer from './Footer';
 
 const MiddleBottomdiv = () => {
 
@@ -53,45 +59,84 @@ const MiddleBottomdiv = () => {
         <>
             {openModal5 &&
                 <>
-                    <div className='main_div1'>
-                        <Topdiv />
-                        <div className="middle_div1" >
-                           
-                            <img className="mid_image_1" src="images/Vector8.png" />
-                            <img className="mid_image_2" src="images/Vector31.png" />
-                            <img className="mid_image_3" src="images/Vector6.png" />
-                            <div className='heading_1'>
-                                <h1>SPARK</h1>
-                                <h4>LAUNCH</h4>
-                            </div>
-                            <div className='launch_div'>
-                                <div id="button_5" onClick={() => { setopenModal4(true); setopenModal5(false); }}>LAUNCH YOUR PROJECT WITH US</div>
-                            </div>
-                            <div className='buy_div'>
-                                <div id="button_6" onClick={scrollToSales}>BUY TOKENS</div>
-                            </div>
-                            <p className="featured">FEATURED PROJECTS</p>
-                            <div className='boxes_div'>
-                                <Boxesdiv />
-                            </div>
-                            <div className='duration_div_left'>
-                                <button id="button_7">ALL SALES</button>
-                                <button id="button_8">UPCOMING</button>
-                                <button id="button_9">ENDED</button>
-                            </div>
-                            <div className='duartion_div_right'>
-                                <button id="button_10">Search</button>
-                            </div>
-                            <div className="kyc_div" ref={salecardsRef} >
-                                <Salecards setopenModal9={setopenModal9} setopenModal5={setopenModal5} />
-                            </div>
-                            <div className='corner_button'>
-                                <div id='button_28'>Ask Us</div>
-                            </div>
+                    <div className='container-fuild'>
+                           <Header/>
+                            <div className="row content" >
+                            <div className='container-fuild'>
+                                <div className='row'>
+                                    <div className='col'></div>
+                                    <div className='col-6 home_logo'>
+                                    <img className='image-fluid' src="/images/biglogo.png"/>
+                                    </div>
+                                    <div className='col'></div>
+                                </div>
+                                <div className='row launchbuy-row'>
+                                    <div className='col-2'></div>
+                                    <div className='col-5'>
+                                        <button className='button launch-btn' onClick={() => { setopenModal4(true); setopenModal5(false); }}>
+                                            LAUNCH YOUR PROJECT WITH US
+                                        </button>
+                                    </div>
+                                    <div className='col-3'>
+                                        <button className='button buy-btn' onClick={scrollToSales}>
+                                            BUY $IGHT
+                                        </button>
+                                    </div>
+                                    <div className='col-2'></div>
+                                </div>
+                                <div className='row featured-row'>
 
-                        </div>
-                        <Bottomdiv />
-                    </div>
+                                    <div className='container'>
+                                        <div className='row'> 
+                                                <p className="col-6 featured-name">FEATURED PROJECTS</p>
+                                        </div>
+                                        <div className='row'>
+                                            <div className='featured-name-underline'></div>
+                                        </div>
+                                        <div className='row feature-card-row'>
+                                      
+                                           <Featuredboxes/>
+                                        
+                                        </div>
+                                    
+
+                                    </div>
+
+                                    
+                                </div>
+                                <div className='row filter-row'>
+                                    <div className='col-8 filter-buttons'>
+                                        <button className='button filter-btn'>ALL SALES</button>
+                                        <button className='button filter-btn'>UPCOMING</button>
+                                        <button className='button filter-btn'>LIVE</button>
+                                        <button className='button filter-btn'>ENDED</button>
+                                    </div>
+                                    <div className='col-4'>
+                                      <input class="filter-search" type="search" placeholder="Search" aria-label="Search"/>
+                                    </div>
+                                </div>
+                            </div>
+                                
+                                
+                                
+                                {/* <div className='duration_div_left'>
+                                    <button id="button_7">ALL SALES</button>
+                                    <button id="button_8">UPCOMING</button>
+                                    <button id="button_9">ENDED</button>
+                                </div>
+                                <div className='duartion_div_right'>
+                                    <button id="button_10">Search</button>
+                                </div> */}
+                                <div className="kyc_div" ref={salecardsRef} >
+                                    <Salecards setopenModal9={setopenModal9} setopenModal5={setopenModal5} />
+                                </div>
+                                <div className='corner_button'>
+                                    <div id='button_28'>Ask Us</div>
+                                </div>
+
+                            </div>
+                            <Footer/> 
+                   </div>
                 </>
             }
 
@@ -99,7 +144,7 @@ const MiddleBottomdiv = () => {
                 <>
                     <div className='main_div'>
 
-                        <Topdiv />
+                        <Header />
 
                         <div className="middle_div" >
                                 <button className='close_button' 
@@ -129,7 +174,7 @@ const MiddleBottomdiv = () => {
                                 </div>
                         </div>
 
-                        <Bottomdiv1 />
+                        <Footer />
 
                     </div>
                 </>
@@ -138,7 +183,7 @@ const MiddleBottomdiv = () => {
             {openModal9 &&
                 <>
                     <div className="main_div" id="blur">
-                        <Topdiv />
+                        <Header />
                         <div className="middle_div" >
                         <button className='close_button' 
                                     onClick={() => { setopenModal9(false);setopenModal5(true)}}>
@@ -147,7 +192,7 @@ const MiddleBottomdiv = () => {
                         <Pools1 setopenModal5={setopenModal5} setopenModal9={setopenModal9} 
                                 setopenModal10={setopenModal10}  setopenModal11={setopenModal11} toggle={toggle}/>
                         </div>
-                        <Bottomdiv1 />
+                        <Footer />
                     </div>
                 </>
             }

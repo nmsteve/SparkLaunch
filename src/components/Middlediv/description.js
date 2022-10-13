@@ -1,5 +1,5 @@
 import React from 'react'
-import { deploySale} from './dataProccessing'
+import { deploySale} from '../../connect/dataProccessing'
 
 const Description = () => {
 

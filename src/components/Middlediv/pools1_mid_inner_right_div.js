@@ -1,6 +1,6 @@
 import React from 'react'
 import Pools1_right_topBottom_boxes from './pools1_right_topBottom_boxes'
-import { depositTokens,withdrawDeposit,withdrawEarnings } from './dataProccessing'
+import { depositTokens,withdrawDeposit,withdrawEarnings } from '../../connect/dataProccessing'
 
 const pools1_mid_inner_right_div = ({ setopenModal12 }) => {
 

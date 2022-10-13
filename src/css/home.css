@@ -1,0 +1,164 @@
+.home_logo {
+    width: 259px;
+    align-self: center;
+    margin-top: 8%;
+}
+
+.launchbuy-row{
+    margin-top: 10%;
+}
+.launch-btn {
+
+    /* text topology */
+    font-family: Konnect;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 34px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: black !important;
+
+    /* box */
+    padding: 2% 3%;
+    margin-left: 15%;
+    background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);  /* gradient green */
+    border-radius: 5.3rem;
+
+}
+
+.buy-btn{
+
+    /* Topology */
+    font-family: Konnect;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 34px;
+    color: white;
+   
+
+    /* Box */
+    width: 207px;
+    padding: 3% 3%;
+    background: transparent;
+    border: 2px solid;
+    border-radius: 50px;
+    border-color: #249806;
+
+}
+
+.featured-row {
+    margin-top: 10%;
+  }
+
+.featured-name{
+   
+    font-family: "Konnect";
+    font-style: normal;
+    font-weight: 800;
+    font-size: 5.3rem;
+    line-height: 9.8rem;
+    word-spacing: 2.2rem;
+    color: #79fb53;
+    margin: auto;
+  }
+
+  .featured-name-underline{
+    background-color: white;
+    width: 46px;
+    height: 7px;
+    margin: auto;
+    margin-left: 42%;
+    margin-top: 1%;
+    border-radius: 15px;
+
+  }
+
+  .feature-card-row{
+    gap: 1%;
+    margin-top: 2%;
+   margin-left: 1%;
+   justify-content: center;
+  }
+
+  .featured-card-animation{
+
+    box-sizing: border-box;
+    width: 280px;
+    height: 160px;
+    background: rgba(129, 128, 128, 0.36);
+    border-radius: 10px;
+    border: 1px solid #5ce65c;
+    background-size: cover;
+  
+    animation: flash;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+  }
+
+  .featured-card {
+   
+    box-sizing: border-box;
+    width: 250px;
+    height: 160px;
+    background: rgba(129, 128, 128, 0.36);
+    border-radius: 10px;
+    border: 1px solid #5ce65c;
+    background-size: cover;
+
+    position: relative;
+   
+  
+  }
+
+.featured-card-name{
+
+  font-family: konnenct;
+  position: relative;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 52px;
+  font-style: normal;
+  border-radius: 0%;
+  margin: auto;
+
+  position:absolute;
+  bottom: 2%;
+
+}
+
+.filter-row{
+  margin-top: 10%;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 2%;
+  justify-content: center;
+}
+.filter-btn {
+  border: 2px solid #5ce65c;
+  background: rgba(129, 128, 128, 0.36);
+  border-radius: 1.5rem;
+  width: 23.1rem;
+  height: 7.4rem;
+  font-size: 2rem;
+  color: white;
+}
+
+.filter-search {
+ 
+   border-radius: 48px;
+
+
+  border-radius: 1.5rem;
+  font-size: 2rem;
+  color: white;
+  padding-left: 1%;
+
+  height: 7.4rem;
+  width: 352px;
+
+  border-radius: 48px;
+  border: 2px solid #5ce65c;
+}
+

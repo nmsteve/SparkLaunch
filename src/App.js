@@ -6,7 +6,6 @@ import {Routes} from 'react-router-dom';
 import "./App.css";
 
 //import components
-import ERC20 from "./components/ER20Sale";
 import  BNB from "./components/BNBSale";
 
 
@@ -18,7 +17,7 @@ function App() {
       <>
           <Routes>
             <Route exact="true" path="/" element={<BNB/>}></Route>
-            <Route path="/ERC20" element={<ERC20/>}></Route> 
+            {/* <Route path="/ERC20" element={<ERC20/>}></Route>  */}
         </Routes>
       </>
    

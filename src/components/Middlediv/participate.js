@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { selectedSale } from './salecards';
-import { participateInsale } from './dataProccessing';
+import { participateInsale } from '../../connect/dataProccessing';
 
 const Participate = ({ setopenModal11, setopenModal10, setopenModal9, toggle1 }) => {
 
