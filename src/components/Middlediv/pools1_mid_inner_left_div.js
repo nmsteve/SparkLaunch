@@ -1,7 +1,8 @@
 import React from 'react'
-import { withdraw, withdrawUnused} from '../../connect/dataProccessing'
+import { withdraw, withdrawUnused } from '../../connect/dataProccessing'
 
-const pools1_mid_inner_left_div = ({setopenModal11,setopenModal10}) => {
+
+const pools1_mid_inner_left_div = ({ setActiveSection }) => {
   return (
     <>
       <div className='innerdiv_left_top'>
@@ -30,15 +31,17 @@ const pools1_mid_inner_left_div = ({setopenModal11,setopenModal10}) => {
         <div className='innerdiv_poolheadings_belowdiv_right2'>Sale End: 10 May</div>
       </div>
       <div className='participate_button'>
-          <div id="button_15" onClick={()=>{setopenModal11(true)}}>Participate</div>
+        <div
+          id="button_15" onClick={() => { setActiveSection(4) }}>Participate</div>
       </div>
       <div className='withdraw_button'>
-          <div id="button_15" onClick={()=>{withdraw()}}>withdraw</div>
+        <div id="button_15" onClick={() => withdraw()}>withdraw</div>
       </div>
       <div className='withdrawused_button'>
-          <div id="button_15" onClick={()=>{withdrawUnused()}}>withdraw unused</div>
+        <div id="button_15" onClick={() => { withdrawUnused() }}>withdraw unused</div>
       </div>
-    </>)
+    </>
+  )
 }
 
 export default pools1_mid_inner_left_div

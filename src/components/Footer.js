@@ -1,51 +1,56 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
+
 const Footer = () => {
-    return (
-        <>
-         <div className='row'>
-            <div className="footer">
-                <img className="spark_image" src="images/Vector.png" />
-                <img className="spark_image_1" src="images/Vector1.png" />
-                <div className="heading">
-                    <h1>SPARK</h1>
-                    <h4>LAUNCH</h4>
-                </div>
-                <div className='spark_image_2'>
-                    <img className="spark_image_2_1" src="images/Vector2.png" />
-                    <img className="spark_image_2_1" src="images/Vector3.png" />
-                    <img className="spark_image_2_1" src="images/Vector4.png" />
-                    <img className="spark_image_2_1" src="images/Vector5.png" />
-                </div>
-
-                <div className="info_div_1">
-                    <NavLink to="/" exact><p>BNB SALE</p> </NavLink>
-                    <NavLink to="/erc20" exact><p>ERC20 SALE</p></NavLink>
-                    <NavLink to="/About" exact><p>ABOUT</p></NavLink>
-
-                </div>
-                <div className='info_div_3'>
-                    <div style={{ marginLeft: "3rem" }}>
-                        <h5>@Copyright DEFI 2022</h5>
-                        <h5 style={{ marginTop: "2rem" }}>Information</h5>
-                    </div>
-                    <div style={{ marginLeft: "13rem" }}>
-                        <h5>Privacy policy</h5>
-                        <h5 style={{ marginTop: "2rem" }}>Terms of Use</h5>
-                    </div>
-                </div>
-                <div className="bottom_corner">
-                    <p id="bottom_para" style={{ marginBottom: "0.6rem" }}>Subscribe to our NewsLetter</p>
-                    <input className="input" style={{color:"black"}} placeholder="Enter your e-mail"></input>
-                    <button id="button_4">Subscribe</button>
-                </div>
-            </div>
-         </div>
-           
-
-        </>
-    )
+  return (
+    <div className="footer">
+      <div className="container container-fluid d-flex align-items-center">
+        <img height={150} src="images/smlogo.png" />
+        <div className="text-white text-center mx-2">
+          <h2>SPARK</h2>
+          <h5>LAUNCH</h5>
+        </div>
+        <div className='d-flex align-items-end pb-4 h-100'>
+          <img className="mx-2" src="images/Vector2.png" />
+          <img className="mx-2" src="images/Vector3.png" />
+          <img className="mx-2" src="images/Vector4.png" />
+          <img className="mx-2" src="images/Vector5.png" />
+        </div>
+        <div className="">
+          <div className="nav">
+            <NavLink className="nav-link text-white" to="/" exact>
+              <p>BNB SALE</p>
+            </NavLink>
+            <NavLink className="nav-link text-white" to="/erc20" exact>
+              <p>ERC20 SALE</p>
+            </NavLink>
+            <NavLink className="nav-link text-white" to="/About" exact>
+              <p>ABOUT</p>
+            </NavLink>
+          </div>
+          <div className='row mx-2 text-white'>
+            <p className='col-6' style={{ fontSize: 12 }}>
+              @Copyright DEFI 2022
+            </p>
+            <p className='col-6' style={{ fontSize: 12 }}>Information</p>
+            <p className='col-6' style={{ fontSize: 12 }}>Privacy policy</p>
+            <p className='col-6' style={{ fontSize: 12 }}>Terms of Use</p>
+          </div>
+        </div>
+        <div className="">
+          <h6 className="text-white text-nowrap">Subscribe to our NewsLetter</h6>
+          <input
+            className='form-control form-control-sm' placeholder="Enter your e-mail" />
+          <button
+            className='btn btn-sm text-white mt-3'
+            style={{ backgroundColor: '#249806' }}
+          >
+            Subscribe
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
-
 export default Footer

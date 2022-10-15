@@ -3,71 +3,69 @@
   margin: 0px;
   padding: 0px;
 }
-html {
-  font-size: 62.5%;
-}
+
 .bodyz {
   position: relative;
   width: 192rem;
   height: 456rem;
 }
+
 #blur.active1 {
   filter: blur(1.5px);
 }
+
 #blur.inactive1 {
-  filter:none
+  filter: none
 }
-.corner_button{
+
+.corner_button {
   position: absolute;
   width: 15.1rem;
   height: 5.6rem;
   left: 154rem;
   top: 550rem;
-  
   background: hsl(106, 95%, 65%);
   border-radius: 1.5rem;
 }
 
-.close_button{
+.close_button {
   position: absolute;
   width: 15.1rem;
   height: 5.6rem;
   left: 162rem;
   top: 2rem;
-  
   background: hsl(106, 95%, 65%);
   border-radius: 1.5rem;
 }
 
-.next_button{
+.next_button {
   position: absolute;
   width: 15.1rem;
   height: 5.6rem;
   right: 10%;
   bottom: 10%;
-  
   background: hsl(106, 95%, 65%);
   border-radius: 15px;
   cursor: pointer;
 }
 
-.next_button:hover{
-  background-color: #4CAF50; /* Green */
+.next_button:hover {
+  background-color: #4CAF50;
+  /* Green */
   color: white;
 }
 
-#button_28{
+#button_28 {
   width: 10.7rem;
   height: 3.3rem;
-
-  margin:1.2rem 3rem;
-  font-family: 'Konnect';
+  margin: 1.2rem 3rem;
   font-style: normal;
   font-weight: 700;
   font-size: 2.4rem;
   line-height: 3.3rem;
   color: #000000;
 }
+
 .top_div {
   position: absolute;
   width: 192rem;
@@ -85,14 +83,6 @@ html {
   margin-top: 8rem;
   width: 55rem;
 }
-p {
-  margin-left: 5.7rem;
-  font-family: "Konnect";
-  font-style: normal;
-  font-weight: 40rem;
-  font-size: 18px;
-  color: #ffffff;
-}
 
 .top_button_div {
   position: absolute;
@@ -103,24 +93,24 @@ p {
   background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
   border-radius: 12px;
 }
+
 #button_1 {
   position: absolute;
   width: 16.5rem;
   height: 3.356rem;
   left: 1rem;
   top: 0.7rem;
-
   background: linear-gradient(90.19deg, #e7794b 3.19%, #962c02 99.83%);
   box-shadow: 0.6rem 0.1rem 0.9rem rgba(0, 0, 0, 0.62);
   border-radius: 0.7rem;
 }
+
 #button_2 {
   position: absolute;
   width: 16rem;
   height: 3.35rem;
   left: 18.5rem;
   top: 0.7rem;
-
   background: linear-gradient(91.08deg, #59a9ef 0.63%, #1d669d 101.42%);
   box-shadow: 0.6rem 0.1rem 0.9rem rgba(0, 0, 0, 0.62);
   border-radius: 0.7rem;
@@ -133,7 +123,6 @@ p {
   height: 4rem;
   left: 164rem;
   top: 7.1rem;
-
   border-radius: 1.2rem;
   border: 1px solid #5ce65c;
 }
@@ -158,24 +147,15 @@ p {
   flex-direction: column;
 }
 
-/* .sub_mid_div{
-    display:flex;
-    
-  } */
-
 .launch_div {
   position: absolute;
   width: 51.6rem;
   height: 6.6rem;
   left: 50.3rem;
   top: 67.5rem;
-
   /* gradient green */
-
   background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
   border-radius: 5.3rem;
-
-  
 }
 
 .launch_div:hover {
@@ -184,15 +164,10 @@ p {
   height: 6.6rem;
   left: 50.3rem;
   top: 67.5rem;
-
   /* gradient green */
-
   background: linear-gradient(91.18deg, hwb(120 58% 9%) 3.96%, hwb(108 2% 52%) 101.84%);
   border-radius: 5.3rem;
-
-  
 }
-
 
 #button_5 {
   position: absolute;
@@ -200,16 +175,14 @@ p {
   height: 3.7rem;
   left: 5.2rem;
   top: 1.5rem;
-
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 700;
   font-size: 2.2rem;
   line-height: 3.4rem;
-
   color: #000000;
-  cursor:pointer;
+  cursor: pointer;
 }
+
 .buy_div {
   box-sizing: border-box;
   background-color: #1e1e1e;
@@ -223,18 +196,16 @@ p {
 }
 
 .buy_div:hover {
-  color:black;
+  color: black;
   background-color: green;
-
 }
+
 #button_6 {
   position: absolute;
   width: 17.2rem;
   height: 3.7rem;
   left: 4.4rem;
   top: 1.5rem;
-
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 700;
   font-size: 2rem;
@@ -253,30 +224,31 @@ p {
   width: 19.2rem;
   height: 15.8rem;
 }
+
 .mid_image_2 {
   position: absolute;
   left: 43.6%;
   right: 40.47%;
   top: 5%;
   bottom: 45.65%;
-
   /* background: #0d161c; */
   mix-blend-mode: screen;
   width: 8.6rem;
   height: 18.5rem;
 }
+
 .mid_image_3 {
   position: absolute;
   left: 44.8%;
   right: 25.22%;
   top: 6.6%;
   bottom: 41.96%;
-
   /* background: #0d161c; */
   mix-blend-mode: screen;
   width: 8.1rem;
   height: 12.1rem;
 }
+
 .spark_image {
   position: absolute;
   left: 6.11%;
@@ -284,20 +256,12 @@ p {
   bottom: 29%;
   height: 8.4rem;
 }
+
 .spark_image_1 {
   position: absolute;
   left: 7.04%;
   right: 90.54%;
   bottom: 20%;
-}
-p {
-  margin-left: 5.7rem;
-  font-family: "Konnect";
-  font-style: normal;
-  font-weight: 40rem;
-  font-size: 1.5rem;
-  color: #ffffff;
-  letter-spacing: 1px;
 }
 
 .bottom_div1 {
@@ -320,26 +284,6 @@ p {
   position: absolute;
 }
 
-.bottom_corner {
-  margin-left: 156.5rem;
-  width: 26rem;
-  height: 12rem;
-  box-sizing: border-box;
-  position: absolute;
-  margin-top: 3rem;
-}
-
-.input {
-  box-sizing: border-box;
-  border: 1px solid #5ce65c;
-  background: #ffffff;
-  border-radius: 1.2rem;
-  margin-left: 0.3rem;
-  width: 24.5rem;
-  height: 3.6rem;
-  padding: 1rem;
-}
-
 #button_4 {
   position: absolute;
   width: 9.7rem;
@@ -352,7 +296,6 @@ p {
 
 #bottom_para {
   margin-left: 1rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 40rem;
   font-size: 1.5rem;
@@ -371,6 +314,7 @@ p {
   margin-top: 8rem;
   letter-spacing: 1rem;
 }
+
 .heading_1 {
   box-sizing: border-box;
   position: absolute;
@@ -391,19 +335,16 @@ p {
   left: 53.9rem;
   top: 91.6rem;
   margin-bottom: 10rem;
-
   /* heading1 */
-
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 700;
   font-size: 5.3rem;
   line-height: 9.8rem;
   word-spacing: 2.2rem;
   /* identical to box height */
-
   color: #79fb53;
 }
+
 .boxes_div {
   display: flex;
   flex-wrap: wrap;
@@ -416,6 +357,7 @@ p {
   gap: 3.5rem;
   height: 17rem;
 }
+
 .boxes {
   box-sizing: border-box;
   left: 15.7rem;
@@ -424,7 +366,6 @@ p {
   background: rgba(129, 128, 128, 0.36);
   border-radius: 10px;
   border: 1px solid #5ce65c;
-
   animation: flash;
   animation-duration: 4s;
   animation-iteration-count: infinite;
@@ -437,7 +378,6 @@ p {
 
 #button_7 {
   box-sizing: border-box;
-
   position: absolute;
   left: 20.2rem;
   top: 152.4rem;
@@ -449,6 +389,7 @@ p {
   font-size: 2rem;
   color: white;
 }
+
 #button_8 {
   position: absolute;
   left: 47.3rem;
@@ -461,6 +402,7 @@ p {
   font-size: 2rem;
   color: white;
 }
+
 #button_9 {
   position: absolute;
   left: 74.5rem;
@@ -473,9 +415,9 @@ p {
   font-size: 2rem;
   color: white;
 }
+
 #button_10 {
   box-sizing: border-box;
-
   position: absolute;
   width: 35.2rem;
   height: 7.2rem;
@@ -493,6 +435,7 @@ p {
   margin-left: 20.2rem;
   gap: 18.6rem;
 }
+
 .kyc_boxes {
   box-sizing: border-box;
   width: 38.2rem;
@@ -506,18 +449,17 @@ p {
   flex-direction: row;
   height: 15.3rem;
 }
+
 .kyc_boxes_inside_top_left {
   position: absolute;
   width: 7.8rem;
   height: 2.5rem;
   margin-top: 3.6rem;
-
-  font-family: "Gilroy";
   font-style: normal;
   font-weight: 700;
-
   line-height: 2.5rem;
 }
+
 .kyc_images {
   margin-top: 0.5rem;
   margin-left: 3.6rem;
@@ -525,10 +467,12 @@ p {
   flex-direction: row;
   height: 1.6rem;
 }
+
 .kyc_heading {
   color: #5ce65c;
   font-size: 2rem;
 }
+
 .kyc_heading_small {
   color: #afafaf;
   font-size: 1.5rem;
@@ -536,7 +480,6 @@ p {
 
 .kyc_boxes_inside_top_right {
   box-sizing: border-box;
-
   position: absolute;
   width: 7.8rem;
   height: 7.8rem;
@@ -553,6 +496,7 @@ p {
   margin-top: 0.5rem;
   height: 2rem;
 }
+
 .live_div {
   box-sizing: border-box;
   position: absolute;
@@ -561,10 +505,10 @@ p {
   height: 2.2rem;
   border: 1px solid #5ce65c;
   border-radius: 8px;
-
   background: #71ee4f;
   border-radius: 8px;
 }
+
 .upcoming_div {
   box-sizing: border-box;
   position: absolute;
@@ -601,23 +545,19 @@ p {
   height: 11px;
   margin-left: 2rem;
   margin-top: 0.6rem;
-
-  font-family: "Gilroy";
   font-style: normal;
   font-weight: 600;
   font-size: 1rem;
   line-height: 11px;
-
   color: #ffffff;
 }
+
 #button_12 {
   position: absolute;
   /* width: 48px; */
   height: 11px;
   margin-left: 0.5rem;
   margin-top: 0.5rem;
-
-  font-family: "Gilroy";
   font-style: normal;
   font-weight: 600;
   font-size: 1rem;
@@ -631,9 +571,9 @@ p {
   width: 34rem;
   margin-top: 1.5rem;
 }
+
 .middle_para {
   margin-left: 5rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 500;
   font-size: 1.2rem;
@@ -650,10 +590,10 @@ p {
   height: 7.6rem;
   width: 100%;
 }
+
 .kyc_boxes_inside_last_left {
   position: absolute;
   height: 7.4rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 500;
   font-size: 1.4rem;
@@ -665,61 +605,55 @@ p {
   position: absolute;
   height: 7.4rem;
   margin-left: 16rem;
-
-  font-family: "Avenir Next Cyr";
   font-style: normal;
   font-weight: 500;
   font-size: 1.4rem;
   line-height: 1.8rem;
   color: #5ce65c;
 }
+
 .dollar {
   position: absolute;
   height: 2.2rem;
-
-  font-family: "Avenir Next Cyr";
   font-style: normal;
   font-weight: 450;
   font-size: 1.6rem;
   line-height: 2.2rem;
-
   color: #5ce65c;
 }
+
 .date {
   position: absolute;
   height: 1.8rem;
-  margin-top:7rem;
-  font-family: "Avenir Next Cyr";
+  margin-top: 7rem;
   font-style: normal;
   font-weight: 450;
   font-size: 1.4rem;
   line-height: 1.8rem;
-
   color: #5ce65c;
 }
+
 .value {
   margin-top: 5rem;
   position: absolute;
   height: 1.8rem;
-
-  font-family: "Avenir Next Cyr";
   font-style: normal;
   font-weight: 450;
   font-size: 1.4rem;
   line-height: 1.8rem;
-
   color: #5ce65c;
 }
+
 .kyc_audit {
   display: flex;
   /* flex-direction: row; */
   height: 4.1rem;
   margin-top: 3.7rem;
 }
+
 .audit_div {
   margin-left: 4.5rem;
   box-sizing: border-box;
-
   position: absolute;
   width: 9.8rem;
   height: 4.1rem;
@@ -727,16 +661,14 @@ p {
   border-radius: 1.2rem;
   border: 1px solid #5ce65c;
 }
+
 .kycbox_div {
   margin-left: 23rem;
   box-sizing: border-box;
-
   position: absolute;
   width: 9.8rem;
   height: 4.1rem;
-  /* left: 179px;
-    top: 2308px; */
-
+  /* left: 179px;    top: 2308px; */
   background: #2c2e30;
   border-radius: 1.2rem;
   border: 1px solid #5ce65c;
@@ -747,33 +679,32 @@ p {
   width: 4.9rem;
   height: 1.8rem;
   margin: 1rem 2.2rem;
-
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 600;
   font-size: 1.5rem;
   line-height: 2rem;
-
   color: #ffffff;
 }
+
 #button_14 {
   margin: 1rem 3rem;
   position: absolute;
   width: 3.5rem;
   height: 1.8rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 600;
   font-size: 1.5rem;
   line-height: 2rem;
   color: #ffffff;
 }
+
 .potion_fill {
   width: 100%;
   height: 1rem;
   margin-left: 1rem;
   margin-top: 1rem;
 }
+
 .potion {
   position: absolute;
   width: 28.1rem;
@@ -782,6 +713,7 @@ p {
   background: #525252;
   border-radius: 46px;
 }
+
 .potion_flow {
   position: absolute;
   width: 15.1rem;
@@ -789,142 +721,133 @@ p {
   background: #5ce65c;
   border-radius: 46px;
 }
+
 .registration {
   display: flex;
   width: 100%;
   height: 0.9rem;
   margin-top: 1rem;
 }
+
 #registration {
   position: absolute;
   /* width: 181px; */
   height: 7px;
   margin-left: 5rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 13px;
-
   color: #fafafa;
 }
+
 #percentage {
   position: absolute;
   width: 22px;
   height: 7px;
   margin-left: 30rem;
-
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 13px;
-
   color: #5ce65c;
 }
+
 .registration_1 {
   display: flex;
   width: 100%;
   /* height:0.9rem; */
   margin-top: 0.4rem;
 }
+
 #registration_1 {
   position: absolute;
   width: 181px;
   height: 7px;
   margin-left: 5rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 13px;
-
   color: #fafafa;
 }
+
 #percentage_1 {
   position: absolute;
   width: 22px;
   height: 7px;
   margin-left: 24rem;
-
   width: 20rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 13px;
-
   color: #5ce65c;
 }
+
 .registration_2 {
   display: flex;
   width: 100%;
   /* height:0.9rem; */
   margin-top: 4rem;
-  
 }
+
 #registration_2 {
   position: absolute;
   width: 181px;
   height: 7px;
   margin-left: 5rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 13px;
-
   color: #fafafa;
 }
+
 #percentage_2 {
   position: absolute;
   width: 22px;
   height: 7px;
   margin-left: 26.6rem;
-
   width: 20rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 13px;
-
   color: #fafafa;
 }
+
 .registration_3 {
   display: flex;
   width: 100%;
   /* height:0.9rem; */
   margin-top: 1.5rem;
 }
+
 #registration_3 {
   position: absolute;
   width: 181px;
   height: 7px;
   margin-left: 5rem;
   margin-top: 1rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 400;
   font-size: 1.4rem;
   line-height: 13px;
-
   color: #fafafa;
 }
+
 #percentage_3 {
   position: absolute;
   width: 2px;
   height: 7px;
   margin-left: 16rem;
   margin-top: 1rem;
-
   width: 20rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 400;
   font-size: 1.4rem;
   line-height: 13px;
-
   color: #5ce65c;
 }
 
@@ -952,36 +875,23 @@ p {
   margin-top: 10rem;
   width: 50.5rem;
 }
-h5 {
-  letter-spacing: 0.1rem;
-  font-family: "Konnect";
-  font-style: normal;
-  font-weight: 40rem;
-  font-size: 1.3rem;
-  line-height: 1.6rem;
-}
 
 @media (min-width: 1000px) and (max-width: 1550px) {
-  html {
-    font-size: 49.4%;
-  }
   #button_3 {
     font-size: 10px;
   }
+
   .heading {
     margin-left: 27rem;
   }
 }
 
 @media (min-width: 1650px) and (max-width: 1920px) {
-  html {
-    font-size: 62.5%;
-  }
   #button_3 {
     font-size: 10px;
   }
 }
 
-.inputfontsize{
+.inputfontsize {
   font-size: 1.5rem;
 }

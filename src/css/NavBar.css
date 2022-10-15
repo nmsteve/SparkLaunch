@@ -1,56 +1,48 @@
-.navbar-custom{
-    height: 4%;
-    background-color: black;
-    position: relative;
+.navbar-custom {
+  height: 4%;
+  background-color: black;
+  position: relative;
 }
 
 .navbar_row {
-    margin: 2% 5%;
+  margin: 2% 5%;
 }
 
-.nav_logo{
-   margin-right: 10%;
-    
+.nav_logo {
+  margin-right: 10%;
 }
 
-.nav_menu{
-    display: flex;
-    margin: 5% 5%;
-    font-family: Konnect;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 20px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: white;
-
+.nav_menu {
+  display: flex;
+  margin: 5% 5%;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: white;
 }
 
-.nav-Menu_item{
-    margin: 0% 5%;
-    text-decoration: none;
-    color: white;
-    cursor: pointer;
+.nav-Menu_item {
+  margin: 0% 5%;
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
 }
 
-.buttons{
-    display: flex;
-    margin: 5% 0%;
-   
+.buttons {
+  display: flex;
+  margin: 5% 0%;
 }
 
 .btn_custom {
-    font-family: Konnect;
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 20px;
-    letter-spacing: 0em;
-    text-align: left;
-    padding: 1% 5%;
-    background: linear-gradient(91.08deg, #59A9EF 0.63%, #1D669D 101.42%);
-    box-shadow: 6px 1px 9px 0px #0000009E;
-    border-radius: 7px;
-
-
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: left;
+  padding: 1% 5%;
+  background: linear-gradient(91.08deg, #59A9EF 0.63%, #1D669D 101.42%);
+  box-shadow: 6px 1px 9px 0px #0000009E;
+  border-radius: 7px;
 }
-

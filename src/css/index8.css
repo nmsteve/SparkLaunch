@@ -3,28 +3,26 @@
   margin: 0px;
   padding: 0px;
 }
-html {
-  font-size: 62.5%;
-}
-.mainnet_div{
+
+.mainnet_div {
   position: relative;
   width: 15rem;
-  height:4rem;
+  height: 4rem;
   left: 87.4rem;
   top: 2rem;
   border-radius: 18px;
 }
+
 .mainnet_design {
-position: absolute;
-width: 13.8rem;
-height: 3.8rem;
-
-background: #121111;
-color: white;
-
-border: 1px solid #434242;
-border-radius: 18px;
+  position: absolute;
+  width: 13.8rem;
+  height: 3.8rem;
+  background: #121111;
+  color: white;
+  border: 1px solid #434242;
+  border-radius: 18px;
 }
+
 #blur.active1 {
   filter: blur(1.5px);
 }
@@ -35,37 +33,43 @@ border-radius: 18px;
   /* position: fixed; */
   /* transform: translate(-50% -50%); */
 }
+
 #popup.active1 {
   visibility: visible;
   opacity: 1;
 }
+
 #popup.inactive {
   visibility: hidden;
   opacity: 0;
   position: fixed;
 }
-#popup1{
-    visibility: hidden;
-    opacity: 0;
-    /* position: fixed; */
-}
-#popup1.active {
-    visibility: visible;
-    opacity: 1;
-    /* position: fixed; */
-}
-#blur.inactive1 {
-    filter:none
-  }
 
-#popup1.inactive{
-    visibility: hidden;
-    opacity: 0;
+#popup1 {
+  visibility: hidden;
+  opacity: 0;
+  /* position: fixed; */
 }
+
+#popup1.active {
+  visibility: visible;
+  opacity: 1;
+  /* position: fixed; */
+}
+
+#blur.inactive1 {
+  filter: none
+}
+
+#popup1.inactive {
+  visibility: hidden;
+  opacity: 0;
+}
+
 .main_div {
   position: relative;
   width: 192rem;
-   height: 100.5rem; 
+  height: 100.5rem;
 }
 
 .top_div {
@@ -85,14 +89,6 @@ border-radius: 18px;
   margin-top: 8rem;
   width: 55rem;
 }
-p {
-  margin-left: 5.7rem;
-  font-family: "Konnect";
-  font-style: normal;
-  font-weight: 40rem;
-  font-size: 18px;
-  color: #ffffff;
-}
 
 .top_button_div {
   position: absolute;
@@ -103,24 +99,24 @@ p {
   background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
   border-radius: 12px;
 }
+
 #button_1 {
   position: absolute;
   width: 16.5rem;
   height: 3.356rem;
   left: 1rem;
   top: 0.7rem;
-
   background: linear-gradient(90.19deg, #e7794b 3.19%, #962c02 99.83%);
   box-shadow: 0.6rem 0.1rem 0.9rem rgba(0, 0, 0, 0.62);
   border-radius: 0.7rem;
 }
+
 #button_2 {
   position: absolute;
   width: 16rem;
   height: 3.35rem;
   left: 18.5rem;
   top: 0.7rem;
-
   background: linear-gradient(91.08deg, #59a9ef 0.63%, #1d669d 101.42%);
   box-shadow: 0.6rem 0.1rem 0.9rem rgba(0, 0, 0, 0.62);
   border-radius: 0.7rem;
@@ -133,13 +129,12 @@ p {
   height: 4rem;
   left: 164rem;
   top: 7.1rem;
-
   border-radius: 1.2rem;
   border: 1px solid #5ce65c;
 }
 
 .connect {
- color: #000;
+  color: #000;
 }
 
 .wallet_div {
@@ -152,8 +147,6 @@ p {
   padding-left: 1%;
   padding-top: 1rem;
   font-size: medium;
-  
-
   border-radius: 1.2rem;
   border: 1px solid #5ce65c;
 }
@@ -176,6 +169,7 @@ p {
   margin-left: 0px;
   margin-top: 18.7rem;
 }
+
 .inner_div {
   box-sizing: border-box;
   position: absolute;
@@ -187,77 +181,73 @@ p {
   background: rgba(96, 96, 96, 0.43);
   border-radius: 3.4rem;
 }
+
 .inner_div_top {
   box-sizing: border-box;
-
   position: absolute;
   width: 43.6rem;
   height: 29.2rem;
   margin-left: 16.3rem;
   margin-top: 3.4rem;
-
   background: #1a1e21;
   border-radius: 1.5rem;
   border: 0.2rem solid #5ce65c;
 }
+
 .inner_top {
   position: absolute;
   width: 9.8rem;
   height: 2.1rem;
   margin-left: 16.5rem;
   margin-top: 2.7rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 700;
   font-size: 1.6rem;
   line-height: 2.1rem;
   color: #ffffff;
 }
+
 .inner_top_1 {
   position: absolute;
   width: 37.4rem;
   height: 5.1rem;
   margin-left: 3.2rem;
   margin-top: 5.4rem;
-
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 400;
   font-size: 1rem;
   line-height: 169.3%;
   color: #ffffff;
 }
+
 .inner_mid {
   position: absolute;
   width: 37.4rem;
   height: 3.6rem;
   margin-top: 11.4rem;
   margin-left: 3.2rem;
-
-  font-family: "Konnect";
   font-style: italic;
   font-weight: 400;
   font-size: 1.2rem;
   line-height: 148.8%;
   color: #404345;
 }
+
 .inner_bottom {
   position: absolute;
   width: 37.5rem;
   height: 3.2rem;
   margin-left: 3.2rem;
   margin-top: 15.8rem;
-
-  font-family: "Konnect";
   font-style: italic;
   font-weight: 300;
   font-size: 1.1rem;
   line-height: 148.8%;
   color: #79fb53;
 }
+
 .inner_bottom_button {
   box-sizing: border-box;
-
   position: absolute;
   width: 37.4rem;
   height: 3.8rem;
@@ -268,6 +258,7 @@ p {
   display: flex;
   flex-direction: row;
 }
+
 .ether_img {
   display: flex;
   flex-direction: column;
@@ -279,15 +270,18 @@ p {
   display: flex;
   flex-direction: row;
 }
+
 .ether_img_bottom {
   display: flex;
   flex-direction: row;
   margin-top: -0.3rem;
 }
+
 #button_26 {
   margin-left: 16rem;
   margin-top: 0.8rem;
 }
+
 .spark_image {
   position: absolute;
   left: 6.11%;
@@ -295,6 +289,7 @@ p {
   bottom: 29%;
   height: 84.01px;
 }
+
 .spark_image_1 {
   position: absolute;
   left: 7.04%;
@@ -311,6 +306,7 @@ p {
   background-color: #000;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
+
 .info_div_1 {
   display: flex;
   flex-direction: row;
@@ -319,35 +315,6 @@ p {
   width: 55rem;
   box-sizing: border-box;
   position: absolute;
-}
-p {
-  margin-left: 5.7rem;
-  font-family: "Konnect";
-  font-style: normal;
-  font-weight: 40rem;
-  font-size: 1.5rem;
-  color: #ffffff;
-  letter-spacing: 1px;
-}
-
-.bottom_corner {
-  margin-left: 156.5rem;
-  width: 26rem;
-  height: 12rem;
-  box-sizing: border-box;
-  position: absolute;
-  margin-top: 3rem;
-}
-
-.input {
-  box-sizing: border-box;
-  border: 1px solid #5ce65c;
-  background: #ffffff;
-  border-radius: 1.2rem;
-  margin-left: 0.3rem;
-  width: 24.5rem;
-  height: 3.6rem;
-  padding: 1rem;
 }
 
 #button_4 {
@@ -362,7 +329,6 @@ p {
 
 #bottom_para {
   margin-left: 1rem;
-  font-family: "Konnect";
   font-style: normal;
   font-weight: 40rem;
   font-size: 1.5rem;
@@ -391,6 +357,7 @@ p {
   box-sizing: border-box;
   position: absolute;
 }
+
 .spark_image_2_1 {
   margin-left: 2rem;
 }
@@ -405,31 +372,18 @@ p {
   margin-top: 10rem;
   width: 50.5rem;
 }
-h5 {
-  letter-spacing: 0.1rem;
-  font-family: "Konnect";
-  font-style: normal;
-  font-weight: 40rem;
-  font-size: 1.3rem;
-  line-height: 1.6rem;
-}
 
 @media (min-width: 1000px) and (max-width: 1550px) {
-  html {
-    font-size: 49.4%;
-  }
   #button_3 {
     font-size: 10px;
   }
+
   .heading {
     margin-left: 27rem;
   }
 }
 
 @media (min-width: 1650px) and (max-width: 1920px) {
-  html {
-    font-size: 62.5%;
-  }
   #button_3 {
     font-size: 10px;
   }
