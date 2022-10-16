@@ -329,29 +329,6 @@ import { formatEther } from "ethers/lib/utils";
                   const {id,minBuy, maxBuy} = await postData()
                   console.log('Return Values',id,minBuy, maxBuy)
 
-                  // //fetch saleId from db
-                  // const response = await fetch(`${backendURL}/id${id}`);
-                  // const data = await response.json();
-                  // console.log('B4Deploy:', data[0])
-                  // console.log('SaleID:',data[0].saleDetails.saleID)
-                  
-                  // const saleId = async () => {
-
-                  //   var saleID = await data[0].saleDetails.saleID
-                  //   console.log('SaleID:undifined  ', saleID)
-
-                  //   if(!saleID) {
-
-                  //     const response = await fetch(`${backendURL}/id${id}`);
-                  //     const data = await response.json();
-                  //     saleID = await data[0].saleDetails.saleID
-                  //     console.log('SaleID:difined  ', saleID)
-
-                  //     return(saleID)
-
-                  //   } else {return saleID}
-                  // }
-          
                   //signer needed for transaction 
                   const signer = provider.getSigner();
                   
