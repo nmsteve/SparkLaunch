@@ -2,12 +2,9 @@ import React from 'react'
 import { useState, useRef } from 'react'
 import 'animate.css';
 
-//nav bar section
-import Header from './Header'
-
 //displays on home page
-import Featuredboxes from './Middlediv/Featuredboxes'
-import Salecards from './Middlediv/salecards'
+import Featuredboxes from './Featuredboxes'
+import Salecards from './salecards'
 
 //displays for participate
 import Pools1 from './Middlediv/pools1'
@@ -15,7 +12,6 @@ import Metamaskconnect from './Middlediv/metamaskconnect'
 import Participate from './Middlediv/participate'
 
 //footer section
-import Footer from './Footer';
 import Step1 from './Middlediv/Step1';
 import Step2 from './Middlediv/Step2';
 import Step3 from './Middlediv/Step3';
@@ -28,13 +24,6 @@ const MiddleBottomdiv = () => {
 
   const [activeSection, setActiveSection] = useState(0)
   const [activeTab, setActiveTab] = useState(1)
-
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    event.stopPropagation()
-
-    setActiveTab(activeTab + 1)
-  }
 
   var scrollToSales = () => {
     salecardsRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -116,7 +105,6 @@ const MiddleBottomdiv = () => {
 
   return (
     <div>
-      <Header />
       {activeSection === 0 &&
         <div className="row content">
           <div className='container container-fuild'>
@@ -261,7 +249,6 @@ const MiddleBottomdiv = () => {
           setActiveSection={setActiveSection}
         />
       }
-      <Footer />
     </div>
   )
 }

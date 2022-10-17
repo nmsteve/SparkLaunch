@@ -1,15 +1,21 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter } from 'react-router-dom';
-import App from "./App";
-import reportWebVitals from './reportWebVitals';
+import React from "react"
+import ReactDOM from "react-dom"
+import App from "./App"
+import * as serviceWorker from "./serviceWorker"
+import { BrowserRouter } from "react-router-dom"
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import { Provider } from "react-redux"
 
-root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-);
+import store from "./store"
 
-reportWebVitals();
+
+const app = (
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>
+)
+
+ReactDOM.render(app, document.getElementById("root"))
+serviceWorker.unregister()

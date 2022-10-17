@@ -1,5 +1,5 @@
 import React from 'react'
-import { withdraw, withdrawUnused } from '../../connect/dataProccessing'
+import { withdraw, withdrawUnused } from 'connect/dataProccessing'
 
 
 const pools1_mid_inner_left_div = ({ setActiveSection }) => {

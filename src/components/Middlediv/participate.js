@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { selectedSale } from './salecards';
-import { participateInsale } from '../../connect/dataProccessing';
+import { participateInsale } from 'connect/dataProccessing';
 
 
 const Participate = ({ setActiveSection, toggle1 }) => {
