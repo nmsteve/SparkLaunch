@@ -138,19 +138,19 @@ const Header = props => {
                   HOME
                 </Link>
 
-                <Link
-                  to="#"
+                <a
+                  href="/#pools"
                   className={classnames('nav-link me-3 px-0', {
-                    active: window.location.pathname === '/history'
+                    active: window.location.pathname === '/#pools'
                   })}
                 >
                   POOLS
-                </Link>
+                </a>
 
                 <Link
                   to="#"
                   className={classnames('nav-link me-3 px-0', {
-                    active: window.location.pathname === '/payments'
+                    active: window.location.pathname === '/about'
                   })}
                 >
                   ABOUT
@@ -159,7 +159,7 @@ const Header = props => {
                 <Link
                   to="#"
                   className={classnames('nav-link me-3 px-0', {
-                    active: window.location.pathname === '/payments'
+                    active: window.location.pathname === '/token-locker'
                   })}
                 >
                   TOKEN LOCKER

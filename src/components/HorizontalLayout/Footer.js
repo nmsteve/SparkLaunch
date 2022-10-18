@@ -1,10 +1,9 @@
 import React from "react"
-import { Col, Container, Form, Nav, Navbar, Row } from "react-bootstrap"
+import { Col, Container, Nav, Navbar, Row } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
 import classnames from "classnames"
 
-// Import Ngamia Powered by Logo
 import logoSM from 'assets/images/logos/smlogo.png'
 import logoLG from 'assets/images/logos/lglogo.png'
 import discordLogo from 'assets/images/icons/discord.png'
@@ -96,14 +95,14 @@ const Footer = props => {
                     HOME
                   </Link>
 
-                  <Link
-                    to="#"
+                  <a
+                    href="/#pools"
                     className={classnames('nav-link me-3 px-0', {
                       active: window.location.pathname === '/history'
                     })}
                   >
                     POOLS
-                  </Link>
+                  </a>
 
                   <Link
                     to="#"

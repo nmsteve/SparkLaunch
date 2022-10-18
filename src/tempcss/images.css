@@ -1,0 +1,49 @@
+.loading {
+  height: auto;
+  width: 259px;
+  align-self: center;
+  animation: pulse;
+  /* referring directly to the animation's @keyframe declaration */
+  animation-duration: 2s;
+  /* don't forget to set a duration! */
+  animation-iteration-count: infinite;
+}
+
+.loading-div {
+  margin-left: 35%;
+  margin-top: 15%;
+}
+
+.featured_box {
+  width: 28rem;
+  height: 16rem;
+  background: rgba(129, 128, 128, 0.36);
+  border-radius: 10px;
+  border: 1px solid #5ce65c;
+  position: relative;
+}
+
+.featured_name {
+  position: relative;
+  /*  */
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 52px;
+  font-style: normal;
+  border-radius: 0%;
+}
+
+.featured_mainImg {
+  border-radius: 10px;
+  position: relative;
+}
+
+.featured_logoImg {
+  border-radius: 50px;
+  height: 30px;
+  width: 30px;
+  position: relative;
+  top: -130px;
+  float: right;
+  margin-right: 5px;
+}

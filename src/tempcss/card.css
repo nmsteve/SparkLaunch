@@ -1,0 +1,46 @@
+.cards-row {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 3%;
+  gap: 10%;
+}
+
+.sale-card {
+  position: relative;
+  height: 555px;
+  width: 352px;
+  margin-bottom: 3%;
+  padding: 15px 0px;
+  background: transparent;
+  border: 2px solid #5ce65c;
+  border-radius: 10px;
+}
+
+.card-title-row {
+  height: 15.3rem;
+}
+
+.card-title-name {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 25px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #5CE65C;
+}
+
+.card-title-symbol {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+.card-title-img {
+  height: 78px;
+  width: 78px;
+  border: 1px solid green;
+  border-radius: 45px;
+  margin: 0px 15px;
+}

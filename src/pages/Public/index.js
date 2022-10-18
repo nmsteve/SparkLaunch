@@ -4,10 +4,10 @@ import { Link } from 'react-router-dom'
 
 import { Col, Container, Row } from 'react-bootstrap'
 
+import { fetchSaleInfor } from 'connect/dataProccessing'
+
+import SaleCard from 'components/SaleCard'
 import verticaLogo from 'assets/images/logos/biglogo.png'
-
-import Salecards from 'components/salecards'
-
 import api from 'connect/BaseApi'
 
 
@@ -17,6 +17,8 @@ const Public = () => {
   const tempList = [tempCard, tempCard, tempCard, tempCard, tempCard]
 
   const [featuredSales, setFeaturedSales] = useState([])
+  const [deployedSales, setDeployedSales] = useState([])
+
 
   const fetchFeaturedSale = () => {
     api.get("featured/true", {
@@ -37,8 +39,15 @@ const Public = () => {
       })
   }
 
-  useEffect(() => {
+  useEffect(async () => {
     fetchFeaturedSale()
+
+    const sales = await fetchSaleInfor()
+
+    console.log(sales?.salesData)
+    setTimeout(() => {
+      setDeployedSales(sales?.salesData)
+    }, 10000);
   }, [])
 
 
@@ -97,7 +106,7 @@ const Public = () => {
               }
             </Row>
 
-            <Row id='sales' className='pt-4'>
+            <Row id='sales' className='py-4'>
               <Col lg={8} className="d-flex justify-content-evenly">
                 <button className='btn btn-lg filter-button'>
                   ALL SALES
@@ -127,8 +136,13 @@ const Public = () => {
           </div>
 
           <div className='my-4'>
-            <Row className='justify-content-center'>
-              <Salecards />
+            <Row className='g-5 mb-4' id='pools'>
+              {/* <Salecards /> */}
+              {deployedSales?.map((sale, key) =>
+                <Col key={key} md={4} sm={6}>
+                  <SaleCard sale={sale} />
+                </Col>
+              )}
             </Row>
 
             <div className='text-end mb-3'>

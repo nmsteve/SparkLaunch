@@ -73,7 +73,7 @@ const Pools1_right_top_boxes = () => {
                     </div>
                 </div>
             </div>
-           
+
         </>
     )
 }

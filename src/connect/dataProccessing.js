@@ -1,8 +1,8 @@
 import { ethers } from "ethers"
 
 import { factoryABI, saleABI, adminABI, testABI } from "./abi";
-import { selectedSale } from "components/salecards";
-import { formatDistanceToNow } from "date-fns";
+// import { selectedSale } from "components/salecards";
+import moment from "moment";
 import { formatEther } from "ethers/lib/utils";
 
 import api from 'connect/BaseApi'
@@ -38,15 +38,11 @@ export const fetchSaleInfor = async () => {
     } else {
       const response = await fetch(`${backendURL}/deployed/true`);
       const DBdata = await response.json();
-      console.log('DB Data:', DBdata)
-
-
+      // console.log('DB Data:', DBdata)
 
       await DBdata.map(async sale => {
 
         const saleID = await sale._id
-
-        //console.log('SaleID',saleID)
 
         //get sale address
         const saleAddressObject = await FactoryContract.saleIdToAddress(saleID);
@@ -76,11 +72,6 @@ export const fetchSaleInfor = async () => {
           const isFinished = await saleContract.saleFinished()
           const saleStartTime = await saleContract.saleStartTime()
 
-          //console.log('raised',chainData.totalBNBRaised/10**18)
-          //console.log('hardcap',chainData.hardCap/10**18 )
-          //console.log('price',chainData.tokenPriceInBNB/10**18)
-          //console.log('Logo:', sale.saleLinks.logo)
-
           const percentage = () => {
             const raised = chainData.totalBNBRaised / 10 ** 18
             const hardCap = chainData.hardCap / 10 ** 18
@@ -92,8 +83,8 @@ export const fetchSaleInfor = async () => {
 
           //const end = chainData.saleEnd.toString()*1000
           const timeDiff = () => {
-            const diffEnd = formatDistanceToNow(chainData.saleEnd.toString() * 1000)
-            const diffStart = formatDistanceToNow(saleStartTime.toNumber() * 1000)
+            const diffEnd = moment(chainData.saleEnd.toString() * 1000).fromNow()
+            const diffStart = moment(saleStartTime.toNumber() * 1000).fromNow()
             if (isFinished) {
               return 'Sale Closed'
             } else if (Date.now() / 1000 < saleStartTime.toNumber()) {
@@ -118,14 +109,7 @@ export const fetchSaleInfor = async () => {
 
           }
 
-
-
-          //console.log('status:', status())
-
-
-
           let saleDBChain =
-
           {
             id: sale._id,
             saleToken: {
@@ -174,16 +158,12 @@ export const fetchSaleInfor = async () => {
 
           salesData.push(saleDBChain)
         }
-
-      }
-
-      );
+      })
 
       return { salesNO, salesData }
     }
 
   } catch (e) { console.log("Err: ", e.message) }
-
 }
 
 export const fetchFeaturedsale = async () => {
@@ -481,7 +461,7 @@ export const deploySale = async (values) => {
 
 }
 
-export const participateInsale = async () => {
+export const participateInsale = async (selectedSale) => {
 
   const amount = document.getElementById('amount').value
   const amountInWei = ethers.utils.parseUnits(amount.toString(), 'ether')
@@ -537,7 +517,7 @@ export const participateInsale = async () => {
   }
 }
 
-export const withdraw = async () => {
+export const withdraw = async (selectedSale) => {
   try {
 
 
@@ -571,7 +551,7 @@ export const withdraw = async () => {
   }
 }
 
-export const withdrawUnused = async () => {
+export const withdrawUnused = async (selectedSale) => {
   try {
 
 
@@ -609,7 +589,7 @@ export const withdrawUnused = async () => {
   }
 }
 
-export const finishSale = async () => {
+export const finishSale = async (selectedSale) => {
   try {
 
     //get sale Data
@@ -636,7 +616,7 @@ export const finishSale = async () => {
   }
 }
 
-export const depositTokens = async () => {
+export const depositTokens = async (selectedSale) => {
   try {
 
     //connect if not connected
@@ -687,7 +667,7 @@ export const depositTokens = async () => {
   }
 }
 
-export const withdrawDeposit = async () => {
+export const withdrawDeposit = async (selectedSale) => {
   try {
 
     //connect if not connected
@@ -733,7 +713,7 @@ export const withdrawDeposit = async () => {
   }
 }
 
-export const withdrawEarnings = async () => {
+export const withdrawEarnings = async (selectedSale) => {
 
   var errorMsg = document.getElementById('errormsg')
   try {

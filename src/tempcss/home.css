@@ -1,0 +1,135 @@
+.home_logo {
+  width: 259px;
+  align-self: center;
+  margin-top: 8%;
+}
+
+.launchbuy-row {
+  margin-top: 10%;
+}
+
+.launch-btn {
+  /* text topology */
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 34px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: black !important;
+  /* box */
+  padding: 2% 3%;
+  margin-left: 15%;
+  background: linear-gradient(91.18deg, #5ce65c 3.96%, #249806 101.84%);
+  /* gradient green */
+  border-radius: 5.3rem;
+}
+
+.buy-btn {
+  /* Topology */
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 34px;
+  color: white;
+  /* Box */
+  width: 207px;
+  padding: 3% 3%;
+  background: transparent;
+  border: 2px solid;
+  border-radius: 50px;
+  border-color: #249806;
+}
+
+.filter-row {
+  margin-top: 10%;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 2%;
+  justify-content: center;
+}
+
+.filter-btn {
+  border: 2px solid #5ce65c;
+  background: rgba(129, 128, 128, 0.36);
+  border-radius: 8px;
+  width: 20%;
+  padding-top: 1%;
+  padding-bottom: 1%;
+  color: white;
+}
+
+.filter-search-name {
+  height: 3.5rem;
+  width: 80%;
+  display: flex;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  /* Topology */
+  color: #5BE944;
+  /* box */
+  border-radius: 48px;
+  border: 2px solid #5ce65c;
+  background: transparent;
+}
+
+.search-input {
+  background-color: transparent;
+  border: none;
+  flex-grow: 1;
+
+  color: #5BE944;
+}
+
+.search-input:focus {
+  outline: none;
+}
+
+.ask-btn {
+  position: relative;
+  left: 85%;
+  /* Topology */
+  font-style: normal;
+  font-weight: 700;
+  font-size: 2.4rem;
+  line-height: 3.3rem;
+  color: #000000;
+  /* box */
+  width: 15.1rem;
+  height: 5.6rem;
+  background: hsl(106, 95%, 65%);
+  border-radius: 1.5rem;
+}
+
+.custom-form-check {
+  accent-color: #79fb53;
+  margin-right: 0.5rem;
+}
+
+.custom-form-switch {
+  accent-color: #79fb53;
+}
+
+.custom-form-switch:checked {
+  background-color: #79fb53;
+}
+
+.custom-form-switch:focus {
+  box-shadow: none;
+}
+
+.form-text {
+  font-size: 12px;
+}
+
+.input-dark {
+  background-color: #0007;
+  color: #fefefe;
+  border: none;
+}
+
+.input-dark:focus {
+  background-color: #0007;
+  color: #fefefe;
+  border: none;
+}
