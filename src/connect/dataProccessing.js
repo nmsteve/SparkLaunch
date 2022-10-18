@@ -5,6 +5,9 @@ import { selectedSale } from "components/salecards";
 import { formatDistanceToNow } from "date-fns";
 import { formatEther } from "ethers/lib/utils";
 
+import api from 'connect/BaseApi'
+import { connect } from "react-redux";
+
 //const backendURL = 'http://localhost:3001/sale'
 const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
 
@@ -308,44 +311,120 @@ export const postData = async () => {
 
 }
 
-export const deploySale = async () => {
+export const saveData = async (tittle,params,links,description ) => {
 
   try {
 
-    if (!ethereum) {
+        if (params.maxbuy < params.minbuy) 
+        {
+          alert("maxBuy is less than minBuy")
+        } 
+        
+        else 
+        {
+
+            const input = JSON.stringify(
+              {
+
+                saleToken:
+                {
+                  name: tittle.title,
+                },
+                saleParams:
+                {
+                  softCap: params.softcap,
+                  hardCap: params.hardcap,
+                  // price: price,
+                  startDate:params.startdt,
+                  endDate:params.enddt,
+                  minBuy:params.minbuy,
+                  maxBuy:params.maxbuy,
+                  firstRelease: params.firstFund,
+                  eachRelease: params.fundRelease,
+                  vestingDays: params.firstFund
+                },
+
+                saleLinks: {
+                  logo: links.logo,
+                  fb: links.facebook,
+                  git: links.githube,
+                  insta: links.instagram,
+                  reddit: links.reddit,
+
+                  web: links.website,
+                  twitter: links.twitter,
+                  telegram: links.telegram,
+                  discord: links.discord,
+                  youtube: links.youtube
+                },
+                saleDetails: {
+                  saleOwner: ethereum.selectedAddress,
+                  description: description
+                },
+
+              }
+
+            )
+
+            const requestOptions = {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: input
+            };
+
+            // api.post(requestOptions).then(response => {
+            //   const data = response.data
+            //   let id =data._id
+
+            //   let softCap = data.saleParams.softCap
+            //   let hardCap = data.saleParams.hardCap
+            //   let minBuy = data.saleParams.minBuy
+            //   let maxBuy = data.saleParams.maxBuy
+            //   console.log('Post To DB', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
+            //   return { id, minBuy, maxBuy }
+            // }
+            // )
+
+        const response = await fetch(`${backendURL}`, requestOptions);
+        const data = await response.json();
+        console.log('Data:', data)
+        let id = await data._id
+        let softCap = data.saleParams.softCap
+        let hardCap = data.saleParams.hardCap
+        let minBuy = data.saleParams.minBuy
+        let maxBuy = data.saleParams.maxBuy
+
+        console.log('SaveData:', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
+
+        return{id, minBuy, maxBuy}
+
+    }
+
+    } catch (e) { console.log("Err: ", e.message) }
+
+    //console.log(data)
+}
+
+export const deploySale = async (tittle,params,links,description) => {
+
+  try {
+
+    if (!ethereum) 
+    {
       console.log('Please install MetaMask')
       alert('Please install MetaMask')
 
-    } else {
+    }
+    
+    else
+    
+    {
 
       const connect = await ethereum.request({ method: 'eth_requestAccounts' });
 
       if (connect) {
-        const { id, minBuy, maxBuy } = await postData()
-        console.log('Return Values', id, minBuy, maxBuy)
-
-        // //fetch saleId from db
-        // const response = await fetch(`${backendURL}/id${id}`);
-        // const data = await response.json();
-        // console.log('B4Deploy:', data[0])
-        // console.log('SaleID:',data[0].saleDetails.saleID)
-
-        // const saleId = async () => {
-
-        //   var saleID = await data[0].saleDetails.saleID
-        //   console.log('SaleID:undifined  ', saleID)
-
-        //   if(!saleID) {
-
-        //     const response = await fetch(`${backendURL}/id${id}`);
-        //     const data = await response.json();
-        //     saleID = await data[0].saleDetails.saleID
-        //     console.log('SaleID:difined  ', saleID)
-
-        //     return(saleID)
-
-        //   } else {return saleID}
-        // }
+        const { id, minBuy, maxBuy } = await saveData(tittle,params,links,description)
+        console.log('Deploy', id, minBuy, maxBuy)
 
         //signer needed for transaction 
         const signer = provider.getSigner();
@@ -414,6 +493,7 @@ export const deploySale = async () => {
     }
 
   }
+
   catch (error) { console.log("Error:", error.message) }
 
 }
@@ -727,3 +807,8 @@ export const withdrawEarnings = async () => {
   }
 }
 
+export const getDeploymentFee = async () => {
+     const deploymentFee =  formatEther(await FactoryContract.fee())
+     return deploymentFee
+     console.log('deploymentFee', deploymentFee)
+}

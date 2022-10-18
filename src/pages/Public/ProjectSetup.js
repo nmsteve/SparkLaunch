@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { MetaTags } from 'react-meta-tags'
 
 import { Col, Container, Form, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
+//import methods to handle data
+import { getDeploymentFee, deploySale } from 'connect/dataProccessing'
 
 const ProjectSetup = () => {
 
@@ -16,6 +18,8 @@ const ProjectSetup = () => {
 
   const [step3, setStep3] = useState(null)
   const [description, setDescription] = useState('')
+
+  var [deploymentFee, setDeploymentFee] = useState(0.000)
 
 
   const handleSubmit1 = (event) => {
@@ -75,7 +79,7 @@ const ProjectSetup = () => {
     setActiveTab(activeTab + 1)
   }
 
-  const handleSubmitFinal = (event) => {
+  const handleSubmitFinal =async (event) => {
 
     const form = event.currentTarget
 
@@ -87,6 +91,9 @@ const ProjectSetup = () => {
       get the values from the objects saved in states above
       description has its own state
     */
+
+    await deploySale(step1,step2,step3,form.desc.value)
+
   }
 
   const steps = [
@@ -146,11 +153,20 @@ const ProjectSetup = () => {
     )
   }
 
+  useEffect(async () => {
+    setDeploymentFee(
+      deploymentFee = await  getDeploymentFee()
+    )
+   
+   console.log('From frontend:',deploymentFee)
+  },[])
+  
   return (
+
     <React.Fragment>
       <div className="page-content">
         <MetaTags>
-          <title>Project Setup | Marquee</title>
+          <title>Project Setup | SparkLaunch</title>
         </MetaTags>
 
         <Container fluid>
@@ -189,6 +205,9 @@ const ProjectSetup = () => {
                     placeholder="Ex. This is my private sale..."
                     required
                   />
+                  <Form.Text>
+                    Pool creation fee: {deploymentFee} BNB
+                  </Form.Text>
                 </Form.Group>
 
                 <Form.Group className='mb-2'>
@@ -242,6 +261,7 @@ const ProjectSetup = () => {
                       defaultValue={step2?.softcap}
                       type='number'
                       placeholder="0"
+                      step='.0000001'
                     />
                   </Form.Group>
 
@@ -518,6 +538,8 @@ const ProjectSetup = () => {
       </div>
     </React.Fragment>
   )
+
+
 }
 
 export default ProjectSetup

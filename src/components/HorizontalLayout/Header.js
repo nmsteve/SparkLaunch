@@ -20,8 +20,8 @@ import logoLG from 'assets/images/logos/lglogo.png'
 
 const Header = props => {
 
-  const [socialDrp, setSocialDrp] = useState(false)
 
+  const [isConnected, setIsConnected] = useState(false)
 
   return (
     <React.Fragment>
@@ -117,31 +117,40 @@ const Header = props => {
                 </Link>
               </Nav>
             </Navbar>
+
           </div>
 
           {/* right section */}
           <div className="ms-2 flex-fill d-flex justify-content-end flex-fill">
+            {isConnected ?
+              <div>
 
-            <div className="bg-primary rounded-3 d-flex p-1 me-3 me-lg-5">
-              <button
-                className="btn btn-warning text-white rounded-2 py-0 me-3"
-              >
-                IGNITE DEFI
-              </button>
+              </div>
+              :
+              <div className="d-flex flex-nowrap">
 
-              <button
-                className="btn btn-info text-white rounded-2 py-0 shadow w-lg"
-              >
-                PYRE GAMES
-              </button>
+                <div className="bg-primary rounded-3 d-flex p-1 me-3 me-lg-5">
+                  <button
+                    className="btn btn-warning text-white rounded-2 py-0 me-3"
+                  >
+                    IGNITE DEFI
+                  </button>
 
-            </div>
+                  <button
+                    className="btn btn-info text-white rounded-2 py-0 shadow w-lg"
+                  >
+                    PYRE GAMES
+                  </button>
 
-            <button
-              className="btn btn-sm btn-outline-primary text-white rounded-3 mx-2"
-            >
-              CONNECT WALLET
-            </button>
+                </div>
+
+                <button
+                  className="btn btn-sm btn-outline-primary text-white rounded-3 mx-2"
+                >
+                  CONNECT WALLET
+                </button>
+              </div>
+            }
 
           </div>
 

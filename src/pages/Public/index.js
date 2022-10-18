@@ -46,7 +46,7 @@ const Public = () => {
     <React.Fragment>
       <div className="page-content">
         <MetaTags>
-          <title>Home | Marquee</title>
+          <title>Home | SparkLaunch</title>
         </MetaTags>
 
         <Container fluid>
