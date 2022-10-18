@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { MetaTags } from 'react-meta-tags'
 
 import { Col, Container, Form, Row } from 'react-bootstrap'
@@ -19,7 +19,10 @@ const ProjectSetup = () => {
   const [step3, setStep3] = useState(null)
   const [description, setDescription] = useState('')
 
-  var [deploymentFee, setDeploymentFee] = useState(0.000)
+  const [deploymentFee, setDeploymentFee] = useState(0.000)
+
+
+  const [isLoading, setIsLoading] = useState(false)
 
 
   const handleSubmit1 = (event) => {
@@ -79,22 +82,42 @@ const ProjectSetup = () => {
     setActiveTab(activeTab + 1)
   }
 
-  const handleSubmitFinal =async (event) => {
-
-    const form = event.currentTarget
+  const handleSubmitFinal = async (event) => {
 
     event.preventDefault()
     event.stopPropagation()
 
-    /* 
-      HANDLE API HERE
-      get the values from the objects saved in states above
-      description has its own state
-    */
+    const values = {
+      title: step1?.title,
+      softcap: step2?.softcap,
+      hardcap: step2?.hardcap,
+      minbuy: step2?.minbuy,
+      maxbuy: step2?.maxbuy,
+      startdt: step2?.startdt,
+      enddt: step2?.enddt,
+      firstFund: step2?.firstFund,
+      fundVest: step2?.fundVest,
+      fundRelease: step2?.fundRelease,
+      logo: step3?.logo,
+      website: step3?.website,
+      facebook: step3?.facebook,
+      twitter: step3?.twitter,
+      github: step3?.github,
+      telegram: step3?.telegram,
+      instagram: step3?.instagram,
+      discord: step3?.discord,
+      reddit: step3?.reddit,
+      youtube: step3?.youtube,
+      description: description,
+      isAble: isAble
+    }
 
-    await deploySale(step1,step2,step3,form.desc.value)
+    setIsLoading(true)
+
+    await deploySale(values)
 
   }
+
 
   const steps = [
     {
@@ -154,13 +177,11 @@ const ProjectSetup = () => {
   }
 
   useEffect(async () => {
-    setDeploymentFee(
-      deploymentFee = await  getDeploymentFee()
-    )
-   
-   console.log('From frontend:',deploymentFee)
-  },[])
-  
+    setDeploymentFee(await getDeploymentFee())
+
+
+  }, [])
+
   return (
 
     <React.Fragment>
@@ -271,6 +292,7 @@ const ProjectSetup = () => {
                       defaultValue={step2?.hardcap}
                       type='number'
                       placeholder="0"
+                      step='.0000001'
                       required
                     />
                   </Form.Group>
@@ -281,6 +303,7 @@ const ProjectSetup = () => {
                       defaultValue={step2?.minbuy}
                       type='number'
                       placeholder="0"
+                      step='.0000001'
                       required
                     />
                   </Form.Group>
@@ -291,6 +314,7 @@ const ProjectSetup = () => {
                       defaultValue={step2?.maxbuy}
                       type='number'
                       placeholder="0"
+                      step='.0000001'
                       required
                     />
                   </Form.Group>
@@ -526,8 +550,9 @@ const ProjectSetup = () => {
                   <button
                     className='btn btn-primary px-3 fw-bolder'
                     type='submit'
+                    disabled={isLoading}
                   >
-                    Done
+                    Submit
                   </button>
                 </div>
               </Form>

@@ -6,7 +6,6 @@ import { formatDistanceToNow } from "date-fns";
 import { formatEther } from "ethers/lib/utils";
 
 import api from 'connect/BaseApi'
-import { connect } from "react-redux";
 
 //const backendURL = 'http://localhost:3001/sale'
 const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
@@ -311,119 +310,102 @@ export const postData = async () => {
 
 }
 
-export const saveData = async (tittle,params,links,description ) => {
+export const saveData = async (values) => {
 
   try {
 
-        if (params.maxbuy < params.minbuy) 
+    if (values.maxbuy < values.minbuy) {
+      alert("maxBuy is less than minBuy")
+    }
+
+    else {
+
+      const input = JSON.stringify(
         {
-          alert("maxBuy is less than minBuy")
-        } 
-        
-        else 
-        {
 
-            const input = JSON.stringify(
-              {
+          saleToken:
+          {
+            name: values.title,
+          },
+          saleParams:
+          {
+            softCap: values.softcap,
+            hardCap: values.hardcap,
+            // price: price,
+            startDate: values.startdt,
+            endDate: values.enddt,
+            minBuy: values.minbuy,
+            maxBuy: values.maxbuy,
+            firstRelease: values.firstFund,
+            eachRelease: values.fundRelease,
+            vestingDays: values.firstFund
+          },
 
-                saleToken:
-                {
-                  name: tittle.title,
-                },
-                saleParams:
-                {
-                  softCap: params.softcap,
-                  hardCap: params.hardcap,
-                  // price: price,
-                  startDate:params.startdt,
-                  endDate:params.enddt,
-                  minBuy:params.minbuy,
-                  maxBuy:params.maxbuy,
-                  firstRelease: params.firstFund,
-                  eachRelease: params.fundRelease,
-                  vestingDays: params.firstFund
-                },
+          saleLinks: {
+            logo: values.logo,
+            fb: values.facebook,
+            git: values.githube,
+            insta: values.instagram,
+            reddit: values.reddit,
 
-                saleLinks: {
-                  logo: links.logo,
-                  fb: links.facebook,
-                  git: links.githube,
-                  insta: links.instagram,
-                  reddit: links.reddit,
+            web: values.website,
+            twitter: values.twitter,
+            telegram: values.telegram,
+            discord: values.discord,
+            youtube: values.youtube
+          },
+          saleDetails: {
+            saleOwner: ethereum.selectedAddress,
+            description: values.description
+          },
 
-                  web: links.website,
-                  twitter: links.twitter,
-                  telegram: links.telegram,
-                  discord: links.discord,
-                  youtube: links.youtube
-                },
-                saleDetails: {
-                  saleOwner: ethereum.selectedAddress,
-                  description: description
-                },
+        }
 
-              }
+      )
 
-            )
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: input
+      };
 
-            const requestOptions = {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: input
-            };
 
-            // api.post(requestOptions).then(response => {
-            //   const data = response.data
-            //   let id =data._id
+      const response = await fetch(`${backendURL}`, requestOptions);
+      const data = await response.json();
+      console.log('Data:', data)
+      let id = await data._id
+      let softCap = data.saleParams.softCap
+      let hardCap = data.saleParams.hardCap
+      let minBuy = data.saleParams.minBuy
+      let maxBuy = data.saleParams.maxBuy
 
-            //   let softCap = data.saleParams.softCap
-            //   let hardCap = data.saleParams.hardCap
-            //   let minBuy = data.saleParams.minBuy
-            //   let maxBuy = data.saleParams.maxBuy
-            //   console.log('Post To DB', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
-            //   return { id, minBuy, maxBuy }
-            // }
-            // )
+      console.log('SaveData:', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
 
-        const response = await fetch(`${backendURL}`, requestOptions);
-        const data = await response.json();
-        console.log('Data:', data)
-        let id = await data._id
-        let softCap = data.saleParams.softCap
-        let hardCap = data.saleParams.hardCap
-        let minBuy = data.saleParams.minBuy
-        let maxBuy = data.saleParams.maxBuy
-
-        console.log('SaveData:', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
-
-        return{id, minBuy, maxBuy}
+      return { id, minBuy, maxBuy }
 
     }
 
-    } catch (e) { console.log("Err: ", e.message) }
+  } catch (e) { console.log("Err: ", e.message) }
 
-    //console.log(data)
+  //console.log(data)
 }
 
-export const deploySale = async (tittle,params,links,description) => {
+export const deploySale = async (values) => {
 
   try {
 
-    if (!ethereum) 
-    {
+    if (!ethereum) {
       console.log('Please install MetaMask')
       alert('Please install MetaMask')
 
     }
-    
-    else
-    
-    {
+
+    else {
 
       const connect = await ethereum.request({ method: 'eth_requestAccounts' });
 
       if (connect) {
-        const { id, minBuy, maxBuy } = await saveData(tittle,params,links,description)
+        const { id, minBuy, maxBuy } = await saveData(values)
         console.log('Deploy', id, minBuy, maxBuy)
 
         //signer needed for transaction 
@@ -451,6 +433,8 @@ export const deploySale = async (tittle,params,links,description) => {
             { value: deployFee })
 
           await tx.wait()
+          // console.log('success')
+
 
           let saleAddress = await FactoryContract.saleIdToAddress(id)
           console.log('SaleAddress:', saleAddress)
@@ -476,14 +460,13 @@ export const deploySale = async (tittle,params,links,description) => {
 
             console.log("data aft put", data)
 
-            // console.log('Deployed?:', data.saleDetails.deployed)
-            // console.log('saleOwner:', data.saleDetails.saleAddress)
-
             console.log('Account:', ethereum.selectedAddress)
             console.log("Bal4:", bal)
             console.log('fee:', fee)
             const BalAFT = await provider.getBalance(ethereum.selectedAddress)
             console.log('BalAFT:', formatEther(BalAFT))
+
+            window.location.pathname = '/'
 
           }
 
@@ -808,7 +791,9 @@ export const withdrawEarnings = async () => {
 }
 
 export const getDeploymentFee = async () => {
-     const deploymentFee =  formatEther(await FactoryContract.fee())
-     return deploymentFee
-     console.log('deploymentFee', deploymentFee)
+  const deploymentFee = formatEther(await FactoryContract.fee())
+  console.log('deploymentFee', deploymentFee)
+
+  return deploymentFee
+
 }

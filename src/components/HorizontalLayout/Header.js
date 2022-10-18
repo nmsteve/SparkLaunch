@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import PropTypes from 'prop-types'
 
 import { connect } from "react-redux"
@@ -9,6 +9,7 @@ import classnames from "classnames"
 import { showRightSidebarAction, toggleLeftmenu } from "store/actions"
 
 import {
+  Alert,
   Nav,
   Navbar,
 } from 'react-bootstrap'
@@ -17,11 +18,59 @@ import {
 import logoSM from 'assets/images/logos/smlogo.png'
 import logoLG from 'assets/images/logos/lglogo.png'
 
+//ethers imports
+import { ethers } from "ethers"
+import { formatEther } from "ethers/lib/utils"
 
 const Header = props => {
 
+  const [haveMetamask, sethaveMetamask] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
 
-  const [isConnected, setIsConnected] = useState(false)
+  const { ethereum } = window;
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+  const [accountAddress, setAccountAddress] = useState('');
+  const [accountBalance, setAccountBalance] = useState('');
+
+  const checkMetamaskAvailability = async () => {
+    if (!ethereum) {
+      sethaveMetamask(false);
+      alert('Please install MetaMask')
+    }
+
+    sethaveMetamask(true);
+  };
+
+  useEffect(() => {
+    checkMetamaskAvailability();
+  }, []);
+
+  const connectWallet = async () => {
+    try {
+      if (!ethereum) {
+        sethaveMetamask(false);
+      }
+
+      const accounts = await ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+
+      let balance = formatEther(await provider.getBalance(ethereum.setAccountAddress))
+      console.log('Balance', balance)
+      setAccountAddress(accounts[0]);
+      setAccountBalance(balance);
+      setIsConnected(true);
+      console.log("isConnected", isConnected)
+
+
+    } catch (error) {
+      setIsConnected(false);
+      console.log(error)
+    }
+  }
+
 
   return (
     <React.Fragment>
@@ -124,7 +173,7 @@ const Header = props => {
           <div className="ms-2 flex-fill d-flex justify-content-end flex-fill">
             {isConnected ?
               <div>
-
+                <p>connected</p>
               </div>
               :
               <div className="d-flex flex-nowrap">
@@ -137,6 +186,7 @@ const Header = props => {
 
                 <button
                   className="btn btn-sm btn-outline-primary text-white rounded-3 mx-2"
+                  onClick={connectWallet}
                 >
                   CONNECT WALLET
                 </button>
