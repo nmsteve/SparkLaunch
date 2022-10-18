@@ -129,20 +129,11 @@ const Header = props => {
               :
               <div className="d-flex flex-nowrap">
 
-                <div className="bg-primary rounded-3 d-flex p-1 me-3 me-lg-5">
-                  <button
-                    className="btn btn-warning text-white rounded-2 py-0 me-3"
-                  >
-                    IGNITE DEFI
-                  </button>
-
-                  <button
-                    className="btn btn-info text-white rounded-2 py-0 shadow w-lg"
-                  >
-                    PYRE GAMES
-                  </button>
-
-                </div>
+                <button
+                  className="btn btn-info text-white rounded-2 py-0 shadow w-lg"
+                >
+                  PYRE GAMES
+                </button>
 
                 <button
                   className="btn btn-sm btn-outline-primary text-white rounded-3 mx-2"
