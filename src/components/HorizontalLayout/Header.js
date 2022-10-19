@@ -57,7 +57,8 @@ const Header = props => {
         method: 'eth_requestAccounts',
       });
 
-      let balance = formatEther(await provider.getBalance(ethereum.setAccountAddress))
+      let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
+
       console.log('Balance', balance)
       setAccountAddress(accounts[0]);
       setAccountBalance(balance);
@@ -71,6 +72,49 @@ const Header = props => {
     }
   }
 
+  const options = [
+    { value: '0x61', text: 'Binance Smart Chain' },
+    { value: '0x9f', text: 'Roburna Chain' },
+
+  ];
+
+  const [selected, setSelected] = useState(options[0].value);
+
+  const handleChange = async event => {
+    setSelected(event.target.value);
+
+    const provider = window.ethereum;
+    if (!provider) {
+      alert("Metamask is not installed, please install!");
+    } else {
+      const chainId = await provider.request({ method: 'eth_chainId' });
+      console.log('ChainID', chainId)
+      console.log('Selected', event.target.value)
+      if (chainId === event.target.value) {
+        alert("You are on the correct network")
+      } else {
+
+        try {
+          await provider.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: event.target.value }],
+          });
+          console.log("You have succefully switched to Binance Smart Chain")
+          window.location.reload(false);
+        } catch (switchError) {
+          // This error code indicates that the chain has not been added to MetaMask.
+          if (switchError.code === 4902) {
+            console.log("This network is not available in your metamask, please add it")
+
+          }
+          console.log(switchError.msg)
+        }
+
+      }
+
+    }
+
+  };
 
   return (
     <React.Fragment>
@@ -170,28 +214,44 @@ const Header = props => {
           </div>
 
           {/* right section */}
-          <div className="ms-2 flex-fill d-flex justify-content-end flex-fill">
+          <div className="d-flex flex-fill  ms-2  justify-content-end">
+
+            <button
+              className="btn btn-info text-white rounded-2 py-0 shadow w-lg"
+            >
+              PYRE GAMES
+            </button>
+
+            <select
+              className="form-select w-25 ms-4"
+              aria-label="Change Network"
+              value={selected} onChange={handleChange}
+            >
+              {options.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.text}
+                </option>))}
+            </select>
+
+
             {isConnected ?
-              <div>
-                <p>connected</p>
-              </div>
+              <button
+                className="btn btn-sm btn-outline-primary text-white rounded-3 mx-2"
+              >
+                {accountAddress.slice(0, 2)}...{accountAddress.slice(38, 42)}
+
+              </button>
               :
-              <div className="d-flex flex-nowrap">
-
-                <button
-                  className="btn btn-info text-white rounded-2 py-0 shadow w-lg"
-                >
-                  PYRE GAMES
-                </button>
-
-                <button
-                  className="btn btn-sm btn-outline-primary text-white rounded-3 mx-2"
-                  onClick={connectWallet}
-                >
-                  CONNECT WALLET
-                </button>
-              </div>
+              <button
+                className="btn btn-sm btn-outline-primary text-white rounded-3 mx-2"
+                onClick={connectWallet}
+              >
+                CONNECT WALLET
+              </button>
             }
+
+
+
 
           </div>
 

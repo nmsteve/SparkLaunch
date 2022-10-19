@@ -139,7 +139,7 @@ const Public = () => {
             <Row className='g-5 mb-4' id='pools'>
               {/* <Salecards /> */}
               {deployedSales?.map((sale, key) =>
-                <Col key={key} md={4} sm={6}>
+                <Col key={key} lg={3} md={4} className="" sm={6}>
                   <SaleCard sale={sale} />
                 </Col>
               )}
