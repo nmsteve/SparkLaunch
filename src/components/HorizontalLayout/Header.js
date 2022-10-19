@@ -39,8 +39,13 @@ const Header = props => {
       sethaveMetamask(false);
       alert('Please install MetaMask')
     }
-
     sethaveMetamask(true);
+    let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
+    if (balance) {
+      setIsConnected(true)
+      setAccountBalance(balance)
+      setAccountAddress(ethereum.selectedAddress)
+    }
   };
 
   useEffect(() => {
@@ -60,7 +65,7 @@ const Header = props => {
       let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
 
       console.log('Balance', balance)
-      setAccountAddress(accounts[0]);
+      setAccountAddress(ethereum.selectedAddress);
       setAccountBalance(balance);
       setIsConnected(true);
       console.log("isConnected", isConnected)
