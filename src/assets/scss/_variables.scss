@@ -5,50 +5,49 @@
 
 // Vertical Sidebar - Default Light
 $sidebar-bg: #f9f9f9;
-$sidebar-menu-item-color: #000;
-$sidebar-menu-sub-item-color: #000;
+$sidebar-menu-item-color: #545a6d;
+$sidebar-menu-sub-item-color: #545a6d;
 $sidebar-menu-item-icon-color: #7f8387;
-$sidebar-menu-item-hover-color: #A26A3188;
-$sidebar-menu-item-active-color: #fd7e14;
-$sidebar-width: 200px;
+$sidebar-menu-item-hover-color: #383c40;
+$sidebar-menu-item-active-color: #71EE4F;
+$sidebar-width: 250px;
 $sidebar-collapsed-width: 70px;
 $sidebar-width-sm: 160px;
 $layout-collapsed-min-height: 1760px;
 
-// Vertical Sidebar - Dark  
-$sidebar-dark-bg: #2a3042; //2c313a
+// Vertical Sidebar - Dark
+$sidebar-dark-bg: #111111; //2c313a
 $sidebar-dark-menu-item-color: #a6b0cf;
 $sidebar-dark-menu-sub-item-color: #79829c;
 $sidebar-dark-menu-item-icon-color: #6a7187;
-$sidebar-dark-menu-item-hover-color: #ffffff;
-$sidebar-dark-menu-item-active-color: #ffffff;
+$sidebar-dark-menu-item-hover-color: #f9f9f9;
+$sidebar-dark-menu-item-active-color: #f9f9f9;
 
 // Topbar - Deafult Light
-$header-height: 70px;
-$header-bg: #f9f9f9;
-$header-item-color: #555b6d;
+$header-height: 110px;
+$header-bg: #000000;
+$header-item-color: #fefefe;
 
 // Topbar - Dark
-$header-dark-bg: #2a3042;
+$header-dark-bg: #556ee6;
 $header-dark-item-color: #e9ecef;
 
 // Topbar Search
-$topbar-search-bg: #fff;
+$topbar-search-bg: #2a3042;
 
 // Footer
-$footer-height: 300px;
+$footer-height: 150px;
 $footer-lg-height: 200px;
 $footer-md-height: 210px;
 $footer-sm-height: 300px;
 $footer-xs-height: 320px;
-$footer-bg: $primary;
-$footer-color: #f9f9f9;
+$footer-bg: #000000;
+$footer-color: #a6b0cf;
 
 // Horizontal nav
-$topnav-bg: #f9f9f9;
-
-$menu-item-color: $gray-900;
-$menu-item-active-color: $primary;
+$topnav-bg: #282e3f;
+$menu-item-color: #eee;
+$menu-item-active-color: #71EE4F;
 
 // Right Sidebar
 $rightbar-width: 280px;
@@ -62,20 +61,19 @@ $navbar-brand-box-width: $sidebar-width;
 
 // Boxed layout width
 $boxed-layout-width: 1300px;
-$boxed-body-bg: #ebebf4;
+$boxed-body-bg: #32394f;
 
 // apex charts
-$apex-grid-color: #f8f9fa;
+$apex-grid-color: #32394e;
 
 // table
-$table-head-bg: $gray-100;
+$table-head-bg: rgba($gray-600, .05);
 $table-dark-border-color: tint-color($gray-800, 7.5%);
-
 
 // Color system
 
 // scss-docs-start gray-color-variables
-$white: #fff;
+$white: #f9f9f9;
 $gray-100: #f8f9fa;
 $gray-200: #e9ecef;
 $gray-300: #dee2e6;
@@ -139,9 +137,9 @@ $colors: (
 // scss-docs-start theme-color-variables
 $primary: $green;
 $secondary: $gray-600;
-$success: $green;
-$info: $blue;
-$warning: $orange;
+$success: $blue;
+$info: $cyan;
+$warning: $yellow;
 $danger: $red;
 $light: $gray-100;
 $dark: $gray-900;
@@ -469,9 +467,8 @@ $position-values: (
 //
 // Settings for the `<body>` element.
 
-$body-bg: #faf4f0;
-
-$body-color: $gray-700;
+$body-bg: #000000;
+$body-color: $gray-300;
 $body-text-align: null;
 
 // Links
@@ -643,7 +640,7 @@ $font-family-code: var(--#{$prefix}font-monospace);
 // $font-size-root affects the value of `rem`, which is used for as well font sizes, paddings, and margins
 // $font-size-base affects the font size of the body text
 $font-size-root: null;
-$font-size-base: 0.8125rem; // Assumes the browser default, typically `16px`
+$font-size-base: 0.85rem; // Assumes the browser default, typically `16px`
 $font-size-sm: $font-size-base * .875;
 $font-size-lg: $font-size-base * 1.25;
 
@@ -685,7 +682,7 @@ $headings-font-family: null;
 $headings-font-style: null;
 $headings-font-weight: 500;
 $headings-line-height: 1.2;
-$headings-color: null;
+$headings-color: $gray-300;
 // scss-docs-end headings-variables
 
 // scss-docs-start display-headings
@@ -921,13 +918,13 @@ $input-padding-y-lg: $input-btn-padding-y-lg;
 $input-padding-x-lg: $input-btn-padding-x-lg;
 $input-font-size-lg: $input-btn-font-size-lg;
 
-$input-bg: #fff;
+$input-bg: #111111;
 $input-disabled-color: null;
 $input-disabled-bg: $gray-200;
 $input-disabled-border-color: null;
 
 $input-color: $body-color;
-$input-border-color: $gray-400;
+$input-border-color: null;
 $input-border-width: $input-btn-border-width;
 $input-box-shadow: $box-shadow-inset;
 
@@ -936,10 +933,10 @@ $input-border-radius-sm: $border-radius-sm;
 $input-border-radius-lg: $border-radius-lg;
 
 $input-focus-bg: $input-bg;
-$input-focus-border-color: tint-color($component-active-bg, 50%);
+$input-focus-border-color: null;
 $input-focus-color: $input-color;
 $input-focus-width: $input-btn-focus-width;
-$input-focus-box-shadow: $input-btn-focus-box-shadow;
+$input-focus-box-shadow: null;
 
 $input-placeholder-color: $gray-600;
 $input-plaintext-color: $body-color;
@@ -1157,9 +1154,9 @@ $zindex-toast: 1090;
 $nav-link-padding-y: .5rem;
 $nav-link-padding-x: 1rem;
 $nav-link-font-size: null;
-$nav-link-font-weight: 600;
-$nav-link-color: var(--#{$prefix}link-color);
-$nav-link-hover-color: $orange-700;
+$nav-link-font-weight: null;
+$nav-link-color: null;
+$nav-link-hover-color: null;
 $nav-link-transition: color .15s ease-in-out,
   background-color .15s ease-in-out,
   border-color .15s ease-in-out;
@@ -1204,11 +1201,11 @@ $navbar-toggler-transition: box-shadow .15s ease-in-out;
 // scss-docs-end navbar-variables
 
 // scss-docs-start navbar-theme-variables
-$navbar-dark-color: rgba($white, .55
+$navbar-dark-color: $gray-100;
+$navbar-dark-hover-color: $green-300;
+$navbar-dark-active-color: $primary;
+$navbar-dark-disabled-color: rgba($white, .25
 );
-$navbar-dark-hover-color: rgba($white, .75);
-$navbar-dark-active-color: $white;
-$navbar-dark-disabled-color: rgba($white, .25);
 $navbar-dark-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-dark-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
 $navbar-dark-toggler-border-color: rgba($white, .1);
 
@@ -1504,8 +1501,8 @@ $modal-dialog-margin-y-sm-up: 1.75rem;
 $modal-title-line-height: $line-height-base;
 
 $modal-content-color: null;
-$modal-content-bg: $white;
-$modal-content-border-color: var(--#{$prefix}border-color-translucent);
+$modal-content-bg: $dark;
+$modal-content-border-color: $gray-600;
 $modal-content-border-width: $border-width;
 $modal-content-border-radius: $border-radius-lg;
 $modal-content-inner-border-radius: subtract($modal-content-border-radius, $modal-content-border-width);
@@ -1515,7 +1512,7 @@ $modal-content-box-shadow-sm-up: $box-shadow;
 $modal-backdrop-bg: $black;
 $modal-backdrop-opacity: .5;
 
-$modal-header-border-color: var(--#{$prefix}border-color);
+$modal-header-border-color: $gray-400;
 $modal-header-border-width: $modal-content-border-width;
 $modal-header-padding-y: $modal-inner-padding;
 $modal-header-padding-x: $modal-inner-padding;
@@ -1558,9 +1555,9 @@ $alert-dismissible-padding-r: $alert-padding-x * 3; // 3x covers width of x plus
 // Progress bars
 
 // scss-docs-start progress-variables
-$progress-height: 1rem;
+$progress-height: .625rem;
 $progress-font-size: $font-size-base * .75;
-$progress-bg: $gray-200;
+$progress-bg: $gray-700;
 $progress-border-radius: $border-radius;
 $progress-box-shadow: $box-shadow-inset;
 $progress-bar-color: $white;
@@ -1751,7 +1748,7 @@ $xxs-layout: "only screen and (min-width: 320px) and (max-width: 479px)";
 
 // Theme Color
 
-$theme-color: #79FB53;
+$theme-color: #5CE65C;
 $poppins: "Poppins",
   sans-serif;
 $abrilfatface: "Abril Fatface",

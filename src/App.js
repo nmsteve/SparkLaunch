@@ -15,7 +15,6 @@ import HorizontalLayout from "components/HorizontalLayout/"
 // import NonAuthLayout from "components/NonAuthLayout"
 
 // Import scss
-import "./App.css";
 import "assets/scss/theme.scss"
 
 

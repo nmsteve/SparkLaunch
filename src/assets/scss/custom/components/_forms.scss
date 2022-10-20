@@ -215,13 +215,9 @@ $value in $theme-colors {
 }
 
 .form-control {
-  background-color: #0007;
-  color: #fefefe;
   border: none;
 
   &:focus {
-    background-color: #0007;
-    color: #fefefe;
     border: none;
   }
 }

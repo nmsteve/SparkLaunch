@@ -315,21 +315,20 @@ body[data-layout="horizontal"] {
     padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) $footer-height calc(#{$grid-gutter-width} / 2);
 
     @media (max-width: 1200px) {
-      padding: calc(55px + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) calc(#{$footer-lg-height} * 2) calc(#{$grid-gutter-width} / 2);
+      padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) calc(#{$footer-lg-height} * 2) calc(#{$grid-gutter-width} / 2);
     }
 
     @media (max-width: 992px) {
-      padding: calc(55px + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) calc(#{$footer-md-height} * 2) calc(#{$grid-gutter-width} / 2);
+      padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) calc(#{$footer-md-height} * 2) calc(#{$grid-gutter-width} / 2);
     }
 
     @media (max-width: 768px) {
-      padding: calc(55px + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) calc(#{$footer-sm-height} * 2) calc(#{$grid-gutter-width} / 2);
+      padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) calc(#{$footer-sm-height} * 2) calc(#{$grid-gutter-width} / 2);
     }
 
     @media (max-width: 576px) {
-      padding: calc(55px + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) calc(#{$footer-xs-height} * 2) calc(#{$grid-gutter-width} / 2);
+      padding: calc(#{$header-height} + #{$grid-gutter-width}) calc(#{$grid-gutter-width} / 2) calc(#{$footer-xs-height} * 2) calc(#{$grid-gutter-width} / 2);
     }
-
   }
 }
 

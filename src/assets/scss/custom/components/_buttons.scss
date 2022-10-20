@@ -96,3 +96,12 @@ a {
     }
   }
 }
+
+.btn-outline-primary {
+  color: $primary;
+
+  &:hover {
+    background-color: rgba($primary, 0.25);
+    color: $white;
+  }
+}

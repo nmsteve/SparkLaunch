@@ -165,7 +165,7 @@ const ProjectSetup = () => {
         </div>
       </div>
       :
-      <div className='d-flex flex-nowrap opacity-25'>
+      <div className='d-flex flex-nowrap opacity-50'>
         <div>
           <div className='avatar-xs'>
             <div className='avatar-title rounded bg-black'>{item.step}</div>
@@ -181,9 +181,8 @@ const ProjectSetup = () => {
 
   useEffect(async () => {
     setDeploymentFee(await getDeploymentFee())
-
-
   }, [])
+
 
   return (
 
@@ -273,19 +272,6 @@ const ProjectSetup = () => {
                 <p className='mb-3 fs-5'>
                   Set Sale Params
                 </p>
-                {/*  <Form.Group className='mb-2'>
-                  <Form.Label>Whitelist</Form.Label>
-                  <Form.Check
-                    id="currency"
-                    type='switch'
-                    checked={isAble}
-                    onChange={() => setIsAble(!isAble)}
-                    label='Abble'
-                  />
-                  <Form.Text>
-                    You can enable/disable whitelist anytime
-                  </Form.Text>
-                </Form.Group> */}
 
                 <Row>
                   <Form.Group className='mb-2' as={Col} md={6} controlId='softcap'>
@@ -295,6 +281,7 @@ const ProjectSetup = () => {
                       type='number'
                       placeholder="0"
                       step='.0000001'
+                      min='0'
                     />
                   </Form.Group>
 
@@ -305,6 +292,7 @@ const ProjectSetup = () => {
                       type='number'
                       placeholder="0"
                       step='.0000001'
+                      min='0'
                       required
                     />
                   </Form.Group>
@@ -316,6 +304,7 @@ const ProjectSetup = () => {
                       type='number'
                       placeholder="0"
                       step='.0000001'
+                      min='0'
                       required
                     />
                   </Form.Group>
@@ -327,6 +316,7 @@ const ProjectSetup = () => {
                       type='number'
                       placeholder="0"
                       step='.0000001'
+                      min='0'
                       required
                     />
                   </Form.Group>
@@ -339,7 +329,7 @@ const ProjectSetup = () => {
                     <Form.Label>Start time (UTC) *</Form.Label>
                     <Form.Control
                       defaultValue={step2?.startdt}
-                      type='Date'
+                      type='date'
                       placeholder="0"
                       required
                     />
@@ -364,6 +354,7 @@ const ProjectSetup = () => {
                       type='number'
                       placeholder="0"
                       step='.0000001'
+                      min='0'
                       required
                     />
                   </Form.Group>

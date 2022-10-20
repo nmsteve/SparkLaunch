@@ -1,18 +1,54 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { MetaTags } from 'react-meta-tags'
 
-import { Container } from 'react-bootstrap'
+import { Col, Container, Form, Modal, Row } from 'react-bootstrap'
+import moment from 'moment/moment'
 
-import Pools1_right_topBottom_boxes from 'components/Middlediv/pools1_right_topBottom_boxes'
-import { depositTokens, withdrawDeposit, withdrawEarnings } from 'connect/dataProccessing'
-import { finishSale, withdraw, withdrawUnused } from 'connect/dataProccessing'
+import { depositTokens, finishSale, getSaleById, participateInsale, withdraw, withdrawDeposit, withdrawEarnings, withdrawUnused } from 'connect/dataProccessing'
+
+import smLogo from 'assets/images/logos/smlogo.png'
+import bscLogo from 'assets/images/logos/bsc.png'
+import discordLogo from 'assets/images/icons/discord.png'
 
 
 const SaleDetails = props => {
 
+  const { ethereum } = window;
+
+  const [isLoading, setIsLoading] = useState(true)
+  const [saleData, setSaleData] = useState(null)
+
+  const [showParticipateModal, setShowParticipateModal] = useState(false)
+
+
+  const handleParticipate = (event) => {
+
+    const form = event.currentTarget
+
+    event.preventDefault()
+    event.stopPropagation()
+
+    participateInsale(params.id, form.amount.value)
+  }
+
   const {
     match: { params },
   } = props
+
+  useEffect(async () => {
+    if (params && params.id) {
+      if (!ethereum) {
+        alert('Please install MetaMask')
+      }
+      else {
+        const sale = await getSaleById(params.id, setIsLoading)
+
+        console.log(sale)
+
+        setSaleData(sale)
+      }
+    }
+  }, [])
 
 
   return (
@@ -23,90 +59,247 @@ const SaleDetails = props => {
         </MetaTags>
 
         <Container fluid>
-          <div className="mainnets_dev">
-            <option className='option'>
-              <select></select>
-            </option>
-          </div>
-
-          <div className="inner_div">
-            <div className='closediv' onClick={() => setActiveSection(0)}></div>
-            <div className='innerdiv_left'>
-              <div className='innerdiv_left_top'>
-                <div className='innerdiv_left_topboxes'>
-                  <div className='innerdiv_left_topboxes_left'></div>
-                  <div className='innerdiv_left_topheadings'>Roburna</div>
-                </div>
-                <div className='inner_div_left_topboxes_right'>
-                  <img src="/images/bsc.png" className='binance_img' />
-                </div>
-              </div>
-              <div className='innerdiv_left_paragraph'>Lorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem ipsum dolorLorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem ipsum dolor sit amet, consectecteur adipliscing elit, sed do eiusmod tempor incidudunt Lorem </div>
-              <div className='innerdiv_left_images'>
-                <img src="images/Vector2.png"></img>
-                <img src="images/Vector3.png"></img>
-                <img src="images/Vector4.png"></img>
-                <img src="images/Vector5.png"></img>
-              </div>
-              <div className='innerdiv_poolheadings'>SALE DETAILS</div>
-              <div className="innerdiv_poolheadings_belowdiv">
-                <div className='innerdiv_poolheadings_belowdiv_left'>Soft Cap: 1000 Tokens</div>
-                <div className='innerdiv_poolheadings_belowdiv_right'>Hard Cap: 10000 Tokens</div>
-                <div className='innerdiv_poolheadings_belowdiv_left1'>Min participation: 0.001 BNB</div>
-                <div className='innerdiv_poolheadings_belowdiv_right1'>Max participation: 10 BNB</div>
-                <div className='innerdiv_poolheadings_belowdiv_left2'>Price 0.001 BNB</div>
-                <div className='innerdiv_poolheadings_belowdiv_right2'>Sale End: 10 May</div>
-              </div>
-              <div className='participate_button'>
-                <div
-                  id="button_15" onClick={() => { setActiveSection(4) }}>Participate</div>
-              </div>
-              <div className='withdraw_button'>
-                <div id="button_15" onClick={() => withdraw()}>withdraw</div>
-              </div>
-              <div className='withdrawused_button'>
-                <div id="button_15" onClick={() => { withdrawUnused() }}>withdraw unused</div>
-              </div>
-
+          {isLoading ?
+            <div className='text-center'>
+              <img src={smLogo} className='blinking-item' />
             </div>
+            :
+            <div className='bg-dark bg-soft border border-primary rounded-4 p-3'>
 
-            <div className='innerdiv_right'>
-              <div className='innerdivright_top'>
-                <div className='innerdivright_topboxes'>
-                  <Pools1_right_topBottom_boxes />
-                  <div className='finish_button'>
-                    <div id="button_15" onClick={() => { depositTokens() }}>Deposit Tokens</div>
-                  </div>
-                </div>
+              <Row className='mx-0'>
+                <Col md={6} lg='4' className='bg-dark bg-soft border border-primary rounded-4 p-3'>
 
-                <div className='innerdivright_topboxes'>
-                  <Pools1_right_topBottom_boxes />
-                  <div className='finish_button'>
-                    <div id="button_15" onClick={() => { withdrawDeposit() }}>Withdraw Deposit</div>
+                  <div className='d-flex flex-nowrap align-items-center'>
+
+                    <div>
+                      <div className='avatar-md me-3'>
+                        <div className='avatar-title bg-primary bg-soft border border-primary rounded-circle overflow-hidden'>
+                          <img
+                            src={saleData?.saleLinks?.logo}
+                            style={{
+                              height: '100%',
+                              width: '100%',
+                              objectFit: 'cover',
+                              objectPosition: '10% 20%'
+                            }}
+                            alt={saleData?.saleToken.symbol ? saleData?.saleToken.symbol : 'SPL'}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className='flex-grow-1'>
+                      <h3 className='text-primary mb-0 me-2 fw-bold'>
+                        {saleData?.saleToken?.name}
+                      </h3>
+                      <h5>
+                        {saleData?.saleToken?.symbol}
+                      </h5>
+                    </div>
+
+                    <div>
+                      <div className='avatar-md me-3'>
+                        <div className='avatar-title bg-dark bg-soft rounded-circle overflow-hidden'>
+                          <img
+                            src={bscLogo}
+                            style={{
+                              height: '100%',
+                              width: '100%',
+                              objectFit: 'cover',
+                              objectPosition: '10% 20%'
+                            }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
                   </div>
-                </div>
-                <div className='innerdivright_topboxes'>
-                  <Pools1_right_topBottom_boxes />
-                  <div className='finish_button'>
-                    <div id="button_15" onClick={() => { withdrawEarnings() }}>Withdraw Earning</div>
+
+                  <p className='my-2 text-white font-size-12 line-truncate-2'>
+                    {saleData?.saleDetails.description}
+                  </p>
+
+                  <ul className="list-unstyled d-flex mb-4">
+
+                    <li className="ms-2">
+                      <a href={saleData?.saleLinks.twitter ? saleData?.saleLinks.twitter : '#'}>
+                        <i className="bx bxl-twitter fs-3" />
+                      </a>
+                    </li>
+
+                    <li className="ms-2">
+                      <a href={saleData?.saleLinks.discord ? saleData?.saleLinks.discord : '#'}>
+                        <img src={discordLogo} alt='discord' />
+                      </a>
+                    </li>
+
+                    <li className="ms-2">
+                      <a href={saleData?.saleLinks.telegram ? saleData?.saleLinks.telegram : '#'}>
+                        <i className="bx bxl-telegram fs-3" />
+                      </a>
+                    </li>
+                  </ul>
+
+                  <div className='text-white font-size-11'>
+
+                    <h4 className='text-primary'>SALE DETAILS</h4>
+
+                    <p className='mb-2 fs-5'>
+                      SoftCap:{' '}
+                      <span className='text-primary'>
+                        {saleData?.saleParams.softCap} Tokens
+                      </span>
+                    </p>
+
+                    <p className='mb-2 fs-5'>
+                      HardCap:{' '}
+                      <span className='text-primary'>
+                        {saleData?.saleParams.hardCap} Tokens
+                      </span>
+                    </p>
+
+                    <p className='mb-2 fs-5'>
+                      Min participation:{' '}
+                      <span className='text-primary'>
+                        {saleData?.saleParams.minBuy} BNB
+                      </span>
+                    </p>
+
+                    <p className='mb-2 fs-5'>
+                      Max participation:{' '}
+                      <span className='text-primary'>
+                        {saleData?.saleParams.maxBuy} BNB
+                      </span>
+                    </p>
+
+                    <p className='mb-2 fs-5'>
+                      Price:{' '}
+                      <span className='text-primary'>
+                        {saleData?.saleParams.price} BNB
+                      </span>
+                    </p>
+
+                    <p className='mb-2 fs-5'>
+                      Sale End:{' '}
+                      <span className='text-primary'>
+                        {moment(saleData?.saleParams.endDate).format('llll')}
+                      </span>
+                    </p>
                   </div>
-                </div>
-                <h3 id='errormsg'></h3>
-              </div>
-              <div className='innerdivright_bottom'>
-                <div className='innerdivright_bottomboxes'>
-                  <Pools1_right_topBottom_boxes />
-                </div>
-                <div className='innerdivright_bottomboxes'>
-                  <Pools1_right_topBottom_boxes />
-                </div>
-              </div>
-              <div className='innerdivright_button'>
-                <div id="button_15" onClick={() => { finishSale() }}>Finish sale</div>
-              </div>
+
+                </Col>
+
+                <Col md={5} lg={8}>
+                  <div className='d-flex flex-column align-items-end'>
+
+                    {saleData?.user === 'buyer' &&
+                      <>
+                        <button
+                          className='btn btn-lg btn-gradient-green mb-3 w-25'
+                          onClick={() => setShowParticipateModal(true)}
+                        >
+                          Participate
+                        </button>
+
+
+                        <button
+                          className='btn btn-lg btn-gradient-green mb-3 w-25'
+                          onClick={() => withdraw(params.id)}
+                        >
+                          Withdraw
+                        </button>
+
+                        <button
+                          className='btn btn-lg btn-gradient-green mb-3 w-25'
+                          onClick={() => withdrawUnused(params.id)}
+                        >
+                          Withdraw Unused
+                        </button>
+                      </>
+                    }
+
+                    {saleData?.user === 'seller' &&
+                      <>
+                        <button
+                          className='btn btn-lg btn-gradient-green mb-3 w-25'
+                          onClick={() => depositTokens(params.id)}
+                        >
+                          Deposit Tokens
+                        </button>
+
+                        <button
+                          className='btn btn-lg btn-gradient-green mb-3 w-25'
+                          onClick={() => withdrawDeposit(params.id)}
+                        >
+                          Withdraw Deposit
+                        </button>
+
+                        <button
+                          className='btn btn-lg btn-gradient-green mb-3 w-25'
+                          onClick={() => withdrawEarnings(params.id)}
+                        >
+                          Withdraw Earnings
+                        </button>
+                      </>
+                    }
+
+                    {saleData?.user === 'admin' &&
+                      <button
+                        className='btn btn-lg btn-gradient-green mb-3 w-25'
+                        onClick={() => finishSale(params.id)}
+                      >
+                        Finish Sale
+                      </button>
+                    }
+                  </div>
+                </Col>
+              </Row>
             </div>
+          }
 
-          </div>
+          <Modal
+            backdrop='static'
+            size="sm"
+            show={showParticipateModal}
+            centered
+            onHide={() => setShowParticipateModal(false)}
+          >
+            <div className="modal-content">
+              <Modal.Header>
+                <span className="text-primary fs-4">Advert Share</span>
+                <button
+                  className="btn border-0" data-bs-dismiss="modal"
+                  onClick={() => setShowParticipateModal(false)}
+                >
+                  X
+                </button>
+              </Modal.Header>
+              <Form onSubmit={handleParticipate} className='m-3'>
+                <Form.Group className='mb-3' controlId='amount'>
+                  <Form.Label>Amount </Form.Label>
+                  <Form.Text className='text-white'> (Max: {saleData?.saleParams.maxBuy} BNB)</Form.Text>
+                  <Form.Control
+                    placeholder='0'
+                    type='number'
+                    step='0.00001'
+                    min='0'
+                  />
+                </Form.Group>
+
+                <div className='text-center'>
+                  <button
+                    className='btn btn-primary px-3 fw-bolder w-50'
+                    type='submit'
+                  >
+                    Buy
+                  </button>
+                </div>
+              </Form>
+              <Modal.Body>
+              </Modal.Body>
+            </div>
+          </Modal>
+
         </Container>
       </div>
     </React.Fragment>

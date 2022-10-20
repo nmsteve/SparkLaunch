@@ -19,7 +19,8 @@ export let provider
 if (!ethereum) {
   console.log('Install MetaMask')
   alert("Please install Metamask")
-} else {
+}
+else {
   provider = new ethers.providers.Web3Provider(window.ethereum);
 }
 
@@ -27,7 +28,7 @@ const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provide
 const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
 
 
-export const fetchSalesInfor = async () => {
+export const fetchAllSales = async (setIsLoading) => {
   let salesData = [];
   try {
 
@@ -157,6 +158,8 @@ export const fetchSalesInfor = async () => {
           }
 
           salesData.push(saleDBChain)
+          setIsLoading(false)
+
         }
       })
 
@@ -171,7 +174,7 @@ export const fetchFeaturedsale = async () => {
 
     const response = await fetch(`${backendURL}/featured/true`)
     const data = await response.json()
-    console.log('Featured Data', data)
+    // console.log('Featured Data', data)
     return data
 
   } catch (error) {
@@ -179,20 +182,20 @@ export const fetchFeaturedsale = async () => {
   }
 }
 
-export const fetchSaleInforById = async (id) => {
+export const getSaleById = async (id, setIsLoading) => {
   try {
 
     //fetch data from DB
     const response = await (await fetch(`${backendURL}/${id}`)).json()
     const DBdata = await response[0]
-    console.log('DBdata', DBdata)
-    console.log('Token Name', DBdata.saleToken.name)
+    // console.log('DBdata', DBdata)
+    // console.log('Token Name', DBdata.saleToken.name)
 
     //Fetch data from Blockchain
     const saleAddress = await FactoryContract.saleIdToAddress(id)
     const saleContract = new ethers.Contract(saleAddress, saleABI, provider)
     const chainData = await saleContract.sale()
-    console.log('chainData', chainData)
+    // console.log('chainData', chainData)
 
 
     //Sale Params (13 fields)
@@ -271,8 +274,7 @@ export const fetchSaleInforById = async (id) => {
       }
     }
 
-    let saleDBChain =
-    {
+    let saleDBChain = {
       id: DBdata._id,
       user: await user(),
       saleToken: {
@@ -327,14 +329,18 @@ export const fetchSaleInforById = async (id) => {
       },
     }
 
-    console.log("SaleChainDB:", saleDBChain)
+    setIsLoading(false)
+
+    // console.log("SaleChainDB:", saleDBChain)
     return saleDBChain
 
-
-  } catch (error) {
-    console.log(error)
+  }
+  catch (error) {
+    console.log(error.message)
+    return null
   }
 }
+
 export const saveData = async (values) => {
 
   try {
@@ -395,14 +401,14 @@ export const saveData = async (values) => {
 
       const response = await fetch(`${backendURL}`, requestOptions);
       const data = await response.json();
-      console.log('Data:', data)
+      // console.log('Data:', data)
       let id = await data._id
       let softCap = data.saleParams.softCap
       let hardCap = data.saleParams.hardCap
       let minBuy = data.saleParams.minBuy
       let maxBuy = data.saleParams.maxBuy
 
-      console.log('SaveData:', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
+      // console.log('SaveData:', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
 
       return { id, minBuy, maxBuy }
 
@@ -420,7 +426,6 @@ export const deploySale = async (values) => {
     if (!ethereum) {
       console.log('Please install MetaMask')
       alert('Please install MetaMask')
-
     }
 
     else {
@@ -429,7 +434,7 @@ export const deploySale = async (values) => {
 
       if (connect) {
         const { id, minBuy, maxBuy } = await saveData(values)
-        console.log('deploySale:', id, minBuy, maxBuy)
+        // console.log('deploySale:', id, minBuy, maxBuy)
 
         //signer needed for transaction (use current connected address)
         const signer = provider.getSigner();
@@ -444,7 +449,7 @@ export const deploySale = async (values) => {
 
         if (bal < fee) {
 
-          console.log("insufficient funds")
+          // console.log("insufficient funds")
           alert("insufficient funds")
         }
         else {
@@ -460,7 +465,7 @@ export const deploySale = async (values) => {
 
 
           let saleAddress = await FactoryContract.saleIdToAddress(id)
-          console.log('SaleAddress:', saleAddress)
+          // console.log('SaleAddress:', saleAddress)
 
           if (saleAddress) {
 
@@ -481,32 +486,26 @@ export const deploySale = async (values) => {
             const response = await fetch(`${backendURL}/deploy/${id}`, requestOptions)
             const data = await response.json()
 
-            console.log("data aft put", data)
+            // console.log("data aft put", data)
 
-            console.log('Account:', ethereum.selectedAddress)
-            console.log("Bal4:", bal)
-            console.log('fee:', fee)
+            // console.log('Account:', ethereum.selectedAddress)
+            // console.log("Bal4:", bal)
+            // console.log('fee:', fee)
             const BalAFT = await provider.getBalance(ethereum.selectedAddress)
-            console.log('BalAFT:', formatEther(BalAFT))
+            // console.log('BalAFT:', formatEther(BalAFT))
 
             window.location.pathname = '/'
 
           }
-
         }
-
       }
     }
-
   }
-
   catch (error) { console.log("Error:", error.message) }
-
 }
 
-export const participateInsale = async (selectedSale) => {
+export const participateInsale = async (selectedSale, amount) => {
 
-  const amount = document.getElementById('amount').value
   const amountInWei = ethers.utils.parseUnits(amount.toString(), 'ether')
 
   try {
@@ -532,7 +531,7 @@ export const participateInsale = async (selectedSale) => {
 
       const userTierObject = await saleContract.tier(ethereum.selectedAddress);
       const userTier = userTierObject.toNumber()
-      console.log('userTier', userTier)
+      // console.log('userTier', userTier)
 
 
       if (userTier === 0) {
@@ -543,20 +542,18 @@ export const participateInsale = async (selectedSale) => {
         if (await saleContract.isParticipated(ethereum.selectedAddress)) {
 
           console.log('Already Participated')
-          console.log(amountInWei.toString())
+          // console.log(amountInWei.toString())
         } else {
           //Participate
           const tx = await saleContract.participate(userTier, { value: amountInWei })
           tx.wait()
-          console.log(tx)
+          // console.log(tx)
 
         }
       }
     }
   } catch (error) {
-
     console.log(error.message)
-
   }
 }
 
@@ -624,7 +621,7 @@ export const withdrawUnused = async (selectedSale) => {
     } else {
       const tx = await saleContract.withdrawUserFundsIfSaleCancelled()
       tx.wait()
-      console.log('tx:', tx)
+      // console.log('tx:', tx)
     }
 
   } catch (error) {
@@ -651,7 +648,7 @@ export const finishSale = async (selectedSale) => {
       //finish sale
       const tx = await saleContract.finishSale()
       tx.wait()
-      console.log('tx:', tx)
+      // console.log('tx:', tx)
     }
 
   } catch (error) {
@@ -684,7 +681,7 @@ export const depositTokens = async (selectedSale) => {
 
       //compare address
       const compare = sale.saleOwner.toString().toLowerCase() === ethereum.selectedAddress.toString().toLowerCase()
-      console.log('compare', compare)
+      // console.log('compare', compare)
 
       if (!sale.isCreated) {
         console.log('params not set')
@@ -734,7 +731,7 @@ export const withdrawDeposit = async (selectedSale) => {
 
 
       const compare = sale.saleOwner.toString().toLowerCase() === ethereum.selectedAddress.toString().toLowerCase()
-      console.log('compare', compare)
+      // console.log('compare', compare)
 
       if (!sale.isCreated) {
         console.log('params not set')
@@ -747,7 +744,7 @@ export const withdrawDeposit = async (selectedSale) => {
       } else {
         const tx = await saleContract.withdrawDepositedTokensIfSaleCancelled()
         tx.wait()
-        console.log('tx:', tx)
+        // console.log('tx:', tx)
       }
     }
 
@@ -783,7 +780,7 @@ export const withdrawEarnings = async (selectedSale) => {
 
       //compare address
       const compare = sale.saleOwner.toString().toLowerCase() === ethereum.selectedAddress.toString().toLowerCase()
-      console.log('compare', compare)
+      // console.log('compare', compare)
 
       if (!sale.isCreated) {
         console.log('params not set')
@@ -804,7 +801,7 @@ export const withdrawEarnings = async (selectedSale) => {
       else {
         const tx = await saleContract.withdrawEarningsAndLeftover()
         tx.wait()
-        console.log('tx:', tx)
+        // console.log('tx:', tx)
       }
     }
 

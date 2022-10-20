@@ -9,7 +9,6 @@ import classnames from "classnames"
 import { showRightSidebarAction, toggleLeftmenu } from "store/actions"
 
 import {
-  Alert,
   Nav,
   Navbar,
 } from 'react-bootstrap'
@@ -22,7 +21,6 @@ import logoLG from 'assets/images/logos/lglogo.png'
 import { ethers } from "ethers"
 import { formatEther } from "ethers/lib/utils"
 
-import { fetchSaleInforById } from "connect/dataProccessing"
 
 const Header = props => {
 
@@ -41,18 +39,19 @@ const Header = props => {
       sethaveMetamask(false);
       alert('Please install MetaMask')
     }
+
     sethaveMetamask(true);
     let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
-    if (balance) {
-      setIsConnected(true)
-      setAccountBalance(balance)
-      setAccountAddress(ethereum.selectedAddress)
-    }
+
+    // if (balance) {
+    setIsConnected(true)
+    setAccountBalance(balance)
+    setAccountAddress(ethereum.selectedAddress)
+    // }
   };
 
   useEffect(() => {
     checkMetamaskAvailability();
-    fetchSaleInforById('6339fb7fbaf047397379aa56')
   }, []);
 
   const connectWallet = async () => {
@@ -67,14 +66,12 @@ const Header = props => {
 
       let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
 
-      console.log('Balance', balance)
+      // console.log('Balance', ethereum)
       setAccountAddress(ethereum.selectedAddress);
       setAccountBalance(balance);
       setIsConnected(true);
-      console.log("isConnected", isConnected)
-
-
-    } catch (error) {
+    }
+    catch (error) {
       setIsConnected(false);
       console.log(error)
     }
@@ -83,10 +80,9 @@ const Header = props => {
   const options = [
     { value: '0x61', text: 'Binance Smart Chain' },
     { value: '0x9f', text: 'Roburna Chain' },
-
   ];
 
-  const [selected, setSelected] = useState(options[0].value);
+  const [selected, setSelected] = useState(options[1].value);
 
   const handleChange = async event => {
     setSelected(event.target.value);
@@ -94,13 +90,14 @@ const Header = props => {
     const provider = window.ethereum;
     if (!provider) {
       alert("Metamask is not installed, please install!");
-    } else {
+    }
+    else {
       const chainId = await provider.request({ method: 'eth_chainId' });
-      console.log('ChainID', chainId)
-      console.log('Selected', event.target.value)
+
       if (chainId === event.target.value) {
         alert("You are on the correct network")
-      } else {
+      }
+      else {
 
         try {
           await provider.request({
@@ -113,16 +110,13 @@ const Header = props => {
           // This error code indicates that the chain has not been added to MetaMask.
           if (switchError.code === 4902) {
             console.log("This network is not available in your metamask, please add it")
-
           }
           console.log(switchError.msg)
         }
-
       }
-
     }
-
   };
+
 
   return (
     <React.Fragment>
@@ -225,15 +219,16 @@ const Header = props => {
           <div className="d-flex flex-fill  ms-2  justify-content-end">
 
             <button
-              className="btn btn-info text-white rounded-2 py-0 shadow w-lg"
+              className="btn btn-gradient-blue rounded-2 py-0 w-lg me-3"
             >
               PYRE GAMES
             </button>
 
             <select
-              className="form-select w-25 ms-4"
+              className="form-select w-25 me-3 bg-warning border-0 text-light"
               aria-label="Change Network"
-              value={selected} onChange={handleChange}
+              value={selected}
+              onChange={handleChange}
             >
               {options.map(option => (
                 <option key={option.value} value={option.value}>
@@ -241,26 +236,22 @@ const Header = props => {
                 </option>))}
             </select>
 
-
             {isConnected ?
               <button
-                className="btn btn-sm btn-outline-primary text-white rounded-3 mx-2"
+                className="btn btn-sm btn-outline-primary text-primary rounded-3 me-3 ps-0 py-0"
               >
+                <i className="fas fa-list text-primary border border-primary rounded p-1 me-1 fs-5" />
                 {accountAddress.slice(0, 2)}...{accountAddress.slice(38, 42)}
 
               </button>
               :
               <button
-                className="btn btn-sm btn-outline-primary text-white rounded-3 mx-2"
+                className="btn btn-sm btn-primary text-white rounded-3 me-3 fw-bold"
                 onClick={connectWallet}
               >
                 CONNECT WALLET
               </button>
             }
-
-
-
-
           </div>
 
         </div>

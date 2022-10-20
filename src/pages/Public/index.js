@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom'
 
 import { Col, Container, Row } from 'react-bootstrap'
 
-import { fetchSalesInfor } from 'connect/dataProccessing'
+import { fetchAllSales } from 'connect/dataProccessing'
 
 import SaleCard from 'components/SaleCard'
 import verticaLogo from 'assets/images/logos/biglogo.png'
+import smLogo from 'assets/images/logos/smlogo.png'
 import api from 'connect/BaseApi'
 
 
-const Public = () => {
+const Public = props => {
 
   const tempCard = (<div className='featured-card-animation'></div>)
   const tempList = [tempCard, tempCard, tempCard, tempCard, tempCard]
@@ -19,6 +20,7 @@ const Public = () => {
   const [featuredSales, setFeaturedSales] = useState([])
   const [deployedSales, setDeployedSales] = useState([])
 
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchFeaturedSale = () => {
     api.get("featured/true", {
@@ -42,9 +44,9 @@ const Public = () => {
   useEffect(async () => {
     fetchFeaturedSale()
 
-    const sales = await fetchSalesInfor()
+    const sales = await fetchAllSales(setIsLoading)
 
-    console.log(sales?.salesData)
+    // console.log(sales?.salesData)
     setTimeout(() => {
       setDeployedSales(sales?.salesData)
     }, 10000);
@@ -136,13 +138,19 @@ const Public = () => {
           </div>
 
           <div className='my-4'>
-            <Row className='g-5 mb-4' id='pools'>
+            <Row className='g-4 mb-4' id='pools'>
               {/* <Salecards /> */}
-              {deployedSales?.map((sale, key) =>
-                <Col key={key} lg={3} md={4} className="" sm={6}>
-                  <SaleCard sale={sale} />
-                </Col>
-              )}
+              {isLoading ?
+                <div className='text-center'>
+                  <img src={smLogo} className='blinking-item' height={150} />
+                </div>
+                :
+                deployedSales?.map((sale, key) =>
+                  <Col key={key} lg={3} md={4} className="" sm={6}>
+                    <SaleCard sale={sale} />
+                  </Col>
+                )
+              }
             </Row>
 
             <div className='text-end mb-3'>
