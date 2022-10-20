@@ -32,7 +32,10 @@ const ProjectSetup = () => {
     event.preventDefault()
     event.stopPropagation()
 
-    setStep1({ title: form.title.value })
+    setStep1({
+      title: form.title.value,
+      address: form.address.value
+    })
 
     setActiveTab(activeTab + 1)
   }
@@ -51,9 +54,8 @@ const ProjectSetup = () => {
       maxbuy: form.maxbuy.value,
       startdt: form.startdt.value,
       enddt: form.enddt.value,
-      firstFund: form.firstFund.value,
-      fundVest: form.fundVest.value,
-      fundRelease: form.fundRelease.value,
+      price: form.price.value,
+      saleOwner: form.saleowner.value ? form.saleowner.value : ethereum.selectedAddress,
     })
 
     setActiveTab(activeTab + 1)
@@ -89,14 +91,15 @@ const ProjectSetup = () => {
 
     const values = {
       title: step1?.title,
+      address: step1?.address,
       softcap: step2?.softcap,
       hardcap: step2?.hardcap,
       minbuy: step2?.minbuy,
       maxbuy: step2?.maxbuy,
       startdt: step2?.startdt,
       enddt: step2?.enddt,
-      firstFund: step2?.firstFund,
-      fundVest: step2?.fundVest,
+      price: step2?.price,
+      saleOwner: step2?.saleOwner,
       fundRelease: step2?.fundRelease,
       logo: step3?.logo,
       website: step3?.website,
@@ -123,7 +126,7 @@ const ProjectSetup = () => {
     {
       step: 1,
       title: 'Before you start',
-      desc: 'Input your awesome title and choose the currency'
+      desc: 'Input your awesome title,and choose the currency'
     },
     {
       step: 2,
@@ -231,6 +234,15 @@ const ProjectSetup = () => {
                   </Form.Text>
                 </Form.Group>
 
+                <Form.Group className='mb-3' controlId='address'>
+                  <Form.Label>Address *</Form.Label>
+                  <Form.Control
+                    defaultValue={step1?.title}
+                    placeholder="Ex. 0x...q34f"
+                    required
+                  />
+                </Form.Group>
+
                 <Form.Group className='mb-2'>
                   <Form.Label>Currency</Form.Label>
                   <Form.Check
@@ -255,13 +267,13 @@ const ProjectSetup = () => {
                 </div>
               </Form>
             }
-
+            {/* FORM 2 */}
             {activeTab === 2 &&
               <Form onSubmit={handleSubmit2}>
-                <p className='form-label text-primary'>
-                  Whitelist
+                <p className='mb-3 fs-5'>
+                  Set Sale Params
                 </p>
-                <Form.Group className='mb-2'>
+                {/*  <Form.Group className='mb-2'>
                   <Form.Label>Whitelist</Form.Label>
                   <Form.Check
                     id="currency"
@@ -273,11 +285,11 @@ const ProjectSetup = () => {
                   <Form.Text>
                     You can enable/disable whitelist anytime
                   </Form.Text>
-                </Form.Group>
+                </Form.Group> */}
 
                 <Row>
                   <Form.Group className='mb-2' as={Col} md={6} controlId='softcap'>
-                    <Form.Label>SoftCap(AVAX)</Form.Label>
+                    <Form.Label>SoftCap (any)</Form.Label>
                     <Form.Control
                       defaultValue={step2?.softcap}
                       type='number'
@@ -287,7 +299,7 @@ const ProjectSetup = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-2' as={Col} md={6} controlId='hardcap'>
-                    <Form.Label>Hardcap(AVAX) *</Form.Label>
+                    <Form.Label>Hardcap (any) *</Form.Label>
                     <Form.Control
                       defaultValue={step2?.hardcap}
                       type='number'
@@ -298,7 +310,7 @@ const ProjectSetup = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-2' as={Col} md={6} controlId='minbuy'>
-                    <Form.Label>Minimum Buy(AVAX) *</Form.Label>
+                    <Form.Label>Minimum Buy(BNB) *</Form.Label>
                     <Form.Control
                       defaultValue={step2?.minbuy}
                       type='number'
@@ -309,7 +321,7 @@ const ProjectSetup = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-2' as={Col} md={6} controlId='maxbuy'>
-                    <Form.Label>Maximum Buy(AVAX) *</Form.Label>
+                    <Form.Label>Maximum Buy(BNB) *</Form.Label>
                     <Form.Control
                       defaultValue={step2?.maxbuy}
                       type='number'
@@ -327,7 +339,7 @@ const ProjectSetup = () => {
                     <Form.Label>Start time (UTC) *</Form.Label>
                     <Form.Control
                       defaultValue={step2?.startdt}
-                      type='date'
+                      type='Date'
                       placeholder="0"
                       required
                     />
@@ -343,37 +355,30 @@ const ProjectSetup = () => {
                     />
                   </Form.Group>
 
-                  <Form.Group className='mb-2' as={Col} md={6} controlId='firstFund'>
+                  <Form.Group className='mb-2' as={Col} md={6} controlId='price'>
                     <Form.Label>
-                      First Fund Release for Projects (%) *
+                      Price (BNB) *
                     </Form.Label>
                     <Form.Control
-                      defaultValue={step2?.firstFund}
-                      placeholder="Ex. 40%"
+                      defaultValue={step2?.price}
+                      type='number'
+                      placeholder="0"
+                      step='.0000001'
                       required
                     />
                   </Form.Group>
 
-                  <Form.Group className='mb-2' as={Col} md={6} controlId='fundVest'>
+                  <Form.Group className='mb-2' as={Col} md={6} controlId='saleowner'>
                     <Form.Label>
-                      Fund Vesting Period Each Cycle (days) *
+                      Sale Owner
                     </Form.Label>
                     <Form.Control
-                      defaultValue={step2?.fundVest}
-                      placeholder="Enter (days). Ex. 3%"
-                      required
+                      defaultValue={step2?.saleOwner}
+                      placeholder="0x...e4r7"
                     />
-                  </Form.Group>
-
-                  <Form.Group className='mb-2' as={Col} md={6} controlId='fundRelease'>
-                    <Form.Label>
-                      Fund Release Each Cycle (%) *
-                    </Form.Label>
-                    <Form.Control
-                      defaultValue={step2?.fundRelease}
-                      placeholder="Ex. 20%"
-                      required
-                    />
+                    <p className='form-text text-primary'>
+                      Leave blank if you are the sale owner
+                    </p>
                   </Form.Group>
 
                 </Row>

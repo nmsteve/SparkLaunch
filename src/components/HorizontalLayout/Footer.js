@@ -56,19 +56,20 @@ const Footer = props => {
             <Col lg={2} className="d-flex align-items-end mb-lg-2">
               <ul className="list-unstyled d-flex mb-2">
                 <li className="ms-2">
-                  <a href="#">
+                  <a href="https://twitter.com/sparklaunch_?t=YBXULrtHlT_TygrFTIzxYA&s=09"
+                    target="_blank">
                     <i className="bx bxl-twitter fs-3" />
                   </a>
                 </li>
 
                 <li className="ms-2">
-                  <a href="#">
+                  <a href="https://discord.gg/2tMRHc3t" target="_blank">
                     <img src={discordLogo} alt='discord' />
                   </a>
                 </li>
 
                 <li className="ms-2">
-                  <a href="#">
+                  <a href="https://t.me/sparklaunch" target="_blank">
                     <i className="bx bxl-telegram fs-3" />
                   </a>
                 </li>

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { Col, Container, Row } from 'react-bootstrap'
 
-import { fetchSaleInfor } from 'connect/dataProccessing'
+import { fetchSalesInfor } from 'connect/dataProccessing'
 
 import SaleCard from 'components/SaleCard'
 import verticaLogo from 'assets/images/logos/biglogo.png'
@@ -42,7 +42,7 @@ const Public = () => {
   useEffect(async () => {
     fetchFeaturedSale()
 
-    const sales = await fetchSaleInfor()
+    const sales = await fetchSalesInfor()
 
     console.log(sales?.salesData)
     setTimeout(() => {

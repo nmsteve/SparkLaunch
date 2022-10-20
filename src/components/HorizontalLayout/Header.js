@@ -22,6 +22,8 @@ import logoLG from 'assets/images/logos/lglogo.png'
 import { ethers } from "ethers"
 import { formatEther } from "ethers/lib/utils"
 
+import { fetchSaleInforById } from "connect/dataProccessing"
+
 const Header = props => {
 
   const [haveMetamask, sethaveMetamask] = useState(false);
@@ -50,6 +52,7 @@ const Header = props => {
 
   useEffect(() => {
     checkMetamaskAvailability();
+    fetchSaleInforById('6339fb7fbaf047397379aa56')
   }, []);
 
   const connectWallet = async () => {

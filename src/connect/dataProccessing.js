@@ -27,7 +27,7 @@ const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provide
 const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
 
 
-export const fetchSaleInfor = async () => {
+export const fetchSalesInfor = async () => {
   let salesData = [];
   try {
 
@@ -179,117 +179,162 @@ export const fetchFeaturedsale = async () => {
   }
 }
 
-export const postData = async () => {
+export const fetchSaleInforById = async (id) => {
+  try {
+
+    //fetch data from DB
+    const response = await (await fetch(`${backendURL}/${id}`)).json()
+    const DBdata = await response[0]
+    console.log('DBdata', DBdata)
+    console.log('Token Name', DBdata.saleToken.name)
+
+    //Fetch data from Blockchain
+    const saleAddress = await FactoryContract.saleIdToAddress(id)
+    const saleContract = new ethers.Contract(saleAddress, saleABI, provider)
+    const chainData = await saleContract.sale()
+    console.log('chainData', chainData)
 
 
+    //Sale Params (13 fields)
+    const saleStartTime = new Date(await saleContract.saleStartTime().toString() * 1000)
+    const saleEndTime = new Date(chainData.saleEnd.toString() * 1000)
+    const softCap = chainData.softCap.toString() / 10 ** 18
+    const hardCap = chainData.hardCap.toString() / 10 ** 18
+    const minBuy = saleContract.minParticipation() / 10 ** 18
+    const maxBuy = saleContract.maxParticipation() / 10 ** 18
+    const tokenAddress = chainData.token.toString()
+    const ownerAddress = chainData.saleOwner.toString()
+    const tokenPrice = chainData.tokenPriceInBNB / 10 ** 18
+    const tokenSold = chainData.totalTokensSold / 10 ** 18
+    const BNBRaised = chainData.totalBNBRaised / 10 ** 18
+    const publicRoundStart = await saleContract.publicRoundStartDelta().toString() * 1000
+    const noOfHolders = (await saleContract.numberOfParticipants()).toNumber()
 
-  const name = document.getElementById("name").value
-  const symbol = document.getElementById("symbol").value
-  const address = document.getElementById("address").value
-
-  const softCap = document.getElementById("softCap").value
-  const hardCap = document.getElementById("hardCap").value
-  const price = document.getElementById("price").value
-  const startDate = document.getElementById("startDate").value
-  const endDate = document.getElementById("endDate").value
-  const minBuy = document.getElementById("minBuy").value
-  const maxBuy = document.getElementById("maxBuy").value
-  const firstRelease = document.getElementById("firstRelease").value
-  const vestingDays = document.getElementById("vestingDays").value
-  const eachRelease = document.getElementById("eachRelease").value
-
-
-  const logo = document.getElementById("logo").value
-  const fb = document.getElementById("fb").value
-  const git = document.getElementById("git").value
-  const insta = document.getElementById("insta").value
-  const reddit = document.getElementById("reddit").value
-
-  const web = document.getElementById("web").value
-  const twitter = document.getElementById("twitter").value
-  const telegram = document.getElementById("telegram").value
-  const discord = document.getElementById("discord").value
-  const youtube = document.getElementById("youtube").value
-  const description = document.getElementById("description").value
+    //sale State (true or false, 7 fields)
+    const isFinished = await saleContract.saleFinished()
+    const isSaleSuccessful = await saleContract.isSaleSuccessful()
+    const issaleCancelledTokensWithdrawn = await saleContract.saleCancelledTokensWithdrawn()
+    const isCreated = chainData.isCreated
+    const isEarningsWithdrawn = chainData.earningsWithdrawn
+    const isLeftoverWithdrawn = chainData.leftoverWithdrawn
+    const isTokensDeposited = chainData.tokensDeposited
 
 
-  if (maxBuy < minBuy) {
-    alert("maxBuy is less than minBuy")
-  } else {
+    const noOfParticipants = await saleContract.numberOfParticipants()
+    const holders = noOfParticipants.toNumber()
 
-    const input = JSON.stringify(
-      {
+    //Derived fileds 
 
-        saleToken:
-        {
-          name: name,
-          symbol: symbol,
-          address: address
-        },
-        saleParams:
-        {
-          softCap: softCap,
-          hardCap: hardCap,
-          price: price,
-          startDate: startDate,
-          endDate: endDate,
-          minBuy: minBuy,
-          maxBuy: maxBuy,
-          firstRelease: firstRelease,
-          eachRelease: eachRelease,
-          vestingDays: vestingDays
-        },
-        saleLinks: {
-          logo: logo,
-          fb: fb,
-          git: git,
-          insta: insta,
-          reddit: reddit,
+    const percentage = () => {
+      const raised = chainData.totalBNBRaised / 10 ** 18
+      const hardCap = chainData.hardCap / 10 ** 18
+      const price = chainData.tokenPriceInBNB / 10 ** 18
 
-          web: web,
-          twitter: twitter,
-          telegram: telegram,
-          discord: discord,
-          youtube: youtube
-        },
-        saleDetails: {
-          saleOwner: ethereum.selectedAddress,
-          description: description
-        },
+      const value = raised / (hardCap * price) * 100
+      if (value > 0) { return value } else { return 0 }
+    }
 
+    const timeDiff = () => {
+      const diffEnd = moment(saleEndTime).fromNow()
+      const diffStart = moment(saleStartTime).fromNow()
+      if (isFinished) {
+        return 'Sale Closed'
+      } else if (Date.now() < saleStartTime) {
+        return 'Sale starts in ' + diffStart
+      } else if (Date.now() < saleEndTime) {
+        return 'Sale ends in ' + diffEnd
+      } else {
+        return 'Sale ended in ' + diffEnd
       }
+    }
 
-    )
+    const status = () => {
+      if (isFinished) {
+        return 'CLOSED'
+      } else if (Date.now() < saleStartTime) {
+        return 'UPCOMMING'
+      } else if (Date.now() < saleEndTime) {
+        return 'LIVE'
+      } else if (saleEndTime === 0) {
+        return 'NOT-SET'
+      } else return 'ENDED'
 
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: input
-    };
+    }
 
-    try {
+    const user = async () => {
+      if (await AdminContract.isAdmin(ethereum.selectedAddress)) {
+        return 'admin'
+      } else if (ownerAddress.toLowerCase() === ethereum.selectedAddress.toLowerCase()) {
+        return 'seller'
+      } else {
+        return 'buyer'
+      }
+    }
 
-      const response = await fetch(`${backendURL}`, requestOptions);
-      const data = await response.json();
-      console.log('Data:', data)
-      let id = await data._id
-      let softCap = data.saleParams.softCap
-      let hardCap = data.saleParams.hardCap
-      let minBuy = data.saleParams.minBuy
-      let maxBuy = data.saleParams.maxBuy
+    let saleDBChain =
+    {
+      id: DBdata._id,
+      user: await user(),
+      saleToken: {
+        name: DBdata.saleToken.name,
+        symbol: DBdata.saleToken.symbol,
+        address: tokenAddress,
+      },
+      saleParams: {
+        startDate: saleStartTime,
+        endDate: saleEndTime,
+        softCap: softCap,
+        hardCap: hardCap,
+        minBuy: minBuy,
+        maxBuy: maxBuy,
+        saleAddress: saleAddress,
+        saleOwner: ownerAddress,
+        raised: BNBRaised,
+        price: tokenPrice,
+        sold: tokenSold,
+        publicStart: publicRoundStart,
+        holders: noOfHolders
+      },
+      saleLinks: {
+        logo: DBdata.saleLinks.logo,
+        fb: DBdata.saleLinks.fb,
+        git: DBdata.saleLinks.git,
+        insta: DBdata.saleLinks.insta,
+        reddit: DBdata.saleLinks.reddit,
 
-      console.log('Post To DB', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
+        web: DBdata.saleLinks.web,
+        twitter: DBdata.saleLinks.twitter,
+        telegram: DBdata.saleLinks.telegram,
+        discord: DBdata.saleLinks.discord,
+        youtube: DBdata.saleLinks.youtube
+      },
+      saleState: {
+        isFinished: isFinished,
+        isSuccessful: isSaleSuccessful,
+        isCancelled: issaleCancelledTokensWithdrawn,
+        isCreated: isCreated,
+        isEarningsWithdrawn: isEarningsWithdrawn,
+        isLeftoverWithdrawn: isLeftoverWithdrawn,
+        isTokensDeposited: isTokensDeposited
+      },
+      saleDetails: {
+        saleID: DBdata.saleDetails.saleID,
+        description: DBdata.saleDetails.description,
+        listingDate: DBdata.saleDetails.listingDate,
+        percentage: percentage(),
+        diff: timeDiff(),
+        status: status()
+      },
+    }
 
-      return { id, minBuy, maxBuy }
+    console.log("SaleChainDB:", saleDBChain)
+    return saleDBChain
 
-    } catch (e) { console.log("Err: ", e.message) }
 
-    //console.log(data)
+  } catch (error) {
+    console.log(error)
   }
-
-
 }
-
 export const saveData = async (values) => {
 
   try {
@@ -306,19 +351,17 @@ export const saveData = async (values) => {
           saleToken:
           {
             name: values.title,
+            address: values.address
           },
           saleParams:
           {
             softCap: values.softcap,
             hardCap: values.hardcap,
-            // price: price,
+            price: values.price,
             startDate: values.startdt,
             endDate: values.enddt,
             minBuy: values.minbuy,
             maxBuy: values.maxbuy,
-            firstRelease: values.firstFund,
-            eachRelease: values.fundRelease,
-            vestingDays: values.firstFund
           },
 
           saleLinks: {
@@ -335,7 +378,7 @@ export const saveData = async (values) => {
             youtube: values.youtube
           },
           saleDetails: {
-            saleOwner: ethereum.selectedAddress,
+            saleOwner: values.saleOwner ? values.saleOwner : ethereum.selectedAddress,
             description: values.description
           },
 
@@ -386,9 +429,9 @@ export const deploySale = async (values) => {
 
       if (connect) {
         const { id, minBuy, maxBuy } = await saveData(values)
-        console.log('Deploy', id, minBuy, maxBuy)
+        console.log('deploySale:', id, minBuy, maxBuy)
 
-        //signer needed for transaction 
+        //signer needed for transaction (use current connected address)
         const signer = provider.getSigner();
 
         const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, signer);
