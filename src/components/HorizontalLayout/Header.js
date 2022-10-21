@@ -22,6 +22,7 @@ import { ethers } from "ethers"
 import { formatEther } from "ethers/lib/utils"
 
 
+
 const Header = props => {
 
   const [haveMetamask, sethaveMetamask] = useState(false);
@@ -225,7 +226,7 @@ const Header = props => {
             </button>
 
             <select
-              className="form-select w-25 me-3 bg-warning border-0 text-light"
+              className="form-select w-25 me-3 bg-warning border-0"
               aria-label="Change Network"
               value={selected}
               onChange={handleChange}
@@ -240,7 +241,7 @@ const Header = props => {
               <button
                 className="btn btn-sm btn-outline-primary text-primary rounded-3 me-3 ps-0 py-0"
               >
-                <i className="fas fa-list text-primary border border-primary rounded p-1 me-1 fs-5" />
+                <i className="fa-solid fa-wallet text-primary border border-primary rounded p-1 me-1 fs-5"></i>
                 {accountAddress.slice(0, 2)}...{accountAddress.slice(38, 42)}
 
               </button>
