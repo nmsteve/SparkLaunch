@@ -34,7 +34,9 @@ const ProjectSetup = () => {
 
     setStep1({
       title: form.title.value,
-      address: form.address.value
+      symbol: form.symbol.value,
+      address: form.address.value,
+
     })
 
     setActiveTab(activeTab + 1)
@@ -56,6 +58,14 @@ const ProjectSetup = () => {
       enddt: form.enddt.value,
       price: form.price.value,
       saleOwner: form.saleowner.value ? form.saleowner.value : ethereum.selectedAddress,
+      round1: form.round1.value,
+      round2: form.round2.value,
+      round3: form.round3.value,
+      round4: form.round4.value,
+      round5: form.round5.value,
+      delta: form.delta.value,
+      csvlink: form.csvlink.value
+
     })
 
     setActiveTab(activeTab + 1)
@@ -91,7 +101,9 @@ const ProjectSetup = () => {
 
     const values = {
       title: step1?.title,
+      symbol: step1?.symbol,
       address: step1?.address,
+
       softcap: step2?.softcap,
       hardcap: step2?.hardcap,
       minbuy: step2?.minbuy,
@@ -100,7 +112,14 @@ const ProjectSetup = () => {
       enddt: step2?.enddt,
       price: step2?.price,
       saleOwner: step2?.saleOwner,
-      fundRelease: step2?.fundRelease,
+      round1: step2?.round1,
+      round2: step2?.round2,
+      round3: step2?.round3,
+      round4: step2?.round4,
+      round5: step2?.round5,
+      publicroundDelta: step2?.delta,
+      whilelist: step2?.csvlink,
+
       logo: step3?.logo,
       website: step3?.website,
       facebook: step3?.facebook,
@@ -112,7 +131,6 @@ const ProjectSetup = () => {
       reddit: step3?.reddit,
       youtube: step3?.youtube,
       description: description,
-      isAble: isAble
     }
 
     setIsLoading(true)
@@ -228,15 +246,23 @@ const ProjectSetup = () => {
                     placeholder="Ex. This is my private sale..."
                     required
                   />
-                  <Form.Text>
+                  <Form.Text className='text-primary'>
                     Pool creation fee: {deploymentFee} BNB
                   </Form.Text>
+                </Form.Group>
+
+                <Form.Group className='mb-3' controlId='symbol'>
+                  <Form.Label>Symbol</Form.Label>
+                  <Form.Control
+                    defaultValue={step1?.symbol}
+                    placeholder="Ex. ZBT"
+                  />
                 </Form.Group>
 
                 <Form.Group className='mb-3' controlId='address'>
                   <Form.Label>Address *</Form.Label>
                   <Form.Control
-                    defaultValue={step1?.title}
+                    defaultValue={step1?.address}
                     placeholder="Ex. 0x...q34f"
                     required
                   />
@@ -251,7 +277,7 @@ const ProjectSetup = () => {
                     label='BNB'
                     required
                   />
-                  <Form.Text>
+                  <Form.Text className='text-primary'>
                     Users will pay with BNB for your token
                   </Form.Text>
                 </Form.Group>
@@ -264,6 +290,7 @@ const ProjectSetup = () => {
                     Next {'>>'}
                   </button>
                 </div>
+
               </Form>
             }
             {/* FORM 2 */}
@@ -321,7 +348,7 @@ const ProjectSetup = () => {
                     />
                   </Form.Group>
 
-                  <p className='form-text text-primary mb-1'>
+                  <p className='form-text text-primary mb-2'>
                     Select time & end time (UTC) *
                   </p>
 
@@ -373,6 +400,106 @@ const ProjectSetup = () => {
                   </Form.Group>
 
                 </Row>
+                <p className='mb-3 fs-5'>
+                  Set Sale Rounds
+                </p>
+                <Row>
+                  <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='round1'>
+                    <Form.Label>Rounds 1 (Hrs)</Form.Label>
+                    <Form.Control
+                      defaultValue={step2?.round1}
+                      type='number'
+                      placeholder="0.5"
+                      step='.1'
+                    />
+                  </Form.Group>
+
+                  <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='round2'>
+                    <Form.Label>Round 2 (Hrs) *</Form.Label>
+                    <Form.Control
+                      defaultValue={step2?.round2}
+                      type='number'
+                      placeholder="0.5"
+                      step='.1'
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='round3'>
+                    <Form.Label>Round 3 (Hrs) *</Form.Label>
+                    <Form.Control
+                      defaultValue={step2?.round3}
+                      type='number'
+                      placeholder="0.5"
+                      step='.1'
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='round4'>
+                    <Form.Label>Rounds 4 (Hrs)</Form.Label>
+                    <Form.Control
+                      defaultValue={step2?.round4}
+                      type='number'
+                      placeholder="0.5"
+                      step='.1'
+                    />
+                  </Form.Group>
+
+                  <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='round5'>
+                    <Form.Label>Round 5 (Hrs) *</Form.Label>
+                    <Form.Control
+                      defaultValue={step2?.round5}
+                      type='number'
+                      placeholder="0.5"
+                      step='.1'
+                      required
+                    />
+                  </Form.Group>
+
+                  <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='delta'>
+                    <Form.Label>Public Round Delta (Hrs) *</Form.Label>
+                    <Form.Control
+                      defaultValue={step2?.delta}
+                      type='number'
+                      placeholder="0.5"
+                      step='.1'
+                      required
+                    />
+                    <Form.Text className='text-primary mt-1'>
+                      Time period before public sale being
+                    </Form.Text>
+
+
+                  </Form.Group>
+                </Row>
+                <p className='form-text mb-3 fs-5'>
+                  Set Sale Whitelist
+                </p>
+                <Row>
+                  <Form.Group className='' as={Col} md={6} controlId='csvlink'>
+                    <Form.Label>CSV File Link </Form.Label>
+                    <Form.Control
+                      defaultValue={step2?.csvlink}
+                      placeholder="Ex. https://bit.ly/3yW3ieR"
+                    />
+
+                  </Form.Group>
+                  <Form.Group className='mt-4 fs-5' as={Col} md={6}>
+                    <Form.Text>
+
+                      <a
+                        href='https://bit.ly/3yW3ieR'
+                        target='_blank'
+                        className='text-'>
+
+                        see example.
+                      </a>
+
+
+                    </Form.Text>
+                  </Form.Group>
+                </Row>
 
                 <div className='d-flex justify-content-between mt-5'>
                   <button
@@ -391,7 +518,7 @@ const ProjectSetup = () => {
                 </div>
               </Form>
             }
-
+            {/* FORM 3 */}
             {activeTab === 3 &&
               <Form onSubmit={handleSubmit3}>
 
@@ -517,7 +644,7 @@ const ProjectSetup = () => {
                 </div>
               </Form>
             }
-
+            {/* FoRM 4 */}
             {activeTab === 4 &&
               <Form onSubmit={handleSubmitFinal}>
 

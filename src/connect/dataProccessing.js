@@ -7,12 +7,12 @@ import { formatEther } from "ethers/lib/utils";
 
 import api from 'connect/BaseApi'
 
-//const backendURL = 'http://localhost:3001/sale'
-const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
+const backendURL = 'http://localhost:3005/sale'
+//const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
 
 const ADMIN_ADDRESS = '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
 const FACTORY_ADDRESS = '0x863B229F7d5e41D76C49bC9922983B0c3a096CDF'
-const SALETOKEN_ADDRESS = '0xCdC76670B62Fd02F1724C976a337E8768fe01fd7'
+
 const { ethereum } = window;
 export let provider
 
@@ -184,6 +184,9 @@ export const fetchFeaturedsale = async () => {
 
 export const getSaleById = async (id, setIsLoading) => {
   try {
+
+    //connect if not connected
+    await ethereum.request({ method: 'eth_requestAccounts' });
 
     //fetch data from DB
     const response = await (await fetch(`${backendURL}/${id}`)).json()
@@ -357,17 +360,26 @@ export const saveData = async (values) => {
           saleToken:
           {
             name: values.title,
+            symbol: values.symbol,
             address: values.address
           },
           saleParams:
           {
             softCap: values.softcap,
             hardCap: values.hardcap,
-            price: values.price,
-            startDate: values.startdt,
-            endDate: values.enddt,
             minBuy: values.minbuy,
             maxBuy: values.maxbuy,
+            startDate: values.startdt,
+            endDate: values.enddt,
+            price: values.price,
+            saleOwner: values.saleOwner ? values.saleOwner : ethereum.selectedAddress,
+            round1: values.round1,
+            round2: values.round2,
+            round3: values.round3,
+            round4: values.round4,
+            round5: values.round5,
+            publicroundDelta: values.publicroundDelta,
+
           },
 
           saleLinks: {
@@ -376,7 +388,6 @@ export const saveData = async (values) => {
             git: values.githube,
             insta: values.instagram,
             reddit: values.reddit,
-
             web: values.website,
             twitter: values.twitter,
             telegram: values.telegram,
@@ -384,8 +395,9 @@ export const saveData = async (values) => {
             youtube: values.youtube
           },
           saleDetails: {
-            saleOwner: values.saleOwner ? values.saleOwner : ethereum.selectedAddress,
-            description: values.description
+
+            description: values.description,
+            whilelist: values.whilelist
           },
 
         }
