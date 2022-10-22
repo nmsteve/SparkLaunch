@@ -9,6 +9,7 @@ import classnames from "classnames"
 import { showRightSidebarAction, toggleLeftmenu } from "store/actions"
 
 import {
+  Dropdown,
   Nav,
   Navbar,
 } from 'react-bootstrap'
@@ -17,23 +18,34 @@ import {
 import logoSM from 'assets/images/logos/smlogo.png'
 import logoLG from 'assets/images/logos/lglogo.png'
 
+import bscLogo from 'assets/images/logos/bsc.png'
+import roburnaLogo from 'assets/images/logos/roburna.png'
+
+
 //ethers imports
 import { ethers } from "ethers"
 import { formatEther } from "ethers/lib/utils"
 
 
-
 const Header = props => {
+
+  const { ethereum } = window;
+
+  const options = [
+    { value: '0x61', text: 'Binance Smart', logo: bscLogo },
+    { value: '0x9f', text: 'Roburna Chain', logo: roburnaLogo },
+  ]
 
   const [haveMetamask, sethaveMetamask] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
-
-  const { ethereum } = window;
 
   const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   const [accountAddress, setAccountAddress] = useState('');
   const [accountBalance, setAccountBalance] = useState('');
+
+  const [selected, setSelected] = useState(options[1]);
+
 
   const checkMetamaskAvailability = async () => {
     if (!ethereum) {
@@ -78,15 +90,8 @@ const Header = props => {
     }
   }
 
-  const options = [
-    { value: '0x61', text: 'Binance Smart Chain' },
-    { value: '0x9f', text: 'Roburna Chain' },
-  ];
-
-  const [selected, setSelected] = useState(options[1].value);
-
-  const handleChange = async event => {
-    setSelected(event.target.value);
+  const handleChange = async (item) => {
+    setSelected(item)
 
     const provider = window.ethereum;
     if (!provider) {
@@ -107,7 +112,8 @@ const Header = props => {
           });
           console.log("You have succefully switched to Binance Smart Chain")
           window.location.reload(false);
-        } catch (switchError) {
+        }
+        catch (switchError) {
           // This error code indicates that the chain has not been added to MetaMask.
           if (switchError.code === 4902) {
             console.log("This network is not available in your metamask, please add it")
@@ -116,7 +122,7 @@ const Header = props => {
         }
       }
     }
-  };
+  }
 
 
   return (
@@ -173,8 +179,8 @@ const Header = props => {
               </Link>
             </div>
 
-            <Navbar className="p-0 navbar-dark">
-              <Nav className="me-auto px-5 d-flex align-items-center">
+            <Navbar className="p-0 navbar-dark d-none d-lg-inline">
+              <Nav className="me-auto px-4 d-flex align-items-center">
                 <Link
                   to="/home"
                   className={classnames('nav-link me-3 px-0', {
@@ -220,28 +226,43 @@ const Header = props => {
           <div className="d-flex flex-fill  ms-2  justify-content-end">
 
             <button
-              className="btn btn-gradient-blue rounded-2 py-0 w-lg me-3"
+              className="btn btn-gradient-blue rounded-2 py-0 w-md me-3 d-none d-md-inline"
             >
               PYRE GAMES
             </button>
 
-            <select
-              className="form-select w-25 me-3 bg-warning border-0"
-              aria-label="Change Network"
-              value={selected}
-              onChange={handleChange}
-            >
-              {options.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.text}
-                </option>))}
-            </select>
+            <Dropdown className="me-3">
+              <Dropdown.Toggle variant="warning" className="py-0 ps-0">
+                <img
+                  src={selected.logo}
+                  height={28}
+                  className='me-1 bg-dark rounded p-1'
+                />
+                {selected.text}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu variant="dark">
+                {options.map((item, key) =>
+                  <Dropdown.Item
+                    key={key}
+                    onClick={() => handleChange(item)}
+                  >
+                    <img
+                      src={item.logo}
+                      height={18}
+                      className='me-2'
+                    />
+                    {item.text}
+                  </Dropdown.Item>
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
 
             {isConnected ?
               <button
-                className="btn btn-sm btn-outline-primary text-primary rounded-3 me-3 ps-0 py-0"
+                className="btn btn-sm btn-outline-primary text-primary rounded-3 me-3 ps-0 py-0 text-nowrap"
               >
-                <i className="fa-solid fa-wallet text-primary border border-primary rounded p-1 me-1 fs-5"></i>
+                <i className="fa-solid fa-wallet text-primary border border-primary rounded p-1 me-1 fs-5" />
                 {accountAddress.slice(0, 2)}...{accountAddress.slice(38, 42)}
 
               </button>

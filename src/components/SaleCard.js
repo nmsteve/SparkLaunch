@@ -27,7 +27,7 @@ const SaleCard = ({ sale }) => {
 
         <div>
           <div className='avatar-md'>
-            <div className='avatar-title bg-primary bg-soft rounded-circle overflow-hidden'>
+            <div className='avatar-title bg-primary bg-softer rounded-circle overflow-hidden'>
               <img
                 src={sale.saleLinks?.logo}
                 style={{

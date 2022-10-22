@@ -43,7 +43,7 @@ const SaleDetails = props => {
       else {
         const sale = await getSaleById(params.id, setIsLoading)
 
-        console.log(sale)
+        // console.log(sale)
 
         setSaleData(sale)
       }
@@ -64,197 +64,206 @@ const SaleDetails = props => {
               <img src={smLogo} className='blinking-item' />
             </div>
             :
-            <div className='bg-dark bg-soft border border-primary rounded-4 p-3'>
+            <Row className='mx-0 justify-content-center'>
+              <Col md={6} lg={5} xl={4} className='bg-dark bg-softer border border-primary rounded-4 p-3 mb-4 mb-lg-0'>
 
-              <Row className='mx-0'>
-                <Col md={6} lg='4' className='bg-dark bg-soft border border-primary rounded-4 p-3'>
+                <div className='d-flex flex-nowrap align-items-center'>
 
-                  <div className='d-flex flex-nowrap align-items-center'>
-
-                    <div>
-                      <div className='avatar-md me-3'>
-                        <div className='avatar-title bg-primary bg-soft border border-primary rounded-circle overflow-hidden'>
-                          <img
-                            src={saleData?.saleLinks?.logo}
-                            style={{
-                              height: '100%',
-                              width: '100%',
-                              objectFit: 'cover',
-                              objectPosition: '10% 20%'
-                            }}
-                            alt={saleData?.saleToken.symbol ? saleData?.saleToken.symbol : 'SPL'}
-                          />
-                        </div>
+                  <div>
+                    <div className='avatar-md me-3'>
+                      <div className='avatar-title bg-primary bg-softer border border-primary rounded-circle overflow-hidden'>
+                        <img
+                          src={saleData?.saleLinks?.logo}
+                          style={{
+                            height: '100%',
+                            width: '100%',
+                            objectFit: 'cover',
+                            objectPosition: '10% 20%'
+                          }}
+                          alt={saleData?.saleToken.symbol ? saleData?.saleToken.symbol : 'SPL'}
+                        />
                       </div>
                     </div>
-
-                    <div className='flex-grow-1'>
-                      <h3 className='text-primary mb-0 me-2 fw-bold'>
-                        {saleData?.saleToken?.name}
-                      </h3>
-                      <h5>
-                        {saleData?.saleToken?.symbol}
-                      </h5>
-                    </div>
-
-                    <div>
-                      <div className='avatar-md me-3'>
-                        <div className='avatar-title bg-dark bg-soft rounded-circle overflow-hidden'>
-                          <img
-                            src={bscLogo}
-                            style={{
-                              height: '100%',
-                              width: '100%',
-                              objectFit: 'cover',
-                              objectPosition: '10% 20%'
-                            }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
                   </div>
 
-                  <p className='my-2 text-white font-size-12 line-truncate-2'>
-                    {saleData?.saleDetails.description}
+                  <div className='flex-grow-1'>
+                    <h3 className='text-primary mb-0 me-2 fw-bold'>
+                      {saleData?.saleToken?.name}
+                    </h3>
+                    <h5>
+                      {saleData?.saleToken?.symbol}
+                    </h5>
+                  </div>
+
+                  <div>
+                    <div className='avatar-md me-3'>
+                      <div className='avatar-title bg-dark bg-soft rounded-circle overflow-hidden'>
+                        <img
+                          src={bscLogo}
+                          style={{
+                            height: '100%',
+                            width: '100%',
+                            objectFit: 'cover',
+                            objectPosition: '10% 20%'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <p className='my-3 text-white font-size-12 line-truncate-2'>
+                  {saleData?.saleDetails.description}
+                </p>
+
+                <ul className="list-unstyled d-flex my-4">
+
+                  <li className="ms-2">
+                    <a href={saleData?.saleLinks.twitter ? saleData?.saleLinks.twitter : '#'}>
+                      <i className="bx bxl-twitter fs-3" />
+                    </a>
+                  </li>
+
+                  <li className="ms-2">
+                    <a href={saleData?.saleLinks.discord ? saleData?.saleLinks.discord : '#'}>
+                      <img src={discordLogo} alt='discord' />
+                    </a>
+                  </li>
+
+                  <li className="ms-2">
+                    <a href={saleData?.saleLinks.telegram ? saleData?.saleLinks.telegram : '#'}>
+                      <i className="bx bxl-telegram fs-3" />
+                    </a>
+                  </li>
+                </ul>
+
+                <div className='text-white font-size-14 mb-4'>
+
+                  <h5 className='text-primary'>POOL DETAILS</h5>
+
+                  <Row>
+                    <Col>
+                      <p>
+                        <span className='fw-bold'>
+                          Access Type:{' '}
+                        </span>
+                        {saleData?.user}
+                      </p>
+                    </Col>
+                    <Col>
+                      <p>
+                        <span className='fw-bold'>
+                          HardCap:{' '}
+                        </span>
+                        {saleData?.saleParams.hardCap} Tokens
+                      </p>
+                    </Col>
+                  </Row>
+
+                  <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
+                    SoftCap:{' '}
+                    <span className='text-primary'>
+                      {saleData?.saleParams.softCap} Tokens
+                    </span>
                   </p>
 
-                  <ul className="list-unstyled d-flex mb-4">
+                  <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
+                    Min participation:{' '}
+                    <span className='text-primary'>
+                      {saleData?.saleParams.minBuy} BNB
+                    </span>
+                  </p>
 
-                    <li className="ms-2">
-                      <a href={saleData?.saleLinks.twitter ? saleData?.saleLinks.twitter : '#'}>
-                        <i className="bx bxl-twitter fs-3" />
-                      </a>
-                    </li>
+                  <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
+                    Max participation:{' '}
+                    <span className='text-primary'>
+                      {saleData?.saleParams.maxBuy} BNB
+                    </span>
+                  </p>
 
-                    <li className="ms-2">
-                      <a href={saleData?.saleLinks.discord ? saleData?.saleLinks.discord : '#'}>
-                        <img src={discordLogo} alt='discord' />
-                      </a>
-                    </li>
+                  <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
+                    Price:{' '}
+                    <span className='text-primary'>
+                      {saleData?.saleParams.price} BNB
+                    </span>
+                  </p>
 
-                    <li className="ms-2">
-                      <a href={saleData?.saleLinks.telegram ? saleData?.saleLinks.telegram : '#'}>
-                        <i className="bx bxl-telegram fs-3" />
-                      </a>
-                    </li>
-                  </ul>
+                  <p className='mb-0 py-1'>
+                    Sale End:{' '}
+                    <span className='text-primary'>
+                      {moment(saleData?.saleParams.endDate).format('llll')}
+                    </span>
+                  </p>
+                </div>
 
-                  <div className='text-white font-size-11'>
+              </Col>
 
-                    <h4 className='text-primary'>SALE DETAILS</h4>
+              <Col md={5} lg={3}>
+                <div className='d-flex flex-md-column align-items-start flex-wrap'>
 
-                    <p className='mb-2 fs-5'>
-                      SoftCap:{' '}
-                      <span className='text-primary'>
-                        {saleData?.saleParams.softCap} Tokens
-                      </span>
-                    </p>
-
-                    <p className='mb-2 fs-5'>
-                      HardCap:{' '}
-                      <span className='text-primary'>
-                        {saleData?.saleParams.hardCap} Tokens
-                      </span>
-                    </p>
-
-                    <p className='mb-2 fs-5'>
-                      Min participation:{' '}
-                      <span className='text-primary'>
-                        {saleData?.saleParams.minBuy} BNB
-                      </span>
-                    </p>
-
-                    <p className='mb-2 fs-5'>
-                      Max participation:{' '}
-                      <span className='text-primary'>
-                        {saleData?.saleParams.maxBuy} BNB
-                      </span>
-                    </p>
-
-                    <p className='mb-2 fs-5'>
-                      Price:{' '}
-                      <span className='text-primary'>
-                        {saleData?.saleParams.price} BNB
-                      </span>
-                    </p>
-
-                    <p className='mb-2 fs-5'>
-                      Sale End:{' '}
-                      <span className='text-primary'>
-                        {moment(saleData?.saleParams.endDate).format('llll')}
-                      </span>
-                    </p>
-                  </div>
-
-                </Col>
-
-                <Col md={5} lg={8}>
-                  <div className='d-flex flex-column align-items-end'>
-
-                    {saleData?.user === 'buyer' &&
-                      <>
-                        <button
-                          className='btn btn-lg btn-gradient-green mb-3 w-25'
-                          onClick={() => setShowParticipateModal(true)}
-                        >
-                          Participate
-                        </button>
-
-
-                        <button
-                          className='btn btn-lg btn-gradient-green mb-3 w-25'
-                          onClick={() => withdraw(params.id)}
-                        >
-                          Withdraw
-                        </button>
-
-                        <button
-                          className='btn btn-lg btn-gradient-green mb-3 w-25'
-                          onClick={() => withdrawUnused(params.id)}
-                        >
-                          Withdraw Unused
-                        </button>
-                      </>
-                    }
-
-                    {saleData?.user === 'seller' &&
-                      <>
-                        <button
-                          className='btn btn-lg btn-gradient-green mb-3 w-25'
-                          onClick={() => depositTokens(params.id)}
-                        >
-                          Deposit Tokens
-                        </button>
-
-                        <button
-                          className='btn btn-lg btn-gradient-green mb-3 w-25'
-                          onClick={() => withdrawDeposit(params.id)}
-                        >
-                          Withdraw Deposit
-                        </button>
-
-                        <button
-                          className='btn btn-lg btn-gradient-green mb-3 w-25'
-                          onClick={() => withdrawEarnings(params.id)}
-                        >
-                          Withdraw Earnings
-                        </button>
-                      </>
-                    }
-
-                    {saleData?.user === 'admin' &&
+                  {saleData?.user === 'buyer' &&
+                    <>
                       <button
-                        className='btn btn-lg btn-gradient-green mb-3 w-25'
-                        onClick={() => finishSale(params.id)}
+                        className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
+                        onClick={() => setShowParticipateModal(true)}
                       >
-                        Finish Sale
+                        Participate
                       </button>
-                    }
-                  </div>
-                </Col>
-              </Row>
-            </div>
+
+
+                      <button
+                        className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
+                        onClick={() => withdraw(params.id)}
+                      >
+                        Withdraw
+                      </button>
+
+                      <button
+                        className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
+                        onClick={() => withdrawUnused(params.id)}
+                      >
+                        Withdraw Unused
+                      </button>
+                    </>
+                  }
+
+                  {saleData?.user === 'seller' &&
+                    <>
+                      <button
+                        className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
+                        onClick={() => depositTokens(params.id)}
+                      >
+                        Deposit Tokens
+                      </button>
+
+                      <button
+                        className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
+                        onClick={() => withdrawDeposit(params.id)}
+                      >
+                        Withdraw Deposit
+                      </button>
+
+                      <button
+                        className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
+                        onClick={() => withdrawEarnings(params.id)}
+                      >
+                        Withdraw Earnings
+                      </button>
+                    </>
+                  }
+
+                  {saleData?.user === 'admin' &&
+                    <button
+                      className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
+                      onClick={() => finishSale(params.id)}
+                    >
+                      Finish Sale
+                    </button>
+                  }
+                </div>
+              </Col>
+            </Row>
           }
 
           <Modal

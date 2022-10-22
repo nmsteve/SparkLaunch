@@ -7,6 +7,10 @@
 $value in $theme-colors {
   .bg-#{$color} {
     &.bg-soft {
+      background-color: rgba(($value), 0.5) !important;
+    }
+
+    &.bg-softer {
       background-color: rgba(($value), 0.25) !important;
     }
   }

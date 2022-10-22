@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { MetaTags } from 'react-meta-tags'
 
-import { Col, Container, Form, Row } from 'react-bootstrap'
+import { Col, Container, Form, Row, Spinner } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 //import methods to handle data
@@ -136,7 +136,6 @@ const ProjectSetup = () => {
     setIsLoading(true)
 
     await deploySale(values)
-
   }
 
 
@@ -144,7 +143,7 @@ const ProjectSetup = () => {
     {
       step: 1,
       title: 'Before you start',
-      desc: 'Input your awesome title,and choose the currency'
+      desc: 'Input your awesome title, and choose the currency'
     },
     {
       step: 2,
@@ -675,7 +674,19 @@ const ProjectSetup = () => {
                     type='submit'
                     disabled={isLoading}
                   >
-                    Submit
+                    {isLoading
+                      ? <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        {' '}Processing...
+                      </>
+                      : "Submit"
+                    }
                   </button>
                 </div>
               </Form>

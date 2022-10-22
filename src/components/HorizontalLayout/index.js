@@ -13,7 +13,7 @@ import {
 import { useSelector, useDispatch } from "react-redux"
 
 //components
-// import Navbar from "./Navbar"
+import Navbar from "./Navbar"
 import Header from "./Header"
 import Footer from "./Footer"
 
@@ -107,7 +107,7 @@ const Layout = (props) => {
           openLeftMenuCallBack={openMenu}
           pathname={props.location.pathname}
         />
-        {/* <Navbar menuOpen={isMenuOpened} /> */}
+        <Navbar menuOpen={isMenuOpened} />
         <div className="main-content">{props.children}</div>
         <Footer pathname={props.location.pathname} />
       </div>

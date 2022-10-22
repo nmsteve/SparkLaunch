@@ -19,8 +19,46 @@ const Public = props => {
 
   const [featuredSales, setFeaturedSales] = useState([])
   const [deployedSales, setDeployedSales] = useState([])
+  const [filteredSales, setFilteredSales] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedBtn, setSelectedBtn] = useState('')
+
+
+  const contains = (item, searchValue) => {
+
+    if (searchValue === null || searchValue.trim() === '') {
+      return true
+    }
+
+    const saleDetails = JSON.stringify(Object.values(item.saleDetails))
+    const saleToken = Object.values(item.saleToken).toString().toLocaleLowerCase()
+
+    if (saleDetails.includes(searchValue.toLocaleLowerCase()) || saleToken.includes(searchValue.toLocaleLowerCase())) {
+      return true
+    }
+
+    return false
+  }
+
+  const handleBtnFilter = (term) => {
+
+    if (term === '') {
+      setFilteredSales(deployedSales)
+      return
+    }
+
+    setSearchTerm('')
+    setSelectedBtn(term)
+
+    setFilteredSales(deployedSales.filter((item) => {
+      if (item.saleDetails.status.toLocaleLowerCase() === term.toLocaleLowerCase()) {
+        return item
+      }
+    }))
+
+  }
 
   const fetchFeaturedSale = () => {
     api.get("featured/true", {
@@ -49,6 +87,7 @@ const Public = props => {
     // console.log(sales?.salesData)
     setTimeout(() => {
       setDeployedSales(sales?.salesData)
+      setFilteredSales(sales?.salesData)
     }, 10000);
   }, [])
 
@@ -68,16 +107,26 @@ const Public = props => {
             </Col>
           </Row>
 
-          <Row className='pt-5 mb-5'>
-            <Col md={6} className='text-end'>
-              <Link to='/project-setup' className='bg-primary text-black fs-4 fw-bold p-3 rounded-pill'>
-                LAUNCH YOUR PROJECT WITH US
+          <Row className='pt-5 mb-lg-5 mb-3'>
+            <Col xs={12} md={6} className='text-lg-end text-center mb-5 mb-lg-0'>
+              <Link to='/project-setup' className='bg-primary text-black fw-bold p-3 rounded-pill'>
+                <span className='fs-4 d-none d-lg-inline'>
+                  LAUNCH YOUR PROJECT WITH US
+                </span>
+                <span className='fs-5 d-lg-none'>
+                  LAUNCH YOUR PROJECT WITH US
+                </span>
               </Link>
             </Col>
 
             <Col md={6} className="text-center">
-              <a href='#sales' className='border border-2 border-primary text-white fs-4 fw-bold py-3 px-5 w-lg rounded-pill'>
-                BUY $IGHT
+              <a href='#sales' className='border border-2 border-primary text-white fw-bold py-3 px-5 w-lg rounded-pill'>
+                <span className='fs-4 d-none d-lg-inline'>
+                  BUY $IGHT
+                </span>
+                <span className='fs-5 d-lg-none'>
+                  BUY $IGHT
+                </span>
               </a>
             </Col>
           </Row>
@@ -95,7 +144,8 @@ const Public = props => {
                       className='featured-card'
                       style={{ backgroundImage: `url(${sale.saleDetails.saleImg})` }}
                     >
-                      <h3 className='text-center position-absolute top-50 start-0 end-0 my-auto'>{sale.saleToken.name}</h3>
+                      <h3 className='text-center position-absolute top-50 start-0 end-0 my-auto d-none d-lg-block'>{sale.saleToken.name}</h3>
+                      <h5 className='text-center position-absolute top-50 start-0 end-0 my-auto d-lg-none'>{sale.saleToken.name}</h5>
                     </div>
                   </Col>
                 )
@@ -107,55 +157,82 @@ const Public = props => {
                 )
               }
             </Row>
-
-            <Row id='sales' className='py-4'>
-              <Col lg={8} className="d-flex justify-content-evenly">
-                <button className='btn btn-lg filter-button'>
-                  ALL SALES
-                </button>
-
-                <button className='btn btn-lg filter-button'>
-                  UPCOMING
-                </button>
-
-                <button className='btn btn-lg filter-button'>
-                  LIVE
-                </button>
-
-                <button className='btn btn-lg filter-button'>
-                  ENDED
-                </button>
-              </Col>
-
-              <Col md={4}>
-                <div className='filter-search-name'>
-                  <i className='bx bx-search fs-1 me-1' />
-                  <input className="search-input" type="search" placeholder="Search.." aria-label="Search" />
-                </div>
-              </Col>
-            </Row>
-
           </div>
 
           <div className='my-4'>
-            <Row className='g-4 mb-4' id='pools'>
-              {/* <Salecards /> */}
-              {isLoading ?
-                <div className='text-center'>
-                  <img src={smLogo} className='blinking-item' height={150} />
-                </div>
-                :
-                deployedSales?.map((sale, key) =>
-                  <Col key={key} lg={3} md={4} className="" sm={6}>
-                    <SaleCard sale={sale} />
-                  </Col>
-                )
-              }
-            </Row>
+            {isLoading ?
+              <div className='text-center mt-4'>
+                <img src={smLogo} className='blinking-item' height={150} />
+              </div>
+              :
+              <>
+                <Row id='sales' className='py-4'>
+                  <Col lg={8} className="d-flex justify-content-evenly mb-3 mb-lg-0">
+                    <button
+                      className={`btn btn-lg filter-button ${selectedBtn === '' ? 'selected' : ''}`}
+                      onClick={() => handleBtnFilter('')}
+                    >
+                      ALL SALES
+                    </button>
 
-            <div className='text-end mb-3'>
-              <button className='btn btn-lg bg-primary rounded-4 w-25 fs-1 fw-bold text-black me-3'>Ask Us</button>
-            </div>
+                    <button
+                      className={`btn btn-lg filter-button ${selectedBtn === 'UPCOMING' ? 'selected' : ''}`}
+                      onClick={() => handleBtnFilter('UPCOMING')}
+                    >
+                      UPCOMING
+                    </button>
+
+                    <button className={`btn btn-lg filter-button ${selectedBtn === 'LIVE' ? 'selected' : ''}`}
+                      onClick={() => handleBtnFilter('LIVE')}
+                    >
+                      LIVE
+                    </button>
+
+                    <button
+                      className={`btn btn-lg filter-button ${selectedBtn === 'ENDED' ? 'selected' : ''}`}
+                      onClick={() => handleBtnFilter('ENDED')}
+                    >
+                      ENDED
+                    </button>
+                  </Col>
+
+                  <Col xs={{ span: 8, offset: 2 }} md={{ span: 4, offset: 0 }}>
+                    <div className='filter-search-name'>
+                      <i className='bx bx-search fs-1 me-1' />
+                      <input
+                        className="search-input"
+                        type="search"
+                        placeholder="Search.."
+                        aria-label="Search"
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
+                      />
+                    </div>
+                  </Col>
+                </Row>
+
+                <Row className='g-4 my-4' id='pools'>
+                  {/* <Salecards /> */}
+                  {filteredSales.length > 0 ?
+                    filteredSales?.filter((item) => {
+                      return contains(item, searchTerm)
+                    }).map((sale, key) =>
+                      <Col key={key} lg={3} md={4} sm={6}>
+                        <SaleCard sale={sale} />
+                      </Col>
+                    )
+                    :
+                    <div className='text-center display-1 text-primary fw-bold'>
+                      No Sales Found
+                    </div>
+                  }
+                </Row>
+
+                <div className='text-end mb-3'>
+                  <button className='btn btn-lg bg-primary rounded-4 w-25 fs-1 fw-bold text-black me-3'>Ask Us</button>
+                </div>
+              </>
+            }
           </div>
 
         </Container>
