@@ -31,6 +31,8 @@ export const fetchAllSales = async (setIsLoading) => {
   let salesData = [];
   try {
 
+
+
     const salesNO = await FactoryContract.getNumberOfSalesDeployed()
 
     if (salesNO.toNumber() === 0) {
@@ -201,18 +203,18 @@ export const getSaleById = async (id, setIsLoading) => {
 
 
     //Sale Params (13 fields)
-    const saleStartTime = new Date(await saleContract.saleStartTime().toString() * 1000)
+    const saleStartTime = new Date((await saleContract.saleStartTime()).toString() * 1000)
     const saleEndTime = new Date(chainData.saleEnd.toString() * 1000)
     const softCap = chainData.softCap.toString() / 10 ** 18
     const hardCap = chainData.hardCap.toString() / 10 ** 18
-    const minBuy = saleContract.minParticipation() / 10 ** 18
-    const maxBuy = saleContract.maxParticipation() / 10 ** 18
+    const minBuy = await saleContract.minParticipation() / 10 ** 18
+    const maxBuy = await saleContract.maxParticipation() / 10 ** 18
     const tokenAddress = chainData.token.toString()
     const ownerAddress = chainData.saleOwner.toString()
     const tokenPrice = chainData.tokenPriceInBNB / 10 ** 18
     const tokenSold = chainData.totalTokensSold / 10 ** 18
     const BNBRaised = chainData.totalBNBRaised / 10 ** 18
-    const publicRoundStart = await saleContract.publicRoundStartDelta().toString() * 1000
+    const publicRoundStart = new Date((await saleContract.publicRoundStartDelta()).toString() * 1000).toISOString()
     const noOfHolders = (await saleContract.numberOfParticipants()).toNumber()
 
     //sale State (true or false, 7 fields)
@@ -224,9 +226,12 @@ export const getSaleById = async (id, setIsLoading) => {
     const isLeftoverWithdrawn = chainData.leftoverWithdrawn
     const isTokensDeposited = chainData.tokensDeposited
 
-
-    const noOfParticipants = await saleContract.numberOfParticipants()
-    const holders = noOfParticipants.toNumber()
+    //Sale Rounds 
+    const round1 = (await saleContract.tierIdToTierStartTime(0))
+    const round2 = (await saleContract.tierIdToTierStartTime(1))
+    const round3 = (await saleContract.tierIdToTierStartTime(2))
+    const round4 = (await saleContract.tierIdToTierStartTime(3))
+    const round5 = (await saleContract.tierIdToTierStartTime(4))
 
     //Derived fileds 
 
@@ -274,6 +279,10 @@ export const getSaleById = async (id, setIsLoading) => {
       } else {
         return 'buyer'
       }
+    }
+
+    const type = async () => {
+
     }
 
     let saleDBChain = {

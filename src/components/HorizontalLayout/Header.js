@@ -54,14 +54,16 @@ const Header = props => {
     }
 
     sethaveMetamask(true);
-    let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
 
-    // if (balance) {
-    setIsConnected(true)
-    setAccountBalance(balance)
-    setAccountAddress(ethereum.selectedAddress)
-    // }
-  };
+    if (ethereum.selectedAddress) {
+      let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
+      setIsConnected(true)
+      setAccountBalance(balance)
+      setAccountAddress(ethereum.selectedAddress)
+
+
+    }
+  }
 
   useEffect(() => {
     checkMetamaskAvailability();
@@ -87,6 +89,7 @@ const Header = props => {
     catch (error) {
       setIsConnected(false);
       console.log(error)
+      alert(error.message)
     }
   }
 
