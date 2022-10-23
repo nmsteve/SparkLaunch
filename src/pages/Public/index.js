@@ -23,7 +23,7 @@ const Public = props => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedBtn, setSelectedBtn] = useState('')
+  const [selectedBtn, setSelectedBtn] = useState('ALL')
 
 
   const contains = (item, searchValue) => {
@@ -44,13 +44,13 @@ const Public = props => {
 
   const handleBtnFilter = (term) => {
 
-    if (term === '') {
+    setSearchTerm('')
+    setSelectedBtn(term)
+
+    if (term === 'ALL') {
       setFilteredSales(deployedSales)
       return
     }
-
-    setSearchTerm('')
-    setSelectedBtn(term)
 
     setFilteredSales(deployedSales.filter((item) => {
       if (item.saleDetails.status.toLocaleLowerCase() === term.toLocaleLowerCase()) {
@@ -136,17 +136,16 @@ const Public = props => {
 
             <div className='bg-white py-1 rounded mx-auto' style={{ maxWidth: 70 }}></div>
 
-            <Row className='my-4'>
+            <Row className='my-4 justify-content-center'>
               {featuredSales.length > 0 ?
                 featuredSales.map((sale, key) =>
-                  <Col key={key}>
+                  <Col xs={6} sm={4} md='' key={key} className='mb-3'>
                     <div
                       className='featured-card'
                       style={{ backgroundImage: `url(${sale.saleDetails.saleImg})` }}
-                    >
-                      <h3 className='text-center position-absolute top-50 start-0 end-0 my-auto d-none d-lg-block'>{sale.saleToken.name}</h3>
-                      <h5 className='text-center position-absolute top-50 start-0 end-0 my-auto d-lg-none'>{sale.saleToken.name}</h5>
-                    </div>
+                    ></div>
+                    <h3 className='text-center mt-1 d-none d-lg-block'>{sale.saleToken.name}</h3>
+                    <h5 className='text-center mt-1 d-lg-none'>{sale.saleToken.name}</h5>
                   </Col>
                 )
                 :
@@ -167,37 +166,37 @@ const Public = props => {
               :
               <>
                 <Row id='sales' className='py-4'>
-                  <Col lg={8} className="d-flex justify-content-evenly mb-3 mb-lg-0">
+                  <Col lg={8} className="d-flex justify-content-md-evenly mb-3 mb-lg-0 overflow-auto">
                     <button
-                      className={`btn btn-lg filter-button ${selectedBtn === '' ? 'selected' : ''}`}
-                      onClick={() => handleBtnFilter('')}
+                      className={`btn filter-button ${selectedBtn === 'ALL' ? 'selected' : ''}`}
+                      onClick={() => handleBtnFilter('ALL')}
                     >
                       ALL SALES
                     </button>
 
                     <button
-                      className={`btn btn-lg filter-button ${selectedBtn === 'UPCOMING' ? 'selected' : ''}`}
+                      className={`btn filter-button ${selectedBtn === 'UPCOMING' ? 'selected' : ''}`}
                       onClick={() => handleBtnFilter('UPCOMING')}
                     >
                       UPCOMING
                     </button>
 
-                    <button className={`btn btn-lg filter-button ${selectedBtn === 'LIVE' ? 'selected' : ''}`}
+                    <button className={`btn filter-button ${selectedBtn === 'LIVE' ? 'selected' : ''}`}
                       onClick={() => handleBtnFilter('LIVE')}
                     >
                       LIVE
                     </button>
 
                     <button
-                      className={`btn btn-lg filter-button ${selectedBtn === 'ENDED' ? 'selected' : ''}`}
+                      className={`btn filter-button ${selectedBtn === 'ENDED' ? 'selected' : ''}`}
                       onClick={() => handleBtnFilter('ENDED')}
                     >
                       ENDED
                     </button>
                   </Col>
 
-                  <Col xs={{ span: 8, offset: 2 }} md={{ span: 4, offset: 0 }}>
-                    <div className='filter-search-name'>
+                  <Col xs={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }} lg={{ span: 4, offset: 0 }}>
+                    <div className='filter-search-name mt-3 mt-lg-0'>
                       <i className='bx bx-search fs-1 me-1' />
                       <input
                         className="search-input"
