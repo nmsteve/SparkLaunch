@@ -143,12 +143,14 @@ const Public = props => {
               {featuredSales.length > 0 ?
                 featuredSales.map((sale, key) =>
                   <Col xs={6} sm={4} md='2' key={key} className='mb-3 flex-md-grow-1'>
-                    <div
-                      className='featured-card'
-                      style={{ backgroundImage: `url(${sale.saleDetails.saleImg})` }}
-                    ></div>
-                    <h3 className='text-center mt-1 d-none d-lg-block'>{sale.saleToken.name}</h3>
-                    <h5 className='text-center mt-1 d-lg-none'>{sale.saleToken.name}</h5>
+                    <Link to={'sale/' + sale._id}>
+                      <div
+                        className='featured-card'
+                        style={{ backgroundImage: `url(${sale.saleDetails.saleImg})` }}
+                      ></div>
+                      <h3 className='text-center mt-1 d-none d-lg-block'>{sale.saleToken.name}</h3>
+                      <h5 className='text-center mt-1 d-lg-none'>{sale.saleToken.name}</h5>
+                    </Link>
                   </Col>
                 )
                 :
@@ -215,7 +217,6 @@ const Public = props => {
 
                 <Row className='g-4 my-4' id='pools'>
 
-
                   {filteredSales.length > 0 ?
 
                     filteredSales?.filter((item) => {
@@ -225,14 +226,10 @@ const Public = props => {
                         <SaleCard sale={sale} />
                       </Col>
                     )
-
-
                     :
                     <div className='text-center display-1 text-primary fw-bold'>
                       No Sales Found
                     </div>
-
-
                   }
                 </Row>
 
