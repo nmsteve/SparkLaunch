@@ -19,6 +19,7 @@ const Public = props => {
 
   const [featuredSales, setFeaturedSales] = useState([])
   const [deployedSales, setDeployedSales] = useState([])
+  const [salesNO, setSalesNO] = useState(0)
   const [filteredSales, setFilteredSales] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
@@ -82,12 +83,14 @@ const Public = props => {
   useEffect(async () => {
     fetchFeaturedSale()
 
-    const sales = await fetchAllSales(setIsLoading)
+    const sales = await fetchAllSales()
+    setSalesNO(sales.salesNO)
 
     // console.log(sales?.salesData)
     setTimeout(() => {
       setDeployedSales(sales?.salesData)
       setFilteredSales(sales?.salesData)
+      setIsLoading(false)
     }, 10000);
   }, [])
 
@@ -211,8 +214,10 @@ const Public = props => {
                 </Row>
 
                 <Row className='g-4 my-4' id='pools'>
-                  {/* <Salecards /> */}
+
+
                   {filteredSales.length > 0 ?
+
                     filteredSales?.filter((item) => {
                       return contains(item, searchTerm)
                     }).map((sale, key) =>
@@ -220,10 +225,14 @@ const Public = props => {
                         <SaleCard sale={sale} />
                       </Col>
                     )
+
+
                     :
                     <div className='text-center display-1 text-primary fw-bold'>
                       No Sales Found
                     </div>
+
+
                   }
                 </Row>
 
@@ -235,8 +244,8 @@ const Public = props => {
           </div>
 
         </Container>
-      </div>
-    </React.Fragment>
+      </div >
+    </React.Fragment >
   )
 }
 

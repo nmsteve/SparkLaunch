@@ -63,7 +63,7 @@ const ProjectSetup = () => {
       round3: form.round3.value,
       round4: form.round4.value,
       round5: form.round5.value,
-      delta: form.delta.value,
+      publicroundDelta: form.publicRound.value - form.round5.value,
       csvlink: form.csvlink.value
 
     })
@@ -117,7 +117,7 @@ const ProjectSetup = () => {
       round3: step2?.round3,
       round4: step2?.round4,
       round5: step2?.round5,
-      publicroundDelta: step2?.delta,
+      publicroundDelta: step2?.publicroundDelta,
       whilelist: step2?.csvlink,
 
       logo: step3?.logo,
@@ -403,8 +403,9 @@ const ProjectSetup = () => {
                   Set Sale Rounds
                 </p>
                 <Row>
+                  <Form.Text className='text-primary mb-2'>Enter Hrs after sale start that a round should begin</Form.Text>
                   <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='round1'>
-                    <Form.Label>Rounds 1 (Hrs)</Form.Label>
+                    <Form.Label>Rounds 1 (Hrs) *</Form.Label>
                     <Form.Control
                       defaultValue={step2?.round1}
                       type='number'
@@ -436,7 +437,7 @@ const ProjectSetup = () => {
                   </Form.Group>
 
                   <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='round4'>
-                    <Form.Label>Rounds 4 (Hrs)</Form.Label>
+                    <Form.Label>Rounds 4 (Hrs) *</Form.Label>
                     <Form.Control
                       defaultValue={step2?.round4}
                       type='number'
@@ -456,18 +457,15 @@ const ProjectSetup = () => {
                     />
                   </Form.Group>
 
-                  <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='delta'>
-                    <Form.Label>Public Round Delta (Hrs) *</Form.Label>
+                  <Form.Group className='mb-2' as={Col} md={6} lg={4} controlId='publicRound'>
+                    <Form.Label>Public Round (Hrs) *</Form.Label>
                     <Form.Control
-                      defaultValue={step2?.delta}
+                      defaultValue={step2?.publicRound}
                       type='number'
                       placeholder="0.5"
                       step='.1'
                       required
                     />
-                    <Form.Text className='text-primary mt-1'>
-                      Time period before public sale being
-                    </Form.Text>
 
 
                   </Form.Group>

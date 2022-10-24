@@ -20,6 +20,10 @@ const SaleDetails = props => {
 
   const [showParticipateModal, setShowParticipateModal] = useState(false)
 
+  ethereum.on('accountsChanged', () => {
+    window.location.reload(false);
+  });
+
 
   const handleParticipate = (event) => {
 
@@ -43,7 +47,7 @@ const SaleDetails = props => {
       else {
         const sale = await getSaleById(params.id, setIsLoading)
 
-        // console.log(sale)
+        console.log(sale)
 
         setSaleData(sale)
       }
