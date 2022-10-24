@@ -287,7 +287,7 @@ const SaleDetails = props => {
           >
             <div className="modal-content">
               <Modal.Header>
-                <span className="text-primary fs-4">Advert Share</span>
+                <span className="text-primary fs-4">Buy Tokens</span>
                 <button
                   className="btn border-0" data-bs-dismiss="modal"
                   onClick={() => setShowParticipateModal(false)}

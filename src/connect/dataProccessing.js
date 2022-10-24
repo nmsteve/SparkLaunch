@@ -557,20 +557,28 @@ export const participateInsale = async (selectedSale, amount) => {
     const signer = provider.getSigner(ethereum.selectedAddress)
     const saleContract = new ethers.Contract(saleAddress, saleABI, signer);
     const sale = await await saleContract.sale()
-    console.log('sale', sale.isCreated)
+    console.log('Is sale params Set', sale.isCreated)
 
     if (!sale.isCreated) {
       console.log('sale Params not set')
+      alert('sale Params not set')
+
     } else if (!sale.tokensDeposited) {
       console.log('Sale tokens were not deposited')
+      alert('Sale tokens were not deposited')
+
     } else {
 
-      const userTierObject = await saleContract.tier(ethereum.selectedAddress);
-      const userTier = userTierObject.toNumber()
-      // console.log('userTier', userTier)
+      //get user tier
+      const userTier = (await saleContract.tier(ethereum.selectedAddress)).toNumber();
+      console.log('userTier', userTier)
 
+      //get round
+      const round5 = await saleContract.tierIdToTierStartTime(5).toString() * 1000
+      const delta = await saleContract.publicRoundStartDelta().toString() * 1000
+      const publicRound = new Date(round5 + delta)
 
-      if (userTier === 0) {
+      if (userTier === 0 && Date.now() < publicRound) {
         console.log('No tier granted')
 
       } else {
@@ -584,6 +592,7 @@ export const participateInsale = async (selectedSale, amount) => {
           const tx = await saleContract.participate(userTier, { value: amountInWei })
           tx.wait()
           // console.log(tx)
+          console.log('Participation Successfull')
 
         }
       }
@@ -668,23 +677,35 @@ export const withdrawUnused = async (selectedSale) => {
 export const finishSale = async (selectedSale) => {
   try {
 
-    //get sale Data
+    //get sale signer
     const signer = provider.getSigner(ethereum.selectedAddress)
 
     //get sale address
     const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
     const saleContract = new ethers.Contract(saleAddress, saleABI, signer)
 
+    //get sale data
+    const sale = await saleContract.sale()
+    const saleEnd = new Date(sale.saleEnd.toString() * 1000)
+
     if (await saleContract.saleFinished()) {
       console.log('sale aready Finished')
+      alert('sale aready Finished')
 
-    } else if (! await AdminContract.isAdmin(ethereum.selectedAddress)) {
+    } else if (!await AdminContract.isAdmin(ethereum.selectedAddress)) {
       console.log('Caller not the admin')
+      alert('Caller not the Admin')
+
+    } else if (Date.now() < saleEnd) {
+      console.log('Sale endntime is yet')
+      alert('Sale end time is yet')
+
     } else {
       //finish sale
       const tx = await saleContract.finishSale()
       tx.wait()
       // console.log('tx:', tx)
+      alert('Sale finished Successfully')
     }
 
   } catch (error) {
@@ -708,24 +729,37 @@ export const depositTokens = async (selectedSale) => {
       //Create signer
       const signer = provider.getSigner(ethereum.selectedAddress)
 
-      //get connect to contract
+      //get connect to sale contract
       const saleContract = new ethers.Contract(saleAddress, saleABI, signer)
-      const BUSDContract = new ethers.Contract(SALETOKEN_ADDRESS, testABI, signer)
+      //get address to token of sale
+      const tokenAddress = (await saleContract.sale()).token
+      //console.log('Sale Token Address', tokenAddress)
+      const BUSDContract = new ethers.Contract(tokenAddress, testABI, signer)
 
       //get sale details
       const sale = await saleContract.sale()
-
       //compare address
       const compare = sale.saleOwner.toString().toLowerCase() === ethereum.selectedAddress.toString().toLowerCase()
       // console.log('compare', compare)
 
+      //check balance
+      const bal = formatEther(await BUSDContract.balanceOf(ethereum.selectedAddress))
+      const hardCap = formatEther(sale.hardCap)
+
       if (!sale.isCreated) {
         console.log('params not set')
+        alert('params not set')
       } else if (!compare) {
         console.log('Not sale owner')
+        alert('You are not the sale Owner')
       } else if (sale.tokensDeposited) {
         console.log("Already deposited")
-      } else {
+        alert('Tokens aready Deposited')
+      } else if (bal < hardCap) {
+        console.log("Insufficient tokens")
+        alert(`You need ${hardCap - bal} Tokens to complete this transaction`)
+      }
+      else {
         const approve = await BUSDContract.approve(saleAddress, sale.hardCap)
         approve.wait()
         console.log("Approve", approve)
@@ -752,6 +786,7 @@ export const withdrawDeposit = async (selectedSale) => {
 
     if (selectedSale === 0) {
       console.log('selected sale lost, please refresh')
+      alert('selected sale lost, please refresh')
     } else {
       //get sale address
       const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
@@ -771,16 +806,21 @@ export const withdrawDeposit = async (selectedSale) => {
 
       if (!sale.isCreated) {
         console.log('params not set')
+        alert('params not set')
       } else if (!compare) {
         console.log('Not sale owner')
+        alert('Not sale owner')
       } else if (!await saleContract.saleFinished()) {
         console.log("Sale not finished")
+        alert("Sale not finished")
       } else if (await saleContract.isSaleSuccessful()) {
         console.log("sale was successful, withdraw earning instead")
+        alert("sale was successful, withdraw earning instead")
       } else {
         const tx = await saleContract.withdrawDepositedTokensIfSaleCancelled()
         tx.wait()
         // console.log('tx:', tx)
+        alert('Withdrawn Successfully')
       }
     }
 
@@ -801,6 +841,7 @@ export const withdrawEarnings = async (selectedSale) => {
     if (selectedSale === 0) {
       console.log('selected sale lost, please refresh')
       errorMsg.innerText = 'Selected sale lost, please refresh'
+      alert('selected sale lost, please refresh')
     } else {
       //get sale address
       const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
@@ -820,24 +861,30 @@ export const withdrawEarnings = async (selectedSale) => {
 
       if (!sale.isCreated) {
         console.log('params not set')
+        alert('params not set')
         errorMsg.innerText = 'params not set'
       } else if (!compare) {
         console.log('Not sale owner')
+        alert('Not sale owner')
         errorMsg.innerText = 'Not sale owner'
       } else if (!await saleContract.saleFinished()) {
         console.log('sale still running')
+        alert('sale still running')
         errorMsg.innerText = 'sale still running'
       } else if (! await saleContract.isSaleSuccessful()) {
         console.log("sale was cancled,withdraw deposited instead")
         errorMsg.innerText = 'sale was cancled.Withdraw deposited instead'
+        alert('sale was cancled.Withdraw deposited instead')
       } else if (sale.earningsWithdrawn) {
         console.log("Aready withdraw")
         errorMsg.innerText = "Aready withdraw"
+        alert("Aready withdraw")
       }
       else {
         const tx = await saleContract.withdrawEarningsAndLeftover()
         tx.wait()
         // console.log('tx:', tx)
+        alert("Withdraw earning successful!")
       }
     }
 
