@@ -103,7 +103,7 @@ const Header = props => {
     else {
       const chainId = await provider.request({ method: 'eth_chainId' });
 
-      if (chainId === event.target.value) {
+      if (chainId === item.value) {
         alert("You are on the correct network")
       }
       else {
@@ -111,7 +111,7 @@ const Header = props => {
         try {
           await provider.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: event.target.value }],
+            params: [{ chainId: item.value }],
           });
           console.log("You have succefully switched to Binance Smart Chain")
           window.location.reload(false);

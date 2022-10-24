@@ -139,10 +139,10 @@ const Public = props => {
 
             <div className='bg-white py-1 rounded mx-auto' style={{ maxWidth: 70 }}></div>
 
-            <Row className='my-4 justify-content-center'>
+            <Row className='my-4 justify-content-center flex-md-nowrap'>
               {featuredSales.length > 0 ?
                 featuredSales.map((sale, key) =>
-                  <Col xs={6} sm={4} md='' key={key} className='mb-3'>
+                  <Col xs={6} sm={4} md='2' key={key} className='mb-3 flex-md-grow-1'>
                     <div
                       className='featured-card'
                       style={{ backgroundImage: `url(${sale.saleDetails.saleImg})` }}
