@@ -46,19 +46,19 @@ const SaleCard = ({ sale }) => {
       <ul className="list-unstyled d-flex mb-4">
 
         <li className="ms-2">
-          <a href={sale.saleLinks.twitter ? sale.saleLinks.twitter : '#'}>
+          <a href={sale.saleLinks.twitter ? sale.saleLinks.twitter : 'https://twitter.com'} target="_blank">
             <i className="bx bxl-twitter fs-3" />
           </a>
         </li>
 
         <li className="ms-2">
-          <a href={sale.saleLinks.discord ? sale.saleLinks.discord : '#'}>
+          <a href={sale.saleLinks.discord ? sale.saleLinks.discord : 'https://discord.com'} target="_blank">
             <img src={discordLogo} alt='discord' />
           </a>
         </li>
 
         <li className="ms-2">
-          <a href={sale.saleLinks.telegram ? sale.saleLinks.telegram : '#'}>
+          <a href={sale.saleLinks.telegram ? sale.saleLinks.telegram : 'https://telegram.com'} target="_blank">
             <i className="bx bxl-telegram fs-3" />
           </a>
         </li>
