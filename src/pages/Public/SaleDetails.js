@@ -32,7 +32,7 @@ const SaleDetails = props => {
     event.preventDefault()
     event.stopPropagation()
 
-    participateInsale(params.id, form.amount.value)
+    participateInsale(params.id, form.amount.value, setShowParticipateModal)
   }
 
   const {
