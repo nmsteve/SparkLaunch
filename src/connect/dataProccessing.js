@@ -288,7 +288,7 @@ export const getSaleById = async (id, setIsLoading) => {
       else if (Date.now() > round5 && Date.now() < publicRound) {
         return ' FIVE, ' + 'PUBLIC starts ' + moment(publicRound).fromNow()
       }
-      else { return 'PUBLIC' }
+      else if (Date.now() > publicRound) { return 'PUBLIC' }
     }
 
     let saleDBChain = {
@@ -573,38 +573,43 @@ export const participateInsale = async (selectedSale, amount, closeParticipation
     const min = (await saleContract.minParticipation()).toString() / 10 ** 18
     console.log('max: ', max, 'min: ', min)
 
-    if (amount < min) {
-      alert(`Minmun amount is ${min}`)
+    if (await saleContract.isParticipated(ethereum.selectedAddress)) {
+      console.log('Already Participated')
+      alert('Already Participated')
+
+
     }
 
-    if (amount > max) {
-      alert(`Maxmun amount is ${max}`)
-    }
-
-    if (!sale.isCreated) {
-      console.log('sale Params not set')
-    }
-
-    if (!sale.isCreated) {
+    else if (!sale.isCreated) {
       console.log('sale Params not set')
       alert('sale Params not set')
+
     }
 
-    if (!sale.tokensDeposited) {
+    else if (!sale.tokensDeposited) {
       console.log('Sale tokens were not deposited')
       alert('Sale tokens were not deposited')
 
     }
 
-    if (userTier === 0 && Date.now() < publicRound) {
+    else if (userTier === 0 && Date.now() < publicRound) {
       console.log('No tier granted')
       alert('No tier granted')
     }
 
-    if (await saleContract.isParticipated(ethereum.selectedAddress)) {
-      console.log('Already Participated')
-      alert('Already Participated')
+    else if (Date.now() < new Date((await saleContract.tierIdToTierStartTime(userTier)).toString() * 1000)) {
+      console.log(`Wrong round.Your rounds is ${userTier}`)
+      alert(`Wrong round.Your rounds is ${userTier}`)
     }
+
+    else if (amount < min) {
+      alert(`Minmun amount is ${min}`)
+    }
+
+    else if (amount > max) {
+      alert(`Maxmun amount is ${max}`)
+    }
+
 
     else {
       //Participate
@@ -613,11 +618,9 @@ export const participateInsale = async (selectedSale, amount, closeParticipation
       // console.log(tx)
       console.log('Participation Successfull')
 
-      closeParticipation()
-
     }
 
-
+    closeParticipation()
 
   } catch (error) {
     console.log(error.message)
@@ -640,16 +643,21 @@ export const withdraw = async (selectedSale) => {
     const sale = await saleContract.sale()
     if (!sale.isCreated) {
       console.log('params not set')
+      alert('params not set')
     } else if (!await saleContract.saleFinished()) {
       console.log("Sale not Finished")
+      alert("Sale not Finished")
     } else if (! await saleContract.isParticipated(ethereum.selectedAddress)) {
       console.log('You did not participate')
+      alert("You did not participate")
     } else if (!await saleContract.isSaleSuccessful()) {
-      console.log("sale Not successful")
+      console.log("sale Not successful,withdraw unused instead")
+      alert("sale Not successful,withdraw unused instead")
     } else {
       const tx = await saleContract.withdraw()
       tx.wait()
       console.log('tx:', tx)
+      alert("Withdraw successful")
     }
 
 
@@ -658,10 +666,10 @@ export const withdraw = async (selectedSale) => {
   }
 }
 
-export const withdrawUnused = async (selectedSale) => {
+export const withdrawUnused = async (selectedSale, setIsProcessing) => {
   try {
 
-
+    setIsProcessing(true)
     //connect if not connected
     await ethereum.request({ method: 'eth_requestAccounts' });
 
@@ -679,26 +687,34 @@ export const withdrawUnused = async (selectedSale) => {
 
     if (!sale.isCreated) {
       console.log('params not set')
+      alert('Params not set')
     } else if (!await saleContract.saleFinished()) {
       console.log("Sale not Finished")
+      alert("Sale not Finshed")
     } else if (! await saleContract.isParticipated(ethereum.selectedAddress)) {
       console.log('You did not participate')
+      alert("You did not Participate")
     } else if (await saleContract.isSaleSuccessful()) {
       console.log("sale was successful, withdraw instead")
+      alert("sale was successful, withdraw instead")
     } else {
       const tx = await saleContract.withdrawUserFundsIfSaleCancelled()
       tx.wait()
       // console.log('tx:', tx)
+      alert('Withdraw successful!')
     }
+
+    setIsProcessing(false)
 
   } catch (error) {
     console.log(error.message)
   }
 }
 
-export const finishSale = async (selectedSale) => {
-  try {
+export const finishSale = async (selectedSale, setIsProcessing) => {
 
+  try {
+    setIsProcessing(true)
     //get sale signer
     const signer = provider.getSigner(ethereum.selectedAddress)
 
@@ -719,7 +735,7 @@ export const finishSale = async (selectedSale) => {
       alert('Caller not the Admin')
 
     } else if (Date.now() < saleEnd) {
-      console.log('Sale endntime is yet')
+      console.log('Sale end time is yet')
       alert('Sale end time is yet')
 
     } else {
@@ -729,14 +745,17 @@ export const finishSale = async (selectedSale) => {
       // console.log('tx:', tx)
       alert('Sale finished Successfully')
     }
-
+    setIsProcessing(false)
   } catch (error) {
     console.log('Error:', error.message)
   }
+  setIsProcessing(false)
 }
 
-export const depositTokens = async (selectedSale) => {
+export const depositTokens = async (selectedSale, setIsProcessing) => {
   try {
+
+    setIsProcessing(true)
 
     //connect if not connected
     await ethereum.request({ method: 'eth_requestAccounts' });
@@ -765,8 +784,9 @@ export const depositTokens = async (selectedSale) => {
       // console.log('compare', compare)
 
       //check balance
-      const bal = formatEther(await BUSDContract.balanceOf(ethereum.selectedAddress))
-      const hardCap = formatEther(sale.hardCap)
+      const bal = (await BUSDContract.balanceOf(ethereum.selectedAddress)) / 10 ** 18
+      const hardCap = (sale.hardCap) / 10 ** 18
+      console.log('bal:', bal, 'hardcap', hardCap)
 
       if (!sale.isCreated) {
         console.log('params not set')
@@ -792,6 +812,7 @@ export const depositTokens = async (selectedSale) => {
           console.log('deposit:', deposit)
         }
       }
+      setIsProcessing(false)
     }
 
   } catch (error) {
@@ -799,7 +820,8 @@ export const depositTokens = async (selectedSale) => {
   }
 }
 
-export const withdrawDeposit = async (selectedSale) => {
+export const withdrawDeposit = async (selectedSale, setIsProcessing) => {
+  setIsProcessing(true)
   try {
 
     //connect if not connected
@@ -849,10 +871,11 @@ export const withdrawDeposit = async (selectedSale) => {
   } catch (error) {
     console.log(error.message)
   }
+  setIsProcessing(false)
 }
 
-export const withdrawEarnings = async (selectedSale) => {
-
+export const withdrawEarnings = async (selectedSale, setIsProcessing) => {
+  setIsProcessing(true)
   var errorMsg = document.getElementById('errormsg')
   try {
 
@@ -913,6 +936,7 @@ export const withdrawEarnings = async (selectedSale) => {
   } catch (error) {
     console.log(error.message)
   }
+  setIsProcessing(false)
 }
 
 export const getDeploymentFee = async () => {

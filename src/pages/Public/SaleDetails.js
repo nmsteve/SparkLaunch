@@ -240,7 +240,7 @@ const SaleDetails = props => {
 
                       <button
                         className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
-                        onClick={() => withdrawUnused(params.id)}
+                        onClick={() => withdrawUnused(params.id, setIsProcessing)}
                       >
                         Withdraw Unused
                       </button>
@@ -251,23 +251,64 @@ const SaleDetails = props => {
                     <>
                       <button
                         className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
-                        onClick={() => depositTokens(params.id)}
+                        onClick={() => depositTokens(params.id, setIsProcessing)}
+                        disabled={isProcessing}
                       >
-                        Deposit Tokens
+                        {isProcessing
+                          ? <>
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            {' '}Processing...
+                          </>
+                          : "Deposit Tokens"
+                        }
+
                       </button>
 
                       <button
                         className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
-                        onClick={() => withdrawDeposit(params.id)}
+                        onClick={() => withdrawDeposit(params.id, setIsProcessing)}
+                        disabled={isProcessing}
                       >
-                        Withdraw Deposit
+                        {isProcessing
+                          ? <>
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            {' '}Processing...
+                          </>
+                          : " Withdraw Deposit"
+                        }
+
                       </button>
 
                       <button
                         className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
-                        onClick={() => withdrawEarnings(params.id)}
+                        onClick={() => withdrawEarnings(params.id, setIsProcessing)}
+                        disabled={isProcessing}
                       >
-                        Withdraw Earnings
+                        {isProcessing
+                          ? <>
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            {' '}Processing...
+                          </>
+                          : " Withdraw Earnings"
+                        }
                       </button>
                     </>
                   }
@@ -275,9 +316,22 @@ const SaleDetails = props => {
                   {saleData?.user === 'admin' &&
                     <button
                       className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
-                      onClick={() => finishSale(params.id)}
+                      onClick={() => finishSale(params.id, setIsProcessing)}
+                      disabled={isProcessing}
                     >
-                      Finish Sale
+                      {isProcessing
+                        ? <>
+                          <Spinner
+                            as="span"
+                            animation="border"
+                            size="sm"
+                            role="status"
+                            aria-hidden="true"
+                          />
+                          {' '}Processing...
+                        </>
+                        : " Finish Sale"
+                      }
                     </button>
                   }
                 </div>
