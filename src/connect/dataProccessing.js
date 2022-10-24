@@ -27,12 +27,9 @@ const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provide
 const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
 
 
-export const fetchAllSales = async (setIsLoading) => {
+export const fetchAllSales = async () => {
   let salesData = [];
   try {
-
-
-
     const salesNO = await FactoryContract.getNumberOfSalesDeployed()
 
     if (salesNO.toNumber() === 0) {
@@ -47,8 +44,8 @@ export const fetchAllSales = async (setIsLoading) => {
         const saleID = await sale._id
 
         //get sale address
-        const saleAddressObject = await FactoryContract.saleIdToAddress(saleID);
-        const saleAddress = saleAddressObject.toString()
+        const saleAddress = await FactoryContract.saleIdToAddress(saleID);
+
         //console.log(saleAddress)
 
         if (saleAddress === '0x0000000000000000000000000000000000000000') { console.log('sale in DB but not deployed') }
@@ -157,15 +154,15 @@ export const fetchAllSales = async (setIsLoading) => {
               status: status()
             },
           }
-
           salesData.push(saleDBChain)
-          setIsLoading(false)
-
         }
       })
 
+
       return { salesNO, salesData }
     }
+
+
 
   } catch (e) { console.log("Err: ", e.message) }
 }
@@ -214,7 +211,7 @@ export const getSaleById = async (id, setIsLoading) => {
     const tokenPrice = chainData.tokenPriceInBNB / 10 ** 18
     const tokenSold = chainData.totalTokensSold / 10 ** 18
     const BNBRaised = chainData.totalBNBRaised / 10 ** 18
-    const publicRoundStart = new Date((await saleContract.publicRoundStartDelta()).toString() * 1000).toISOString()
+    const publicRoundStartDelta = (await saleContract.publicRoundStartDelta()).toString() * 1000 // toISOString() converts to hrs and minutes
     const noOfHolders = (await saleContract.numberOfParticipants()).toNumber()
 
     //sale State (true or false, 7 fields)
@@ -227,20 +224,16 @@ export const getSaleById = async (id, setIsLoading) => {
     const isTokensDeposited = chainData.tokensDeposited
 
     //Sale Rounds 
-    const round1 = (await saleContract.tierIdToTierStartTime(0))
-    const round2 = (await saleContract.tierIdToTierStartTime(1))
-    const round3 = (await saleContract.tierIdToTierStartTime(2))
-    const round4 = (await saleContract.tierIdToTierStartTime(3))
-    const round5 = (await saleContract.tierIdToTierStartTime(4))
+    const round1 = new Date((await saleContract.tierIdToTierStartTime(1)).toString() * 1000)
+    const round2 = new Date((await saleContract.tierIdToTierStartTime(2)).toString() * 1000)
+    const round3 = new Date((await saleContract.tierIdToTierStartTime(3)).toString() * 1000)
+    const round4 = new Date((await saleContract.tierIdToTierStartTime(4)).toString() * 1000)
+    const round5 = new Date((await saleContract.tierIdToTierStartTime(5)).toString() * 1000)
+    const publicRound = new Date((await saleContract.tierIdToTierStartTime(5)).toString() * 1000 + publicRoundStartDelta)
 
     //Derived fileds 
-
     const percentage = () => {
-      const raised = chainData.totalBNBRaised / 10 ** 18
-      const hardCap = chainData.hardCap / 10 ** 18
-      const price = chainData.tokenPriceInBNB / 10 ** 18
-
-      const value = raised / (hardCap * price) * 100
+      const value = BNBRaised / (hardCap * tokenPrice) * 100
       if (value > 0) { return value } else { return 0 }
     }
 
@@ -250,11 +243,11 @@ export const getSaleById = async (id, setIsLoading) => {
       if (isFinished) {
         return 'Sale Closed'
       } else if (Date.now() < saleStartTime) {
-        return 'Sale starts in ' + diffStart
+        return 'Sale starts ' + diffStart
       } else if (Date.now() < saleEndTime) {
-        return 'Sale ends in ' + diffEnd
+        return 'Sale ends ' + diffEnd
       } else {
-        return 'Sale ended in ' + diffEnd
+        return 'Sale ended ' + diffEnd
       }
     }
 
@@ -281,8 +274,22 @@ export const getSaleById = async (id, setIsLoading) => {
       }
     }
 
-    const type = async () => {
+    const type = () => {
+      if (Date.now() < round5) { return 'Private' }
+      else if (Date.now() > round5 && Date.now() < publicRound) {
+        return 'Public start in ' + new Date(publicRoundStartDelta).toISOString()
+      }
+      else if (Date.now() > publicRound) { return 'Public' }
+    }
 
+    const round = () => {
+      if (Date.now() < saleStartTime) { return 'Yet to start' }
+      else if (Date.now() > round1 && Date.now() < round2) { return 'Round One' }
+      else if (Date.now() > round2 && Date.now() < round3) { return 'Round Two' }
+      else if (Date.now() > round3 && Date.now() < round4) { return 'Round Three' }
+      else if (Date.now() > round4 && Date.now() < round5) { return 'Round Four' }
+      else if (Date.now() > round5 && Date.now() < publicRound) { return 'Round Five' }
+      else { return 'Public Round' }
     }
 
     let saleDBChain = {
@@ -305,8 +312,16 @@ export const getSaleById = async (id, setIsLoading) => {
         raised: BNBRaised,
         price: tokenPrice,
         sold: tokenSold,
-        publicStart: publicRoundStart,
+        publicRoundStartDelta: publicRoundStartDelta,
         holders: noOfHolders
+      },
+      saleRouds: {
+        round1: round1,
+        round2: round2,
+        round3: round3,
+        round4: round4,
+        round5: round5,
+        publicRound: publicRound
       },
       saleLinks: {
         logo: DBdata.saleLinks.logo,
@@ -336,7 +351,9 @@ export const getSaleById = async (id, setIsLoading) => {
         listingDate: DBdata.saleDetails.listingDate,
         percentage: percentage(),
         diff: timeDiff(),
-        status: status()
+        status: status(),
+        access: type(),
+        round: round()
       },
     }
 
