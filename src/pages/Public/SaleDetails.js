@@ -37,6 +37,8 @@ const SaleDetails = props => {
     event.preventDefault()
     event.stopPropagation()
 
+    setIsProcessing(true)
+
     participateInsale(params.id, form.amount.value, closeParticipation)
   }
 
@@ -314,7 +316,7 @@ const SaleDetails = props => {
 
                 <div className='text-center'>
                   <button
-                    className='btn btn-primary px-3 fw-bolder w-50'
+                    className='btn btn-primary px-3 fw-bolder w-50 text-nowrap'
                     type='submit'
                     disabled={isProcessing}
                   >
