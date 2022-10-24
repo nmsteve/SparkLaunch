@@ -7,10 +7,21 @@ import discordLogo from 'assets/images/icons/discord.png'
 
 
 const SaleCard = ({ sale }) => {
+
+  const handleClick = (e) => {
+    if (e.target.id === 'social') {
+      void (0)
+    }
+    else {
+      window.location.pathname = 'sale/' + sale.id
+    }
+  }
+
   return (
     <div
-      onClick={() => window.location.pathname = 'sale/' + sale.id}
+      onClick={handleClick}
       className='sale-card'
+      id='sale-card'
       style={{ cursor: 'pointer' }}
     >
 
@@ -27,7 +38,7 @@ const SaleCard = ({ sale }) => {
 
         <div>
           <div className='avatar-md'>
-            <div className='avatar-title bg-primary bg-softer rounded-circle overflow-hidden'>
+            <div className='avatar-title bg-primary bg-softer rounded-circle overflow-hidden fs-4'>
               <img
                 src={sale.saleLinks?.logo}
                 style={{
@@ -46,20 +57,29 @@ const SaleCard = ({ sale }) => {
       <ul className="list-unstyled d-flex mb-4">
 
         <li className="ms-2">
-          <a href={sale.saleLinks.twitter ? sale.saleLinks.twitter : 'https://twitter.com'} target="_blank">
-            <i className="bx bxl-twitter fs-3" />
+          <a
+            href={sale.saleLinks.twitter ? sale.saleLinks.twitter : 'https://twitter.com'}
+            target="_blank"
+          >
+            <i id='social' className="bx bxl-twitter fs-3" />
           </a>
         </li>
 
         <li className="ms-2">
-          <a href={sale.saleLinks.discord ? sale.saleLinks.discord : 'https://discord.com'} target="_blank">
-            <img src={discordLogo} alt='discord' />
+          <a
+            href={sale.saleLinks.discord ? sale.saleLinks.discord : 'https://discord.com'}
+            target="_blank"
+          >
+            <img id='social' src={discordLogo} alt='discord' />
           </a>
         </li>
 
         <li className="ms-2">
-          <a href={sale.saleLinks.telegram ? sale.saleLinks.telegram : 'https://telegram.com'} target="_blank">
-            <i className="bx bxl-telegram fs-3" />
+          <a
+            href={sale.saleLinks.telegram ? sale.saleLinks.telegram : 'https://telegram.com'}
+            target="_blank"
+          >
+            <i id='social' className="bx bxl-telegram fs-3" />
           </a>
         </li>
       </ul>
