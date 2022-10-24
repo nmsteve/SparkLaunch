@@ -87,11 +87,11 @@ export const fetchAllSales = async () => {
             if (isFinished) {
               return 'Sale Closed'
             } else if (Date.now() / 1000 < saleStartTime.toNumber()) {
-              return 'Sale starts in ' + diffStart
+              return 'Sale starts' + diffStart
             } else if (Date.now() / 1000 < chainData.saleEnd.toString()) {
-              return 'Sale ends in ' + diffEnd
+              return 'Sale ends ' + diffEnd
             } else {
-              return 'Sale ended in ' + diffEnd
+              return 'Sale ended ' + diffEnd
             }
           }
 
@@ -275,21 +275,20 @@ export const getSaleById = async (id, setIsLoading) => {
     }
 
     const type = () => {
-      if (Date.now() < round5) { return 'Private' }
-      else if (Date.now() > round5 && Date.now() < publicRound) {
-        return 'Public start in ' + new Date(publicRoundStartDelta).toISOString()
-      }
+      if (Date.now() < publicRound) { return 'Private' }
       else if (Date.now() > publicRound) { return 'Public' }
     }
 
     const round = () => {
       if (Date.now() < saleStartTime) { return 'Yet to start' }
-      else if (Date.now() > round1 && Date.now() < round2) { return 'Round One' }
-      else if (Date.now() > round2 && Date.now() < round3) { return 'Round Two' }
-      else if (Date.now() > round3 && Date.now() < round4) { return 'Round Three' }
-      else if (Date.now() > round4 && Date.now() < round5) { return 'Round Four' }
-      else if (Date.now() > round5 && Date.now() < publicRound) { return 'Round Five' }
-      else { return 'Public Round' }
+      else if (Date.now() > round1 && Date.now() < round2) { return ' ONE' }
+      else if (Date.now() > round2 && Date.now() < round3) { return ' TWO' }
+      else if (Date.now() > round3 && Date.now() < round4) { return ' THREE' }
+      else if (Date.now() > round4 && Date.now() < round5) { return ' FOUR' }
+      else if (Date.now() > round5 && Date.now() < publicRound) {
+        return ' FIVE, ' + 'PUBLIC starts ' + moment(publicRound).fromNow()
+      }
+      else { return 'PUBLIC' }
     }
 
     let saleDBChain = {

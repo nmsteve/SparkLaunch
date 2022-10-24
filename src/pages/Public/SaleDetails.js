@@ -152,53 +152,61 @@ const SaleDetails = props => {
                         <span className='fw-bold'>
                           Access Type:{' '}
                         </span>
-                        {saleData?.user}
+                        {saleData?.saleDetails?.access}
                       </p>
                     </Col>
                     <Col>
                       <p>
                         <span className='fw-bold'>
-                          HardCap:{' '}
+                          Round:{' '}
                         </span>
-                        {saleData?.saleParams.hardCap} Tokens
+                        {saleData?.saleDetails?.round}
                       </p>
                     </Col>
                   </Row>
 
                   <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
-                    SoftCap:{' '}
+                    SoftCap/Hardcap:{' '}
                     <span className='text-primary'>
-                      {saleData?.saleParams.softCap} Tokens
+                      {saleData?.saleParams.softCap} -  {saleData?.saleParams.hardCap} Tokens
                     </span>
                   </p>
 
                   <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
-                    Min participation:{' '}
+                    Min/Max (participation):{' '}
                     <span className='text-primary'>
-                      {saleData?.saleParams.minBuy} BNB
+                      {saleData?.saleParams.minBuy} -  {saleData?.saleParams.maxBuy} BNB
                     </span>
                   </p>
 
                   <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
-                    Max participation:{' '}
+                    Start/End:{' '} <br></br>
                     <span className='text-primary'>
-                      {saleData?.saleParams.maxBuy} BNB
+                      {moment(saleData?.saleParams.startDate).format('llll')} - {moment(saleData?.saleParams.endDate).format('llll')}
                     </span>
                   </p>
 
                   <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
                     Price:{' '}
                     <span className='text-primary'>
-                      {saleData?.saleParams.price} BNB
+                      {saleData?.saleParams?.price} BNB
                     </span>
                   </p>
 
-                  <p className='mb-0 py-1'>
-                    Sale End:{' '}
+                  <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
+                    Sold:{' '}
                     <span className='text-primary'>
-                      {moment(saleData?.saleParams.endDate).format('llll')}
+                      {saleData?.saleParams?.sold}
                     </span>
                   </p>
+
+                  <p className='mb-0 py-1 border-bottom border-white border-opacity-50'>
+                    Holders:{' '}
+                    <span className='text-primary'>
+                      {saleData?.saleParams?.holders}
+                    </span>
+                  </p>
+
                 </div>
 
               </Col>
