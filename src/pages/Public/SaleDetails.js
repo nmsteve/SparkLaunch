@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { MetaTags } from 'react-meta-tags'
 
-import { Col, Container, Form, Modal, Row } from 'react-bootstrap'
+import { Col, Container, Form, Modal, Row, Spinner } from 'react-bootstrap'
 import moment from 'moment/moment'
 
 import { depositTokens, finishSale, getSaleById, participateInsale, withdraw, withdrawDeposit, withdrawEarnings, withdrawUnused } from 'connect/dataProccessing'
@@ -17,6 +17,7 @@ const SaleDetails = props => {
 
   const [isLoading, setIsLoading] = useState(true)
   const [saleData, setSaleData] = useState(null)
+  const [isProcessing, setIsProcessing] = useState(false)
 
   const [showParticipateModal, setShowParticipateModal] = useState(false)
 
@@ -24,6 +25,10 @@ const SaleDetails = props => {
     window.location.reload(false);
   });
 
+  const closeParticipation = () => {
+    setShowParticipateModal(false)
+    setIsProcessing(false)
+  }
 
   const handleParticipate = (event) => {
 
@@ -32,7 +37,7 @@ const SaleDetails = props => {
     event.preventDefault()
     event.stopPropagation()
 
-    participateInsale(params.id, form.amount.value, setShowParticipateModal)
+    participateInsale(params.id, form.amount.value, closeParticipation)
   }
 
   const {
@@ -311,8 +316,21 @@ const SaleDetails = props => {
                   <button
                     className='btn btn-primary px-3 fw-bolder w-50'
                     type='submit'
+                    disabled={isProcessing}
                   >
-                    Buy
+                    {isProcessing
+                      ? <>
+                        <Spinner
+                          as="span"
+                          animation="border"
+                          size="sm"
+                          role="status"
+                          aria-hidden="true"
+                        />
+                        {' '}Processing...
+                      </>
+                      : "Buy"
+                    }
                   </button>
                 </div>
               </Form>

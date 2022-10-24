@@ -540,7 +540,7 @@ export const deploySale = async (values) => {
   catch (error) { console.log("Error:", error.message) }
 }
 
-export const participateInsale = async (selectedSale, amount, setShowParticipateModal) => {
+export const participateInsale = async (selectedSale, amount, closeParticipation) => {
 
   const amountInWei = ethers.utils.parseUnits(amount.toString(), 'ether')
 
@@ -595,7 +595,7 @@ export const participateInsale = async (selectedSale, amount, setShowParticipate
           console.log('Participation Successfull')
 
         }
-        setShowParticipateModal(false)
+        closeParticipation()
       }
     }
   } catch (error) {
