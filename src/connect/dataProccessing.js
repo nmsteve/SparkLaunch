@@ -559,45 +559,66 @@ export const participateInsale = async (selectedSale, amount, closeParticipation
     const sale = await await saleContract.sale()
     console.log('Is sale params Set', sale.isCreated)
 
+    //get user tier
+    const userTier = (await saleContract.tier(ethereum.selectedAddress)).toNumber();
+    console.log('userTier', userTier)
+
+    //get publicRound
+    const round5 = await saleContract.tierIdToTierStartTime(5).toString() * 1000
+    const delta = await saleContract.publicRoundStartDelta().toString() * 1000
+    const publicRound = new Date(round5 + delta)
+
+    //get max and min
+    const max = (await saleContract.maxParticipation()).toString() / 10 ** 18
+    const min = (await saleContract.minParticipation()).toString() / 10 ** 18
+    console.log('max: ', max, 'min: ', min)
+
+    if (amount < min) {
+      alert(`Minmun amount is ${min}`)
+    }
+
+    if (amount > max) {
+      alert(`Maxmun amount is ${max}`)
+    }
+
+    if (!sale.isCreated) {
+      console.log('sale Params not set')
+    }
+
     if (!sale.isCreated) {
       console.log('sale Params not set')
       alert('sale Params not set')
+    }
 
-    } else if (!sale.tokensDeposited) {
+    if (!sale.tokensDeposited) {
       console.log('Sale tokens were not deposited')
       alert('Sale tokens were not deposited')
 
-    } else {
-
-      //get user tier
-      const userTier = (await saleContract.tier(ethereum.selectedAddress)).toNumber();
-      console.log('userTier', userTier)
-
-      //get round
-      const round5 = await saleContract.tierIdToTierStartTime(5).toString() * 1000
-      const delta = await saleContract.publicRoundStartDelta().toString() * 1000
-      const publicRound = new Date(round5 + delta)
-
-      if (userTier === 0 && Date.now() < publicRound) {
-        console.log('No tier granted')
-
-      } else {
-
-        if (await saleContract.isParticipated(ethereum.selectedAddress)) {
-
-          console.log('Already Participated')
-          // console.log(amountInWei.toString())
-        } else {
-          //Participate
-          const tx = await saleContract.participate(userTier, { value: amountInWei })
-          tx.wait()
-          // console.log(tx)
-          console.log('Participation Successfull')
-
-        }
-        closeParticipation()
-      }
     }
+
+    if (userTier === 0 && Date.now() < publicRound) {
+      console.log('No tier granted')
+      alert('No tier granted')
+    }
+
+    if (await saleContract.isParticipated(ethereum.selectedAddress)) {
+      console.log('Already Participated')
+      alert('Already Participated')
+    }
+
+    else {
+      //Participate
+      const tx = await saleContract.participate(userTier, { value: amountInWei })
+      tx.wait()
+      // console.log(tx)
+      console.log('Participation Successfull')
+
+      closeParticipation()
+
+    }
+
+
+
   } catch (error) {
     console.log(error.message)
   }
