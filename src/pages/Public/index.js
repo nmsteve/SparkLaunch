@@ -198,6 +198,13 @@ const Public = props => {
                     >
                       ENDED
                     </button>
+
+                    <button
+                      className={`btn filter-button ${selectedBtn === 'CLOSED' ? 'selected' : ''}`}
+                      onClick={() => handleBtnFilter('CLOSED')}
+                    >
+                      CLOSED
+                    </button>
                   </Col>
 
                   <Col xs={{ span: 10, offset: 1 }} md={{ span: 8, offset: 2 }} lg={{ span: 4, offset: 0 }}>
