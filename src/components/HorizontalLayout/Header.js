@@ -27,6 +27,8 @@ import { ethers } from "ethers"
 import { formatEther } from "ethers/lib/utils"
 
 
+
+
 const Header = props => {
 
   const { ethereum } = window;
@@ -65,9 +67,12 @@ const Header = props => {
     }
   }
 
-  useEffect(() => {
-    checkMetamaskAvailability();
-  }, []);
+
+
+  //ethereum event reload on chain change
+  ethereum.on('chainChanged', () => {
+    window.location.reload(false)
+  })
 
   const connectWallet = async () => {
     try {
@@ -114,7 +119,6 @@ const Header = props => {
             params: [{ chainId: item.value }],
           });
           console.log("You have succefully switched to Binance Smart Chain")
-          window.location.reload(false);
         }
         catch (switchError) {
           // This error code indicates that the chain has not been added to MetaMask.
@@ -126,6 +130,14 @@ const Header = props => {
       }
     }
   }
+
+
+  useEffect(async () => {
+    checkMetamaskAvailability();
+
+
+  }, []);
+
 
 
   return (
@@ -259,6 +271,7 @@ const Header = props => {
                   </Dropdown.Item>
                 )}
               </Dropdown.Menu>
+
             </Dropdown>
 
             {isConnected ?
