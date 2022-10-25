@@ -180,8 +180,8 @@ const Public = props => {
                     </button>
 
                     <button
-                      className={`btn filter-button ${selectedBtn === 'UPCOMING' ? 'selected' : ''}`}
-                      onClick={() => handleBtnFilter('UPCOMING')}
+                      className={`btn filter-button ${selectedBtn === 'UPCOMMING' ? 'selected' : ''}`}
+                      onClick={() => handleBtnFilter('UPCOMMING')}
                     >
                       UPCOMING
                     </button>
