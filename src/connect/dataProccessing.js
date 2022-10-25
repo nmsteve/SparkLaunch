@@ -627,7 +627,8 @@ export const participateInsale = async (selectedSale, amount, closeParticipation
   }
 }
 
-export const withdraw = async (selectedSale) => {
+export const withdraw = async (selectedSale, setIsProcessing) => {
+  setIsProcessing(true)
   try {
 
 
@@ -655,7 +656,7 @@ export const withdraw = async (selectedSale) => {
       alert("sale Not successful,withdraw unused instead")
     } else {
       const tx = await saleContract.withdraw()
-      tx.wait()
+      tx.wait(1)
       console.log('tx:', tx)
       alert("Withdraw successful")
     }
@@ -664,6 +665,8 @@ export const withdraw = async (selectedSale) => {
   } catch (error) {
     console.log(error.message)
   }
+  setIsProcessing(false)
+
 }
 
 export const withdrawUnused = async (selectedSale, setIsProcessing) => {

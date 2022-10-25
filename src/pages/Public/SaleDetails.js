@@ -233,16 +233,43 @@ const SaleDetails = props => {
 
                       <button
                         className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
-                        onClick={() => withdraw(params.id)}
+                        onClick={() => withdraw(params.id, setIsProcessing)}
+                        disabled={isProcessing}
                       >
-                        Withdraw
+                        {isProcessing
+                          ? <>
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            {' '}Processing...
+                          </>
+                          : " Withdraw Tokens"
+                        }
+
                       </button>
 
                       <button
                         className='btn btn-lg btn-gradient-green mb-3 me-3 w-lg'
                         onClick={() => withdrawUnused(params.id, setIsProcessing)}
+                        disabled={isProcessing}
                       >
-                        Withdraw Unused
+                        {isProcessing
+                          ? <>
+                            <Spinner
+                              as="span"
+                              animation="border"
+                              size="sm"
+                              role="status"
+                              aria-hidden="true"
+                            />
+                            {' '}Processing...
+                          </>
+                          : " Withdraw Unused"
+                        }
                       </button>
                     </>
                   }
