@@ -275,12 +275,19 @@ export const getSaleById = async (id, setIsLoading) => {
     }
 
     const type = () => {
-      if (Date.now() < publicRound) { return 'Private' }
+      console.log(round1.getTime())
+      if (round1.getTime() === 0) { return 'Not set' }
+      else if (Date.now() > saleStartTime && Date.now() < publicRound) { return 'Private' }
       else if (Date.now() > publicRound) { return 'Public' }
+
     }
 
     const round = () => {
-      if (Date.now() < saleStartTime) { return 'Yet to start' }
+      if (round1.getTime() === 0) { return 'Not set' }
+      else if (Date.now() < saleStartTime) { return 'Yet to start' }
+      else if (Date.now() > saleStartTime && Date.now() < round1) {
+        return `ONE starts ${moment(round1).fromNow()}`
+      }
       else if (Date.now() > round1 && Date.now() < round2) { return ' ONE' }
       else if (Date.now() > round2 && Date.now() < round3) { return ' TWO' }
       else if (Date.now() > round3 && Date.now() < round4) { return ' THREE' }
@@ -614,8 +621,8 @@ export const participateInsale = async (selectedSale, amount, closeParticipation
     else {
       //Participate
       const tx = await saleContract.participate(userTier, { value: amountInWei })
-      tx.wait()
-      // console.log(tx)
+      await tx.wait()
+      console.log(tx)
       console.log('Participation Successfull')
 
     }
@@ -702,8 +709,8 @@ export const withdrawUnused = async (selectedSale, setIsProcessing) => {
       alert("sale was successful, withdraw instead")
     } else {
       const tx = await saleContract.withdrawUserFundsIfSaleCancelled()
-      tx.wait()
-      // console.log('tx:', tx)
+      await tx.wait()
+      console.log('tx:', tx)
       alert('Withdraw successful!')
     }
 
@@ -744,8 +751,8 @@ export const finishSale = async (selectedSale, setIsProcessing) => {
     } else {
       //finish sale
       const tx = await saleContract.finishSale()
-      tx.wait()
-      // console.log('tx:', tx)
+      await tx.wait()
+      console.log('tx:', tx)
       alert('Sale finished Successfully')
     }
     setIsProcessing(false)
@@ -806,12 +813,12 @@ export const depositTokens = async (selectedSale, setIsProcessing) => {
       }
       else {
         const approve = await BUSDContract.approve(saleAddress, sale.hardCap)
-        approve.wait()
+        await approve.wait()
         console.log("Approve", approve)
 
         if (approve) {
           const deposit = await saleContract.depositTokens()
-          deposit.wait()
+          await deposit.wait()
           console.log('deposit:', deposit)
         }
       }
@@ -865,8 +872,8 @@ export const withdrawDeposit = async (selectedSale, setIsProcessing) => {
         alert("sale was successful, withdraw earning instead")
       } else {
         const tx = await saleContract.withdrawDepositedTokensIfSaleCancelled()
-        tx.wait()
-        // console.log('tx:', tx)
+        await tx.wait()
+        console.log('tx:', tx)
         alert('Withdrawn Successfully')
       }
     }
@@ -930,8 +937,8 @@ export const withdrawEarnings = async (selectedSale, setIsProcessing) => {
       }
       else {
         const tx = await saleContract.withdrawEarningsAndLeftover()
-        tx.wait()
-        // console.log('tx:', tx)
+        await tx.wait()
+        console.log('tx:', tx)
         alert("Withdraw earning successful!")
       }
     }
