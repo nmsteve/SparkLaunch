@@ -171,7 +171,7 @@ const Public = props => {
               :
               <>
                 <Row id='sales' className='py-4'>
-                  <Col lg={8} className="d-flex justify-content-md-evenly mb-3 mb-lg-0 overflow-auto">
+                  <Col lg={8} className="d-flex justify-content-md-evenly mb-3 mb-lg-0 pb-1 overflow-auto fancy-scroll-x">
                     <button
                       className={`btn filter-button ${selectedBtn === 'ALL' ? 'selected' : ''}`}
                       onClick={() => handleBtnFilter('ALL')}
