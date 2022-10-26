@@ -26,115 +26,22 @@ import roburnaLogo from 'assets/images/logos/roburna.png'
 import { ethers } from "ethers"
 import { formatEther } from "ethers/lib/utils"
 
-
-
+//import Methods
+import { checkMetamaskAvailability, connectWallet, handleChange } from "connect/dataProccessing"
 
 const Header = props => {
-
-  const { ethereum } = window;
 
   const options = [
     { value: '0x61', text: 'Binance Smart', logo: bscLogo },
     { value: '0x9f', text: 'Roburna Chain', logo: roburnaLogo },
   ]
-
   const [haveMetamask, sethaveMetamask] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
-
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-
   const [accountAddress, setAccountAddress] = useState('');
-  const [accountBalance, setAccountBalance] = useState('');
-
   const [selected, setSelected] = useState(options[1]);
 
-
-  const checkMetamaskAvailability = async () => {
-    if (!ethereum) {
-      sethaveMetamask(false);
-      alert('Please install MetaMask')
-    }
-
-    sethaveMetamask(true);
-
-    if (ethereum.selectedAddress) {
-      let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
-      setIsConnected(true)
-      setAccountBalance(balance)
-      setAccountAddress(ethereum.selectedAddress)
-
-
-    }
-  }
-
-
-
-  //ethereum event reload on chain change
-  ethereum.on('chainChanged', () => {
-    window.location.reload(false)
-  })
-
-  const connectWallet = async () => {
-    try {
-      if (!ethereum) {
-        sethaveMetamask(false);
-      }
-
-      const accounts = await ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-
-      let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
-
-      // console.log('Balance', ethereum)
-      setAccountAddress(ethereum.selectedAddress);
-      setAccountBalance(balance);
-      setIsConnected(true);
-    }
-    catch (error) {
-      setIsConnected(false);
-      console.log(error)
-      alert(error.message)
-    }
-  }
-
-  const handleChange = async (item) => {
-    setSelected(item)
-
-    const provider = window.ethereum;
-    if (!provider) {
-      alert("Metamask is not installed, please install!");
-    }
-    else {
-      const chainId = await provider.request({ method: 'eth_chainId' });
-
-      if (chainId === item.value) {
-        alert("You are on the correct network")
-      }
-      else {
-
-        try {
-          await provider.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: item.value }],
-          });
-          console.log("You have succefully switched to Binance Smart Chain")
-        }
-        catch (switchError) {
-          // This error code indicates that the chain has not been added to MetaMask.
-          if (switchError.code === 4902) {
-            console.log("This network is not available in your metamask, please add it")
-          }
-          console.log(switchError.msg)
-        }
-      }
-    }
-  }
-
-
   useEffect(async () => {
-    checkMetamaskAvailability();
-
+    checkMetamaskAvailability(sethaveMetamask, setIsConnected, setAccountAddress);
 
   }, []);
 
@@ -260,7 +167,7 @@ const Header = props => {
                 {options.map((item, key) =>
                   <Dropdown.Item
                     key={key}
-                    onClick={() => handleChange(item)}
+                    onClick={() => handleChange(haveMetamask, item, setSelected)}
                   >
                     <img
                       src={item.logo}
@@ -285,7 +192,7 @@ const Header = props => {
               :
               <button
                 className="btn btn-sm btn-primary text-white rounded-3 me-3 fw-bold"
-                onClick={connectWallet}
+                onClick={() => { connectWallet(haveMetamask, setIsConnected, setAccountAddress) }}
               >
                 CONNECT WALLET
               </button>

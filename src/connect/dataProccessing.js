@@ -16,21 +16,111 @@ const { ethereum } = window;
 export let provider
 
 if (!ethereum) {
-  console.log('Install MetaMask')
-  alert("Please install Metamask")
+  provider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
 }
 else {
   provider = new ethers.providers.Web3Provider(window.ethereum);
+}
+
+//ethereum event reload on chain change
+if (ethereum) {
+  ethereum.on('chainChanged', () => {
+    window.location.reload(false)
+  })
 }
 
 const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
 const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
 
 
+export const checkMetamaskAvailability = async (sethaveMetamask, setIsConnected, setAccountAddress) => {
+  if (!ethereum) {
+    sethaveMetamask(false);
+    console.log('MetaMask not Installed')
+  } else {
+    sethaveMetamask(true);
+
+    //display address if Meta instaaled and connected
+    if (ethereum.selectedAddress) {
+      let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
+      setIsConnected(true)
+      setAccountAddress(ethereum.selectedAddress)
+
+    }
+  }
+
+
+}
+
+export const connectWallet = async (haveMetamask, setIsConnected, setAccountAddress) => {
+  try {
+
+    if (haveMetamask) {
+
+      const accounts = await ethereum.request({
+        method: 'eth_requestAccounts',
+      });
+
+      let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
+
+      setAccountAddress(ethereum.selectedAddress);
+      setIsConnected(true);
+
+    } else {
+      console.log("Metamask not installed")
+      alert('Please install Metamask')
+    }
+
+  }
+  catch (error) {
+    setIsConnected(false);
+    console.log(error)
+    alert(error.message)
+  }
+}
+
+export const handleChange = async (haveMetamask, item, setSelected) => {
+  setSelected(item)
+
+
+  if (haveMetamask) {
+
+    const chainId = await ethereum.request({ method: 'eth_chainId' });
+
+    if (chainId === item.value) {
+      alert("You are on the correct network")
+    }
+    else {
+
+      try {
+        await ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: item.value }],
+        });
+        console.log("You have succefully switched to Binance Smart Chain")
+      }
+      catch (switchError) {
+        // This error code indicates that the chain has not been added to MetaMask.
+        if (switchError.code === 4902) {
+          console.log("This network is not available in your metamask, please add it")
+        }
+        console.log(switchError.msg)
+      }
+    }
+  }
+  else {
+    console.log('No wallet installed')
+    alert('Metamask not Installed')
+
+  }
+}
+
+
 export const fetchAllSales = async () => {
   let salesData = [];
   try {
     const salesNO = await FactoryContract.getNumberOfSalesDeployed()
+
 
     if (salesNO.toNumber() === 0) {
       console.log('No sale deployed')
@@ -87,7 +177,7 @@ export const fetchAllSales = async () => {
             if (isFinished) {
               return 'Sale Closed'
             } else if (Date.now() / 1000 < saleStartTime.toNumber()) {
-              return 'Sale starts' + diffStart
+              return 'Sale starts ' + diffStart
             } else if (Date.now() / 1000 < chainData.saleEnd.toString()) {
               return 'Sale ends ' + diffEnd
             } else {

@@ -86,12 +86,13 @@ const Public = props => {
     const sales = await fetchAllSales()
     setSalesNO(sales.salesNO)
 
-    // console.log(sales?.salesData)
     setTimeout(() => {
       setDeployedSales(sales?.salesData)
       setFilteredSales(sales?.salesData)
       setIsLoading(false)
     }, 10000);
+
+
   }, [])
 
 
@@ -159,7 +160,7 @@ const Public = props => {
                     {item}
                   </Col>
                 )
-              }
+              }provider = new ethers.providers.Web3Provider(window.ethereum)
             </Row>
           </div>
 
