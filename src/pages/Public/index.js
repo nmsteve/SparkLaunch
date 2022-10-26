@@ -160,8 +160,7 @@ const Public = props => {
                     {item}
                   </Col>
                 )
-              }provider = new ethers.providers.Web3Provider(window.ethereum)
-            </Row>
+              }            </Row>
           </div>
 
           <div className='my-4'>
