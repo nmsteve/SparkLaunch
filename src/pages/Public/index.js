@@ -19,7 +19,6 @@ const Public = props => {
 
   const [featuredSales, setFeaturedSales] = useState([])
   const [deployedSales, setDeployedSales] = useState([])
-  const [salesNO, setSalesNO] = useState(0)
   const [filteredSales, setFilteredSales] = useState([])
 
   const [isLoading, setIsLoading] = useState(true)
@@ -84,12 +83,13 @@ const Public = props => {
     fetchFeaturedSale()
 
     const sales = await fetchAllSales()
-    setSalesNO(sales.salesNO)
 
     setTimeout(() => {
+
       setDeployedSales(sales?.salesData)
       setFilteredSales(sales?.salesData)
       setIsLoading(false)
+
     }, 10000);
 
 

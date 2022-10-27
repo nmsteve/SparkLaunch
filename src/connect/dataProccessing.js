@@ -13,14 +13,7 @@ const ADMIN_ADDRESS = '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
 const FACTORY_ADDRESS = '0x863B229F7d5e41D76C49bC9922983B0c3a096CDF'
 
 const { ethereum } = window;
-export let provider
-
-if (!ethereum) {
-  provider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
-}
-else {
-  provider = new ethers.providers.Web3Provider(window.ethereum);
-}
+export let provider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
 
 //ethereum event reload on chain change
 if (ethereum) {
@@ -38,14 +31,13 @@ export const checkMetamaskAvailability = async (sethaveMetamask, setIsConnected,
     sethaveMetamask(false);
     console.log('MetaMask not Installed')
   } else {
+    console.log('MetaMask Installed')
     sethaveMetamask(true);
-
-    //display address if Meta instaaled and connected
+    //display address if Meta installed and connected
     if (ethereum.selectedAddress) {
       let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
       setIsConnected(true)
       setAccountAddress(ethereum.selectedAddress)
-
     }
   }
 
@@ -61,8 +53,8 @@ export const connectWallet = async (haveMetamask, setIsConnected, setAccountAddr
         method: 'eth_requestAccounts',
       });
 
+      provider = new ethers.providers.Web3Provider(window.ethereum);
       let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
-
       setAccountAddress(ethereum.selectedAddress);
       setIsConnected(true);
 
@@ -116,8 +108,9 @@ export const handleChange = async (haveMetamask, item, setSelected) => {
 }
 
 
-export const fetchAllSales = async () => {
+export const fetchAllSales = async (setIsLoading) => {
   let salesData = [];
+
   try {
     const salesNO = await FactoryContract.getNumberOfSalesDeployed()
 
@@ -255,6 +248,7 @@ export const fetchAllSales = async () => {
 
 
   } catch (e) { console.log("Err: ", e.message) }
+
 }
 
 export const fetchFeaturedsale = async () => {
