@@ -182,13 +182,13 @@ const Header = props => {
             </Dropdown>
 
             {isConnected ?
-              <button
-                className="btn btn-sm btn-outline-primary text-primary rounded-3 me-3 ps-0 py-0 text-nowrap"
+              <div
+                className="border border-primary text-primary rounded-3 me-3 ps-0 py-0 text-nowrap"
               >
                 <i className="fa-solid fa-wallet text-primary border border-primary rounded p-1 me-1 fs-5" />
                 {accountAddress.slice(0, 2)}...{accountAddress.slice(38, 42)}
 
-              </button>
+              </div>
               :
               <button
                 className="btn btn-sm btn-primary text-white rounded-3 me-3 fw-bold"

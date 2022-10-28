@@ -4,16 +4,22 @@ import { factoryABI, saleABI, adminABI, testABI } from "./abi"
 import moment from "moment"
 import { formatEther } from "ethers/lib/utils"
 
-import api from 'connect/BaseApi'
-
 // const backendURL = 'http://localhost:3005/sale'
 const backendURL = 'https://sparklaunch-backend.herokuapp.com/sale'
 
-const ADMIN_ADDRESS = '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
-const FACTORY_ADDRESS = '0x863B229F7d5e41D76C49bC9922983B0c3a096CDF'
+let ADMIN_ADDRESS = localStorage.getItem(' ADMIN_ADDRESS') || '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
+let FACTORY_ADDRESS = localStorage.getItem('FACTORY_ADDRESS') || '0x863B229F7d5e41D76C49bC9922983B0c3a096CDF'
+let defaultProvider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
+//let provider = localStorage.getItem('provider') || defaultProvider
+let provider = defaultProvider
+
+console.log(ADMIN_ADDRESS, '\n', FACTORY_ADDRESS, "\n", provider)
+
+const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
+const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
+
 
 const { ethereum } = window;
-export let provider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
 
 //ethereum event reload on chain change
 if (ethereum) {
@@ -22,11 +28,9 @@ if (ethereum) {
   })
 }
 
-const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
-const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
-
 
 export const checkMetamaskAvailability = async (sethaveMetamask, setIsConnected, setAccountAddress) => {
+
   if (!ethereum) {
     sethaveMetamask(false);
     console.log('MetaMask not Installed')
@@ -54,7 +58,6 @@ export const connectWallet = async (haveMetamask, setIsConnected, setAccountAddr
       });
 
       provider = new ethers.providers.Web3Provider(window.ethereum);
-      let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
       setAccountAddress(ethereum.selectedAddress);
       setIsConnected(true);
 
@@ -89,7 +92,7 @@ export const handleChange = async (haveMetamask, item, setSelected) => {
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: item.value }],
         });
-        console.log("You have succefully switched to Binance Smart Chain")
+        console.log("You have succefully switched Network")
       }
       catch (switchError) {
         // This error code indicates that the chain has not been added to MetaMask.
@@ -102,12 +105,34 @@ export const handleChange = async (haveMetamask, item, setSelected) => {
   }
   else {
     console.log('No wallet installed')
-    alert('Metamask not Installed')
-
   }
+
+
+  if (item.text === 'Binance Smart') {
+    ADMIN_ADDRESS = '0xE765240958a91DF0cF878b8a4ED23D5FF8effFFe'
+    FACTORY_ADDRESS = '0x863CC01CDC295A1042b8A734E61D9be280C47F2a'
+    provider = ethers.getDefaultProvider('https://data-seed-prebsc-1-s1.binance.org:8545')
+    localStorage.setItem('ADMIN_ADDRESS', ADMIN_ADDRESS)
+    localStorage.setItem('FACTORY_ADDRESS', ADMIN_ADDRESS)
+    localStorage.setItem('provider', provider)
+
+    window.location.reload(false)
+
+  } else if (item.text === 'Roburna Chain') {
+    ADMIN_ADDRESS = ''
+    FACTORY_ADDRESS = ''
+    provider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
+    localStorage.setItem('ADMIN_ADDRESS', ADMIN_ADDRESS)
+    localStorage.setItem('FACTORY_ADDRESS', ADMIN_ADDRESS)
+    localStorage.setItem('provider', provider)
+    window.location.reload(false)
+  }
+
+
 }
 
-export const fetchAllSales = async (setIsLoading) => {
+export const fetchAllSales = async () => {
+
   let salesData = [];
 
   try {
