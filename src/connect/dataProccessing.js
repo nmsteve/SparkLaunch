@@ -28,7 +28,6 @@ if (ethereum) {
   })
 }
 
-
 export const checkMetamaskAvailability = async (sethaveMetamask, setIsConnected, setAccountAddress) => {
 
   if (!ethereum) {
@@ -39,13 +38,10 @@ export const checkMetamaskAvailability = async (sethaveMetamask, setIsConnected,
     sethaveMetamask(true);
     //display address if Meta installed and connected
     if (ethereum.selectedAddress) {
-      let balance = formatEther(await provider.getBalance(ethereum.selectedAddress))
       setIsConnected(true)
       setAccountAddress(ethereum.selectedAddress)
     }
   }
-
-
 }
 
 export const connectWallet = async (haveMetamask, setIsConnected, setAccountAddress) => {
@@ -53,15 +49,12 @@ export const connectWallet = async (haveMetamask, setIsConnected, setAccountAddr
 
     if (haveMetamask) {
 
-      const accounts = await ethereum.request({
-        method: 'eth_requestAccounts',
-      });
-
       provider = new ethers.providers.Web3Provider(window.ethereum);
       setAccountAddress(ethereum.selectedAddress);
       setIsConnected(true);
 
-    } else {
+    }
+    else {
       console.log("Metamask not installed")
       alert('Please install Metamask')
     }
@@ -76,7 +69,6 @@ export const connectWallet = async (haveMetamask, setIsConnected, setAccountAddr
 
 export const handleChange = async (haveMetamask, item, setSelected) => {
   setSelected(item)
-
 
   if (haveMetamask) {
 
@@ -116,19 +108,18 @@ export const handleChange = async (haveMetamask, item, setSelected) => {
     localStorage.setItem('FACTORY_ADDRESS', ADMIN_ADDRESS)
     localStorage.setItem('provider', provider)
 
-    window.location.reload(false)
-
-  } else if (item.text === 'Roburna Chain') {
+  }
+  else if (item.text === 'Roburna Chain') {
     ADMIN_ADDRESS = ''
     FACTORY_ADDRESS = ''
     provider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
     localStorage.setItem('ADMIN_ADDRESS', ADMIN_ADDRESS)
     localStorage.setItem('FACTORY_ADDRESS', ADMIN_ADDRESS)
     localStorage.setItem('provider', provider)
-    window.location.reload(false)
   }
 
-
+  localStorage.setItem('selectedChain', JSON.stringify(item))
+  window.location.reload()
 }
 
 export const fetchAllSales = async () => {

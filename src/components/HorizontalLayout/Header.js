@@ -21,13 +21,9 @@ import logoLG from 'assets/images/logos/lglogo.png'
 import bscLogo from 'assets/images/logos/bsc.png'
 import roburnaLogo from 'assets/images/logos/roburna.png'
 
-
-//ethers imports
-import { ethers } from "ethers"
-import { formatEther } from "ethers/lib/utils"
-
 //import Methods
 import { checkMetamaskAvailability, connectWallet, handleChange } from "connect/dataProccessing"
+
 
 const Header = props => {
 
@@ -43,8 +39,11 @@ const Header = props => {
   useEffect(async () => {
     checkMetamaskAvailability(sethaveMetamask, setIsConnected, setAccountAddress);
 
-  }, []);
-
+    if (localStorage.getItem('selectedChain')) {
+      setSelected(JSON.parse(localStorage.getItem('selectedChain')))
+      console.log(localStorage.getItem('selectedChain'))
+    }
+  }, [])
 
 
   return (
