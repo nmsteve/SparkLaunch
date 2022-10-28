@@ -107,7 +107,6 @@ export const handleChange = async (haveMetamask, item, setSelected) => {
   }
 }
 
-
 export const fetchAllSales = async (setIsLoading) => {
   let salesData = [];
 

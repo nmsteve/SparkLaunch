@@ -89,8 +89,10 @@ const Public = props => {
       setDeployedSales(sales?.salesData)
       setFilteredSales(sales?.salesData)
       setIsLoading(false)
+      console.log('sales No:', sales.salesNO.toString())
+      console.log('sales Lenght:', sales.salesData.length)
 
-    }, 10000);
+    }, 30000);
 
 
   }, [])
