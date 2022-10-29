@@ -24,13 +24,13 @@ import roburnaLogo from 'assets/images/logos/roburna.png'
 //import Methods
 import { checkMetamaskAvailability, connectWallet, handleChange } from "connect/dataProccessing"
 
-
 const Header = props => {
 
   const options = [
     { value: '0x61', text: 'Binance Smart', logo: bscLogo },
     { value: '0x9f', text: 'Roburna Chain', logo: roburnaLogo },
   ]
+
   const [haveMetamask, sethaveMetamask] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [accountAddress, setAccountAddress] = useState('');
@@ -43,6 +43,7 @@ const Header = props => {
       setSelected(JSON.parse(localStorage.getItem('selectedChain')))
       console.log(localStorage.getItem('selectedChain'))
     }
+
   }, [])
 
 
