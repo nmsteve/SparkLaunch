@@ -17,6 +17,7 @@ import SaleCard from 'components/SaleCard'
 import verticaLogo from 'assets/images/logos/biglogo.png'
 import smLogo from 'assets/images/logos/smlogo.png'
 
+import { fetchFeaturedSale, formatDeployedSales } from 'connect/dataProccessing'
 
 const Public = props => {
 
@@ -32,7 +33,6 @@ const Public = props => {
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedBtn, setSelectedBtn] = useState('ALL')
-
 
   const contains = (item, searchValue) => {
 
@@ -68,149 +68,8 @@ const Public = props => {
 
   }
 
-  const fetchFeaturedSale = () => {
-    api.get("featured/true", {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then(response => {
-        const data = response.data
-        // console.log(data)
 
-        setFeaturedSales(data)
-      })
-      .catch(error => {
-        // information not found
-        console.log(error.response?.data?.message)
-      })
-  }
-
-  const formatDeployedSales = async (sales, provider) => {
-
-    let formatedSales = []
-
-    for (let i = 0; i < sales.length; i++) {
-
-      const saleAddress = await FactoryContract.saleIdToAddress(sales[i]._id)
-
-      if (saleAddress !== '0x0000000000000000000000000000000000000000') {
-        //get sale chainData
-        const saleContract = new ethers.Contract(saleAddress, saleABI, provider)
-
-        const chainData = await saleContract.sale()
-
-        const noOfParticipants = await saleContract.numberOfParticipants()
-        const holders = await noOfParticipants.toNumber()
-
-        //get max and min participation
-        const minBuy = await saleContract.minParticipation()
-        const maxBuy = await saleContract.maxParticipation()
-
-        //get sale start, isFinished
-        const isFinished = await saleContract.saleFinished()
-        const saleStartTime = await saleContract.saleStartTime()
-
-        const percentage = () => {
-          const raised = chainData.totalBNBRaised / 10 ** 18
-          const hardCap = chainData.hardCap / 10 ** 18
-          const price = chainData.tokenPriceInBNB / 10 ** 18
-
-          const value = raised / (hardCap * price) * 100
-
-          return value > 0 ? value : 0
-        }
-
-        const timeDiff = () => {
-          const diffEnd = moment(chainData.saleEnd.toString() * 1000).fromNow()
-          const diffStart = moment(saleStartTime.toNumber() * 1000).fromNow()
-
-          if (isFinished) {
-            return 'Sale Closed'
-          }
-          else if (Date.now() / 1000 < saleStartTime.toNumber()) {
-            return 'Sale starts ' + diffStart
-          }
-          else if (Date.now() / 1000 < chainData.saleEnd.toString()) {
-            return 'Sale ends ' + diffEnd
-          }
-          else {
-            return 'Sale ended ' + diffEnd
-          }
-        }
-
-        const status = () => {
-          if (isFinished) {
-            return 'CLOSED'
-          }
-          else if (Date.now() / 1000 < saleStartTime.toNumber()) {
-            return 'UPCOMMING'
-          }
-          else if (Date.now() / 1000 < chainData.saleEnd.toString()) {
-            return 'LIVE'
-          }
-          else if (chainData.saleEnd.toNumber() === 0) {
-            return 'NOT-SET'
-          }
-          else return 'ENDED'
-
-        }
-
-        sales[i] = {
-          id: sales[i]._id,
-          saleToken: {
-            name: sales[i].saleToken.name,
-            symbol: sales[i].saleToken.symbol,
-            address: sales[i].saleToken.address,
-          },
-          saleParams: {
-            softCap: chainData.softCap.toString() / 10 ** 18,
-            hardCap: chainData.hardCap.toString() / 10 ** 18,
-            raised: chainData.totalBNBRaised.toString() / 10 ** 18,
-            price: chainData.tokenPriceInBNB.toString() / 10 ** 18,
-            startDate: sales[i].saleParams.startDate,
-            endDate: new Date(chainData.saleEnd.toString() * 1000),
-            minBuy: minBuy.toString() / 10 ** 18,
-            maxBuy: maxBuy.toString() / 10 ** 18,
-            firstRelease: sales[i].saleParams.firstRelease,
-            eachRelease: sales[i].saleParams.eachRelease,
-            vestingDays: sales[i].saleParams.vestingDay
-          },
-          saleLinks: {
-            logo: sales[i].saleLinks.logo,
-            fb: sales[i].saleLinks.fb,
-            git: sales[i].saleLinks.git,
-            insta: sales[i].saleLinks.insta,
-            reddit: sales[i].saleLinks.reddit,
-
-            web: sales[i].saleLinks.web,
-            twitter: sales[i].saleLinks.twitter,
-            telegram: sales[i].saleLinks.telegram,
-            discord: sales[i].saleLinks.discord,
-            youtube: sales[i].saleLinks.youtube
-          },
-          saleDetails: {
-            saleID: sales[i].saleDetails.saleID,
-            saleAddress: saleAddress,
-            saleOwner: chainData.saleOwner.toString(),
-            description: sales[i].saleDetails.description,
-            holders: holders,
-            listingDate: sales[i].saleDetails.listingDate,
-            percentage: percentage(),
-            diff: timeDiff(),
-            status: status()
-          },
-        }
-
-        formatedSales.push(sales[i])
-      }
-    }
-
-    return formatedSales
-  }
-
-  const getAllSales = (provider) => {
+  const getAllSales = () => {
 
     api.get("deployed/true", {
       method: "GET",
@@ -220,32 +79,31 @@ const Public = props => {
     })
       .then(async response => {
         const data = response.data
+        console.log(data)
 
-        let deployedSales = await formatDeployedSales(data, provider)
+        let deployedSales = []
+
+        deployedSales = await formatDeployedSales(data)
+        console.log(deployedSales)
 
         setDeployedSales(deployedSales)
         setFilteredSales(deployedSales)
-        setIsLoading(false)
+
+
+        setTimeout(async () => {
+          setIsLoading(false)
+        }, 15000);
       })
       .catch(error => {
         // information not found
-        console.log(error.response?.data?.message)
+        console.log(error.message)
       })
   }
 
   useEffect(() => {
-    fetchFeaturedSale()
 
-    let provider = null
-
-    if (!ethereum) {
-      provider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
-    }
-    else {
-      provider = new ethers.providers.Web3Provider(window.ethereum);
-    }
-
-    getAllSales(provider)
+    fetchFeaturedSale(setFeaturedSales)
+    getAllSales()
 
   }, [])
 
