@@ -14,12 +14,10 @@ let defaultProvider = ethers.getDefaultProvider('https://preseed-testnet-1.robur
 
 let provider = JSON.parse(localStorage.getItem('provider')) || defaultProvider
 //let provider = new ethers.providers.Web3Provider(window.ethereum);
-//console.log(ADMIN_ADDRESS, '\n', FACTORY_ADDRESS, "\n", provider)
-
+console.log(ADMIN_ADDRESS, '\n', FACTORY_ADDRESS, "\n", provider)
 
 const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
 const AdminContract = new ethers.Contract(ADMIN_ADDRESS, adminABI, provider)
-
 
 const { ethereum } = window;
 
@@ -29,9 +27,9 @@ if (ethereum) {
     window.location.reload(false)
   })
 }
-
-
-
+// ________________________________________________________________________________________________________
+// Display functions
+// ________________________________________________________________________________________________________
 export const checkMetamaskAvailability = async (sethaveMetamask, setIsConnected, setAccountAddress) => {
 
   if (!ethereum) {
@@ -44,6 +42,7 @@ export const checkMetamaskAvailability = async (sethaveMetamask, setIsConnected,
     if (ethereum.selectedAddress) {
       setIsConnected(true)
       setAccountAddress(ethereum.selectedAddress)
+      //provider = new ethers.providers.Web3Provider(window.ethereum);
     }
   }
 }
@@ -152,9 +151,10 @@ export const formatDeployedSales = async (sales) => {
 
   let formatedSales = []
 
-  await await sales.forEach(async (sale) => {
+
+  await sales.forEach(async (sale) => {
     const saleAddress = await FactoryContract.saleIdToAddress(sale._id)
-    //console.log(saleAddress)
+    console.log(saleAddress)
     if (saleAddress !== '0x0000000000000000000000000000000000000000') {
       //get sale chainData
       const saleContract = new ethers.Contract(saleAddress, saleABI, provider)
@@ -273,166 +273,6 @@ export const formatDeployedSales = async (sales) => {
   return formatedSales
 
 
-}
-
-
-
-
-export const fetchAllSales = async () => {
-
-  let salesData = [];
-
-  try {
-    const salesNO = await FactoryContract.getNumberOfSalesDeployed()
-
-
-    if (salesNO.toNumber() === 0) {
-      console.log('No sale deployed')
-    } else {
-      const response = await fetch(`${backendURL}/deployed/true`);
-      const DBdata = await response.json();
-      // console.log('DB Data:', DBdata)
-
-      await DBdata.map(async sale => {
-
-        const saleID = await sale._id
-
-        //get sale address
-        const saleAddress = await FactoryContract.saleIdToAddress(saleID);
-
-        //console.log(saleAddress)
-
-        if (saleAddress === '0x0000000000000000000000000000000000000000') { console.log('sale in DB but not deployed') }
-        else {
-          //get sale chainData
-          const saleContract = new ethers.Contract(saleAddress, saleABI, provider);
-          const chainData = await saleContract.sale();
-          //console.log('Data',chainData)
-
-          //get NO of participants
-          const noOfParticipants = await saleContract.numberOfParticipants()
-          const holders = noOfParticipants.toNumber()
-          //console.log('Holders', holders)
-
-          //format data for display
-          let dateObject = new Date(chainData.saleEnd.toString() * 1000)
-
-          //get max and min participation
-          const minBuy = await saleContract.minParticipation()
-          const maxBuy = await saleContract.maxParticipation()
-
-          //get sale start, isFinished
-          const isFinished = await saleContract.saleFinished()
-          const saleStartTime = await saleContract.saleStartTime()
-
-          const percentage = () => {
-            const raised = chainData.totalBNBRaised / 10 ** 18
-            const hardCap = chainData.hardCap / 10 ** 18
-            const price = chainData.tokenPriceInBNB / 10 ** 18
-
-            const value = raised / (hardCap * price) * 100
-            if (value > 0) { return value } else { return 0 }
-          }
-
-          //const end = chainData.saleEnd.toString()*1000
-          const timeDiff = () => {
-            const diffEnd = moment(chainData.saleEnd.toString() * 1000).fromNow()
-            const diffStart = moment(saleStartTime.toNumber() * 1000).fromNow()
-            if (isFinished) {
-              return 'Sale Closed'
-            } else if (Date.now() / 1000 < saleStartTime.toNumber()) {
-              return 'Sale starts ' + diffStart
-            } else if (Date.now() / 1000 < chainData.saleEnd.toString()) {
-              return 'Sale ends ' + diffEnd
-            } else {
-              return 'Sale ended ' + diffEnd
-            }
-          }
-
-          const status = () => {
-            if (isFinished) {
-              return 'CLOSED'
-            } else if (Date.now() / 1000 < saleStartTime.toNumber()) {
-              return 'UPCOMMING'
-            } else if (Date.now() / 1000 < chainData.saleEnd.toString()) {
-              return 'LIVE'
-            } else if (chainData.saleEnd.toNumber() === 0) {
-              return 'NOT-SET'
-            } else return 'ENDED'
-
-          }
-
-          let saleDBChain =
-          {
-            id: sale._id,
-            saleToken: {
-              name: sale.saleToken.name,
-              symbol: sale.saleToken.symbol,
-              address: sale.saleToken.address,
-            },
-            saleParams: {
-              softCap: chainData.softCap.toString() / 10 ** 18,
-              hardCap: chainData.hardCap.toString() / 10 ** 18,
-              raised: chainData.totalBNBRaised.toString() / 10 ** 18,
-              price: chainData.tokenPriceInBNB.toString() / 10 ** 18,
-              startDate: sale.saleParams.startDate,
-              endDate: dateObject,
-              minBuy: minBuy.toString() / 10 ** 18,
-              maxBuy: maxBuy.toString() / 10 ** 18,
-              firstRelease: sale.saleParams.firstRelease,
-              eachRelease: sale.saleParams.eachRelease,
-              vestingDays: sale.saleParams.vestingDay
-            },
-            saleLinks: {
-              logo: sale.saleLinks.logo,
-              fb: sale.saleLinks.fb,
-              git: sale.saleLinks.git,
-              insta: sale.saleLinks.insta,
-              reddit: sale.saleLinks.reddit,
-
-              web: sale.saleLinks.web,
-              twitter: sale.saleLinks.twitter,
-              telegram: sale.saleLinks.telegram,
-              discord: sale.saleLinks.discord,
-              youtube: sale.saleLinks.youtube
-            },
-            saleDetails: {
-              saleID: sale.saleDetails.saleID,
-              saleAddress: saleAddress,
-              saleOwner: chainData.saleOwner.toString(),
-              description: sale.saleDetails.description,
-              holders: holders,
-              listingDate: sale.saleDetails.listingDate,
-              percentage: percentage(),
-              diff: timeDiff(),
-              status: status()
-            },
-          }
-          salesData.push(saleDBChain)
-        }
-      })
-
-
-      return { salesNO, salesData }
-    }
-
-
-
-  } catch (e) { console.log("Err: ", e.message) }
-
-}
-
-export const fetchFeaturedsale = async () => {
-  try {
-
-    const response = await fetch(`${backendURL}/featured/true`)
-    const data = await response.json()
-    // console.log('Featured Data', data)
-    return data
-
-  } catch (error) {
-    console.log(error.message)
-  }
 }
 
 export const getSaleById = async (id, setIsLoading) => {
@@ -630,393 +470,16 @@ export const getSaleById = async (id, setIsLoading) => {
   }
 }
 
-export const saveData = async (values) => {
-
-  try {
-
-    if (values.maxbuy < values.minbuy) {
-      alert("maxBuy is less than minBuy")
-    }
-
-    else {
-
-      const input = JSON.stringify(
-        {
-
-          saleToken:
-          {
-            name: values.title,
-            symbol: values.symbol,
-            address: values.address
-          },
-          saleParams:
-          {
-            softCap: values.softcap,
-            hardCap: values.hardcap,
-            minBuy: values.minbuy,
-            maxBuy: values.maxbuy,
-            startDate: values.startdt,
-            endDate: values.enddt,
-            price: values.price,
-            saleOwner: values.saleOwner ? values.saleOwner : ethereum.selectedAddress,
-            round1: values.round1,
-            round2: values.round2,
-            round3: values.round3,
-            round4: values.round4,
-            round5: values.round5,
-            publicroundDelta: values.publicroundDelta,
-
-          },
-
-          saleLinks: {
-            logo: values.logo,
-            fb: values.facebook,
-            git: values.githube,
-            insta: values.instagram,
-            reddit: values.reddit,
-            web: values.website,
-            twitter: values.twitter,
-            telegram: values.telegram,
-            discord: values.discord,
-            youtube: values.youtube
-          },
-          saleDetails: {
-
-            description: values.description,
-            whilelist: values.whilelist
-          },
-
-        }
-
-      )
-
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: input
-      };
-
-
-      const response = await fetch(`${backendURL}`, requestOptions);
-      const data = await response.json();
-      // console.log('Data:', data)
-      let id = await data._id
-      let softCap = data.saleParams.softCap
-      let hardCap = data.saleParams.hardCap
-      let minBuy = data.saleParams.minBuy
-      let maxBuy = data.saleParams.maxBuy
-
-      // console.log('SaveData:', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
-
-      return { id, minBuy, maxBuy }
-
-    }
-
-  } catch (e) { console.log("Err: ", e.message) }
-
-  //console.log(data)
-}
-
-export const deploySale = async (values) => {
-
-  try {
-
-    if (!ethereum) {
-      console.log('Please install MetaMask')
-      alert('Please install MetaMask')
-    }
-
-    else {
-
-      const connect = await ethereum.request({ method: 'eth_requestAccounts' });
-
-      if (connect) {
-        const { id, minBuy, maxBuy } = await saveData(values)
-        // console.log('deploySale:', id, minBuy, maxBuy)
-
-        //signer needed for transaction (use current connected address)
-        const signer = provider.getSigner();
-
-        const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, signer);
-
-        let balance = await provider.getBalance(ethereum.selectedAddress);
-        let bal = ethers.utils.formatEther(balance);
-
-        let deployFee = await FactoryContract.fee()
-        let fee = ethers.utils.formatEther(deployFee)
-
-        if (bal < fee) {
-
-          // console.log("insufficient funds")
-          alert("insufficient funds")
-        }
-        else {
-
-          const tx = await FactoryContract.deployNormalSale(
-            ethers.utils.parseUnits(minBuy.toString(), 'ether'),
-            ethers.utils.parseUnits(maxBuy.toString(), 'ether'),
-            id,
-            { value: deployFee })
-
-          await tx.wait()
-          // console.log('success')
-
-
-          let saleAddress = await FactoryContract.saleIdToAddress(id)
-          // console.log('SaleAddress:', saleAddress)
-
-          if (saleAddress) {
-
-            const input = JSON.stringify(
-              {
-                deployed: true,
-                saleAddress: saleAddress
-
-              }
-            )
-
-            const requestOptions = {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: input
-            };
-
-            const response = await fetch(`${backendURL}/deploy/${id}`, requestOptions)
-            const data = await response.json()
-
-            // console.log("data aft put", data)
-
-            // console.log('Account:', ethereum.selectedAddress)
-            // console.log("Bal4:", bal)
-            // console.log('fee:', fee)
-            const BalAFT = await provider.getBalance(ethereum.selectedAddress)
-            // console.log('BalAFT:', formatEther(BalAFT))
-
-            window.location.pathname = '/'
-
-          }
-        }
-      }
-    }
-  }
-  catch (error) { console.log("Error:", error.message) }
-}
-
-export const participateInsale = async (selectedSale, amount, closeParticipation) => {
-
-  const amountInWei = ethers.utils.parseUnits(amount.toString(), 'ether')
-
-  try {
-
-    //connect if not connected
-    await ethereum.request({ method: 'eth_requestAccounts' });
-
-    //get sale address
-    const saleAddressObject = await FactoryContract.saleIdToAddress(selectedSale);
-    const saleAddress = saleAddressObject.toString()
-
-    //get sale chainData
-    const signer = provider.getSigner(ethereum.selectedAddress)
-    const saleContract = new ethers.Contract(saleAddress, saleABI, signer);
-    const sale = await await saleContract.sale()
-    console.log('Is sale params Set', sale.isCreated)
-
-    //get user tier
-    const userTier = (await saleContract.tier(ethereum.selectedAddress)).toNumber();
-    console.log('userTier', userTier)
-
-    //get publicRound
-    const round5 = await saleContract.tierIdToTierStartTime(5).toString() * 1000
-    const delta = await saleContract.publicRoundStartDelta().toString() * 1000
-    const publicRound = new Date(round5 + delta)
-
-    //get max and min
-    const max = (await saleContract.maxParticipation()).toString() / 10 ** 18
-    const min = (await saleContract.minParticipation()).toString() / 10 ** 18
-    console.log('max: ', max, 'min: ', min)
-
-    if (await saleContract.isParticipated(ethereum.selectedAddress)) {
-      console.log('Already Participated')
-      alert('Already Participated')
-
-
-    }
-
-    else if (!sale.isCreated) {
-      console.log('sale Params not set')
-      alert('sale Params not set')
-
-    }
-
-    else if (!sale.tokensDeposited) {
-      console.log('Sale tokens were not deposited')
-      alert('Sale tokens were not deposited')
-
-    }
-
-    else if (userTier === 0 && Date.now() < publicRound) {
-      console.log('No tier granted')
-      alert('No tier granted')
-    }
-
-    else if (Date.now() < new Date((await saleContract.tierIdToTierStartTime(userTier)).toString() * 1000)) {
-      console.log(`Wrong round.Your rounds is ${userTier}`)
-      alert(`Wrong round.Your rounds is ${userTier}`)
-    }
-
-    else if (amount < min) {
-      alert(`Minmun amount is ${min}`)
-    }
-
-    else if (amount > max) {
-      alert(`Maxmun amount is ${max}`)
-    }
-
-
-    else {
-      //Participate
-      const tx = await saleContract.participate(userTier, { value: amountInWei })
-      await tx.wait()
-      console.log(tx)
-      console.log('Participation Successfull')
-
-    }
-
-    closeParticipation()
-
-  } catch (error) {
-    console.log(error.message)
-  }
-}
-
-export const withdraw = async (selectedSale, setIsProcessing) => {
-  setIsProcessing(true)
-  try {
-
-
-    //connect if not connected
-    await ethereum.request({ method: 'eth_requestAccounts' });
-
-    //get sale address
-    const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
-
-    //get sale chainData
-    const signer = provider.getSigner(ethereum.selectedAddress)
-    const saleContract = new ethers.Contract(saleAddress, saleABI, signer)
-    const sale = await saleContract.sale()
-    if (!sale.isCreated) {
-      console.log('params not set')
-      alert('params not set')
-    } else if (!await saleContract.saleFinished()) {
-      console.log("Sale not Finished")
-      alert("Sale not Finished")
-    } else if (! await saleContract.isParticipated(ethereum.selectedAddress)) {
-      console.log('You did not participate')
-      alert("You did not participate")
-    } else if (!await saleContract.isSaleSuccessful()) {
-      console.log("sale Not successful,withdraw unused instead")
-      alert("sale Not successful,withdraw unused instead")
-    } else {
-      const tx = await saleContract.withdraw()
-      tx.wait(1)
-      console.log('tx:', tx)
-      alert("Withdraw successful")
-    }
-
-
-  } catch (error) {
-    console.log(error.message)
-  }
-  setIsProcessing(false)
+export const getDeploymentFee = async () => {
+  const deploymentFee = formatEther(await FactoryContract.fee())
+  console.log('deploymentFee', deploymentFee)
+
+  return deploymentFee
 
 }
-
-export const withdrawUnused = async (selectedSale, setIsProcessing) => {
-  try {
-
-    setIsProcessing(true)
-    //connect if not connected
-    await ethereum.request({ method: 'eth_requestAccounts' });
-
-    //get sale address
-    const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
-
-    // create signer
-    const signer = provider.getSigner(ethereum.selectedAddress)
-
-    //connect to sale
-    const saleContract = new ethers.Contract(saleAddress, saleABI, signer)
-
-    //get sale chain data
-    const sale = await saleContract.sale()
-
-    if (!sale.isCreated) {
-      console.log('params not set')
-      alert('Params not set')
-    } else if (!await saleContract.saleFinished()) {
-      console.log("Sale not Finished")
-      alert("Sale not Finshed")
-    } else if (! await saleContract.isParticipated(ethereum.selectedAddress)) {
-      console.log('You did not participate')
-      alert("You did not Participate")
-    } else if (await saleContract.isSaleSuccessful()) {
-      console.log("sale was successful, withdraw instead")
-      alert("sale was successful, withdraw instead")
-    } else {
-      const tx = await saleContract.withdrawUserFundsIfSaleCancelled()
-      await tx.wait()
-      console.log('tx:', tx)
-      alert('Withdraw successful!')
-    }
-
-    setIsProcessing(false)
-
-  } catch (error) {
-    console.log(error.message)
-  }
-}
-
-export const finishSale = async (selectedSale, setIsProcessing) => {
-
-  try {
-    setIsProcessing(true)
-    //get sale signer
-    const signer = provider.getSigner(ethereum.selectedAddress)
-
-    //get sale address
-    const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
-    const saleContract = new ethers.Contract(saleAddress, saleABI, signer)
-
-    //get sale data
-    const sale = await saleContract.sale()
-    const saleEnd = new Date(sale.saleEnd.toString() * 1000)
-
-    if (await saleContract.saleFinished()) {
-      console.log('sale aready Finished')
-      alert('sale aready Finished')
-
-    } else if (!await AdminContract.isAdmin(ethereum.selectedAddress)) {
-      console.log('Caller not the admin')
-      alert('Caller not the Admin')
-
-    } else if (Date.now() < saleEnd) {
-      console.log('Sale end time is yet')
-      alert('Sale end time is yet')
-
-    } else {
-      //finish sale
-      const tx = await saleContract.finishSale()
-      await tx.wait()
-      console.log('tx:', tx)
-      alert('Sale finished Successfully')
-    }
-    setIsProcessing(false)
-  } catch (error) {
-    console.log('Error:', error.message)
-  }
-  setIsProcessing(false)
-}
-
+//____________________________________________________________________________________________________________
+//  Seller operations
+// ___________________________________________________________________________________________________________
 export const depositTokens = async (selectedSale, setIsProcessing) => {
   try {
 
@@ -1204,10 +667,396 @@ export const withdrawEarnings = async (selectedSale, setIsProcessing) => {
   setIsProcessing(false)
 }
 
-export const getDeploymentFee = async () => {
-  const deploymentFee = formatEther(await FactoryContract.fee())
-  console.log('deploymentFee', deploymentFee)
+export const saveData = async (values) => {
 
-  return deploymentFee
+  try {
+
+    if (values.maxbuy < values.minbuy) {
+      alert("maxBuy is less than minBuy")
+    }
+
+    else {
+
+      const input = JSON.stringify(
+        {
+
+          saleToken:
+          {
+            name: values.title,
+            symbol: values.symbol,
+            address: values.address
+          },
+          saleParams:
+          {
+            softCap: values.softcap,
+            hardCap: values.hardcap,
+            minBuy: values.minbuy,
+            maxBuy: values.maxbuy,
+            startDate: values.startdt,
+            endDate: values.enddt,
+            price: values.price,
+            saleOwner: values.saleOwner ? values.saleOwner : ethereum.selectedAddress,
+            round1: values.round1,
+            round2: values.round2,
+            round3: values.round3,
+            round4: values.round4,
+            round5: values.round5,
+            publicroundDelta: values.publicroundDelta,
+
+          },
+
+          saleLinks: {
+            logo: values.logo,
+            fb: values.facebook,
+            git: values.githube,
+            insta: values.instagram,
+            reddit: values.reddit,
+            web: values.website,
+            twitter: values.twitter,
+            telegram: values.telegram,
+            discord: values.discord,
+            youtube: values.youtube
+          },
+          saleDetails: {
+
+            description: values.description,
+            whilelist: values.whilelist
+          },
+
+        }
+
+      )
+
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: input
+      };
+
+
+      const response = await fetch(`${backendURL}`, requestOptions);
+      const data = await response.json();
+      // console.log('Data:', data)
+      let id = await data._id
+      let softCap = data.saleParams.softCap
+      let hardCap = data.saleParams.hardCap
+      let minBuy = data.saleParams.minBuy
+      let maxBuy = data.saleParams.maxBuy
+
+      // console.log('SaveData:', 'ID:', id, 'softCap', softCap, 'hardcap', hardCap, 'Minbuy', minBuy, 'Maxbuy', maxBuy)
+
+      return { id, minBuy, maxBuy }
+
+    }
+
+  } catch (e) { console.log("Err: ", e.message) }
+
+  //console.log(data)
+}
+
+export const deploySale = async (values) => {
+
+  try {
+
+    if (!ethereum) {
+      console.log('Please install MetaMask')
+      alert('Please install MetaMask')
+    }
+
+    else {
+
+      const connect = await ethereum.request({ method: 'eth_requestAccounts' });
+
+      if (connect) {
+        const { id, minBuy, maxBuy } = await saveData(values)
+        // console.log('deploySale:', id, minBuy, maxBuy)
+
+        //signer needed for transaction (use current connected address)
+        const signer = provider.getSigner();
+
+        const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, signer);
+
+        let balance = await provider.getBalance(ethereum.selectedAddress);
+        let bal = ethers.utils.formatEther(balance);
+
+        let deployFee = await FactoryContract.fee()
+        let fee = ethers.utils.formatEther(deployFee)
+
+        if (bal < fee) {
+
+          // console.log("insufficient funds")
+          alert("insufficient funds")
+        }
+        else {
+
+          const tx = await FactoryContract.deployNormalSale(
+            ethers.utils.parseUnits(minBuy.toString(), 'ether'),
+            ethers.utils.parseUnits(maxBuy.toString(), 'ether'),
+            id,
+            { value: deployFee })
+
+          await tx.wait()
+          // console.log('success')
+
+
+          let saleAddress = await FactoryContract.saleIdToAddress(id)
+          // console.log('SaleAddress:', saleAddress)
+
+          if (saleAddress) {
+
+            const input = JSON.stringify(
+              {
+                deployed: true,
+                saleAddress: saleAddress
+
+              }
+            )
+
+            const requestOptions = {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: input
+            };
+
+            const response = await fetch(`${backendURL}/deploy/${id}`, requestOptions)
+            const data = await response.json()
+
+            // console.log("data aft put", data)
+
+            // console.log('Account:', ethereum.selectedAddress)
+            // console.log("Bal4:", bal)
+            // console.log('fee:', fee)
+            const BalAFT = await provider.getBalance(ethereum.selectedAddress)
+            // console.log('BalAFT:', formatEther(BalAFT))
+
+            window.location.pathname = '/'
+
+          }
+        }
+      }
+    }
+  }
+  catch (error) { console.log("Error:", error.message) }
+}
+
+// ______________________________________________________________________________________________________________
+//   Buyer operations
+//_______________________________________________________________________________________________________________
+
+export const participateInsale = async (selectedSale, amount, closeParticipation) => {
+
+  const amountInWei = ethers.utils.parseUnits(amount.toString(), 'ether')
+
+  try {
+
+    //connect if not connected
+    await ethereum.request({ method: 'eth_requestAccounts' });
+
+    //get sale address
+    const saleAddressObject = await FactoryContract.saleIdToAddress(selectedSale);
+    const saleAddress = saleAddressObject.toString()
+
+    //get sale chainData
+    const signer = provider.getSigner(ethereum.selectedAddress)
+    const saleContract = new ethers.Contract(saleAddress, saleABI, signer);
+    const sale = await await saleContract.sale()
+    console.log('Is sale params Set', sale.isCreated)
+
+    //get user tier
+    const userTier = (await saleContract.tier(ethereum.selectedAddress)).toNumber();
+    console.log('userTier', userTier)
+
+    //get publicRound
+    const round5 = await saleContract.tierIdToTierStartTime(5).toString() * 1000
+    const delta = await saleContract.publicRoundStartDelta().toString() * 1000
+    const publicRound = new Date(round5 + delta)
+
+    //get max and min
+    const max = (await saleContract.maxParticipation()).toString() / 10 ** 18
+    const min = (await saleContract.minParticipation()).toString() / 10 ** 18
+    console.log('max: ', max, 'min: ', min)
+
+    if (await saleContract.isParticipated(ethereum.selectedAddress)) {
+      console.log('Already Participated')
+      alert('Already Participated')
+
+
+    }
+
+    else if (!sale.isCreated) {
+      console.log('sale Params not set')
+      alert('sale Params not set')
+
+    }
+
+    else if (!sale.tokensDeposited) {
+      console.log('Sale tokens were not deposited')
+      alert('Sale tokens were not deposited')
+
+    }
+
+    else if (userTier === 0 && Date.now() < publicRound) {
+      console.log('No tier granted')
+      alert('No tier granted')
+    }
+
+    else if (Date.now() < new Date((await saleContract.tierIdToTierStartTime(userTier)).toString() * 1000)) {
+      console.log(`Wrong round.Your rounds is ${userTier}`)
+      alert(`Wrong round.Your rounds is ${userTier}`)
+    }
+
+    else if (amount < min) {
+      alert(`Minmun amount is ${min}`)
+    }
+
+    else if (amount > max) {
+      alert(`Maxmun amount is ${max}`)
+    }
+
+
+    else {
+      //Participate
+      const tx = await saleContract.participate(userTier, { value: amountInWei })
+      await tx.wait()
+      console.log(tx)
+      console.log('Participation Successfull')
+
+    }
+
+    closeParticipation()
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+export const withdraw = async (selectedSale, setIsProcessing) => {
+  setIsProcessing(true)
+  try {
+
+
+    //connect if not connected
+    await ethereum.request({ method: 'eth_requestAccounts' });
+
+    //get sale address
+    const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
+
+    //get sale chainData
+    const signer = provider.getSigner(ethereum.selectedAddress)
+    const saleContract = new ethers.Contract(saleAddress, saleABI, signer)
+    const sale = await saleContract.sale()
+    if (!sale.isCreated) {
+      console.log('params not set')
+      alert('params not set')
+    } else if (!await saleContract.saleFinished()) {
+      console.log("Sale not Finished")
+      alert("Sale not Finished")
+    } else if (! await saleContract.isParticipated(ethereum.selectedAddress)) {
+      console.log('You did not participate')
+      alert("You did not participate")
+    } else if (!await saleContract.isSaleSuccessful()) {
+      console.log("sale Not successful,withdraw unused instead")
+      alert("sale Not successful,withdraw unused instead")
+    } else {
+      const tx = await saleContract.withdraw()
+      tx.wait(1)
+      console.log('tx:', tx)
+      alert("Withdraw successful")
+    }
+
+
+  } catch (error) {
+    console.log(error.message)
+  }
+  setIsProcessing(false)
 
 }
+
+export const withdrawUnused = async (selectedSale, setIsProcessing) => {
+  try {
+
+    setIsProcessing(true)
+    //connect if not connected
+    await ethereum.request({ method: 'eth_requestAccounts' });
+
+    //get sale address
+    const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
+
+    // create signer
+    const signer = provider.getSigner(ethereum.selectedAddress)
+
+    //connect to sale
+    const saleContract = new ethers.Contract(saleAddress, saleABI, signer)
+
+    //get sale chain data
+    const sale = await saleContract.sale()
+
+    if (!sale.isCreated) {
+      console.log('params not set')
+      alert('Params not set')
+    } else if (!await saleContract.saleFinished()) {
+      console.log("Sale not Finished")
+      alert("Sale not Finshed")
+    } else if (! await saleContract.isParticipated(ethereum.selectedAddress)) {
+      console.log('You did not participate')
+      alert("You did not Participate")
+    } else if (await saleContract.isSaleSuccessful()) {
+      console.log("sale was successful, withdraw instead")
+      alert("sale was successful, withdraw instead")
+    } else {
+      const tx = await saleContract.withdrawUserFundsIfSaleCancelled()
+      await tx.wait()
+      console.log('tx:', tx)
+      alert('Withdraw successful!')
+    }
+
+    setIsProcessing(false)
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+// _________________________________________________________________________________________________________________
+// Admin operations
+// _________________________________________________________________________________________________________________
+export const finishSale = async (selectedSale, setIsProcessing) => {
+
+  try {
+    setIsProcessing(true)
+    //get sale signer
+    const signer = provider.getSigner(ethereum.selectedAddress)
+
+    //get sale address
+    const saleAddress = await FactoryContract.saleIdToAddress(selectedSale);
+    const saleContract = new ethers.Contract(saleAddress, saleABI, signer)
+
+    //get sale data
+    const sale = await saleContract.sale()
+    const saleEnd = new Date(sale.saleEnd.toString() * 1000)
+
+    if (await saleContract.saleFinished()) {
+      console.log('sale aready Finished')
+      alert('sale aready Finished')
+
+    } else if (!await AdminContract.isAdmin(ethereum.selectedAddress)) {
+      console.log('Caller not the admin')
+      alert('Caller not the Admin')
+
+    } else if (Date.now() < saleEnd) {
+      console.log('Sale end time is yet')
+      alert('Sale end time is yet')
+
+    } else {
+      //finish sale
+      const tx = await saleContract.finishSale()
+      await tx.wait()
+      console.log('tx:', tx)
+      alert('Sale finished Successfully')
+    }
+    setIsProcessing(false)
+  } catch (error) {
+    console.log('Error:', error.message)
+  }
+  setIsProcessing(false)
+}
+

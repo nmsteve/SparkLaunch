@@ -69,7 +69,7 @@ const Public = props => {
   }
 
 
-  const getAllSales = () => {
+  const getAllSales = (setIsLoading) => {
 
     api.get("deployed/true", {
       method: "GET",
@@ -92,7 +92,7 @@ const Public = props => {
 
         setTimeout(async () => {
           setIsLoading(false)
-        }, 15000);
+        }, 45000);
       })
       .catch(error => {
         // information not found
@@ -103,7 +103,7 @@ const Public = props => {
   useEffect(() => {
 
     fetchFeaturedSale(setFeaturedSales)
-    getAllSales()
+    getAllSales(setIsLoading)
 
   }, [])
 
