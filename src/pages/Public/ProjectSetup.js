@@ -355,7 +355,7 @@ const ProjectSetup = () => {
                     <Form.Label>Start time (UTC) *</Form.Label>
                     <Form.Control
                       defaultValue={step2?.startdt}
-                      type='date'
+                      type='datetime-local'
                       placeholder="0"
                       required
                     />
@@ -365,7 +365,7 @@ const ProjectSetup = () => {
                     <Form.Label>End time (UTC) *</Form.Label>
                     <Form.Control
                       defaultValue={step2?.enddt}
-                      type='date'
+                      type='datetime-local'
                       placeholder="0"
                       required
                     />
