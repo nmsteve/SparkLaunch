@@ -12,8 +12,9 @@ let ADMIN_ADDRESS = localStorage.getItem('ADMIN_ADDRESS') || '0x45B1379Be4A4f389
 let FACTORY_ADDRESS = localStorage.getItem('FACTORY_ADDRESS') || '0x863B229F7d5e41D76C49bC9922983B0c3a096CDF'
 let defaultProvider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
 
-let provider = JSON.parse(localStorage.getItem('provider')) || defaultProvider
+//let provider = JSON.parse(localStorage.getItem('provider')) || defaultProvider
 //let provider = new ethers.providers.Web3Provider(window.ethereum);
+let provider = defaultProvider
 console.log(ADMIN_ADDRESS, '\n', FACTORY_ADDRESS, "\n", provider)
 
 const FactoryContract = new ethers.Contract(FACTORY_ADDRESS, factoryABI, provider);
@@ -70,7 +71,7 @@ export const connectWallet = async (haveMetamask, setIsConnected, setAccountAddr
   }
 }
 
-export const handleChange = async (haveMetamask, item, setSelected) => {
+export const handleChange = async (haveMetamask, item, setSelected, setIsLoading) => {
 
   setSelected(item)
 
@@ -108,6 +109,7 @@ export const handleChange = async (haveMetamask, item, setSelected) => {
     ADMIN_ADDRESS = '0xE765240958a91DF0cF878b8a4ED23D5FF8effFFe'
     FACTORY_ADDRESS = '0x863CC01CDC295A1042b8A734E61D9be280C47F2a'
     provider = ethers.getDefaultProvider('https://data-seed-prebsc-1-s1.binance.org:8545')
+    getAllSales(setIsLoading)
     localStorage.setItem('ADMIN_ADDRESS', ADMIN_ADDRESS)
     localStorage.setItem('FACTORY_ADDRESS', FACTORY_ADDRESS)
     localStorage.setItem('provider', JSON.stringify(provider))
@@ -118,13 +120,14 @@ export const handleChange = async (haveMetamask, item, setSelected) => {
     ADMIN_ADDRESS = '0x45B1379Be4A4f389B67D7Ad41dB5222f7104D26C'
     FACTORY_ADDRESS = '0x863B229F7d5e41D76C49bC9922983B0c3a096CDF'
     provider = ethers.getDefaultProvider('https://preseed-testnet-1.roburna.com/')
+    getAllSales(setIsLoading)
     localStorage.setItem('ADMIN_ADDRESS', ADMIN_ADDRESS)
     localStorage.setItem('FACTORY_ADDRESS', FACTORY_ADDRESS)
     localStorage.setItem('provider', JSON.stringify(provider))
   }
 
   localStorage.setItem('selectedChain', JSON.stringify(item))
-  window.location.reload()
+  //window.location.reload()
 
 }
 
@@ -273,6 +276,37 @@ export const formatDeployedSales = async (sales) => {
   return formatedSales
 
 
+}
+
+const getAllSales = (setIsLoading) => {
+
+  api.get("deployed/true", {
+    method: "GET",
+    headers: {
+      "content-type": "application/json",
+    },
+  })
+    .then(async response => {
+      const data = response.data
+      console.log(data)
+
+      let deployedSales = []
+
+      deployedSales = await formatDeployedSales(data)
+      console.log(deployedSales)
+
+      setDeployedSales(deployedSales)
+      setFilteredSales(deployedSales)
+
+
+      setTimeout(async () => {
+        setIsLoading(false)
+      }, 45000);
+    })
+    .catch(error => {
+      // information not found
+      console.log(error.message)
+    })
 }
 
 export const getSaleById = async (id, setIsLoading) => {
